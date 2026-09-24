@@ -1,6 +1,60 @@
 {
   "topic": "how-to-use-this-book",
   "title": "How to use this book",
-  "quiz": [],
-  "flashcards": []
+  "quiz": [
+    {
+      "q": "What is a backend?",
+      "options": [
+        "The part of an app that runs on a server and handles data and rules",
+        "The CSS of a website",
+        "The bottom half of a web page",
+        "A type of database"
+      ],
+      "answer": 0,
+      "explain": "The backend runs on a server: it receives requests, applies the rules, talks to the database and sends back responses."
+    },
+    {
+      "q": "Which Rust topic should you review before starting this book?",
+      "options": [
+        "Unsafe Rust",
+        "Ownership and borrowing",
+        "FFI",
+        "Build scripts"
+      ],
+      "answer": 1,
+      "explain": "Ownership shows up on every page of backend code; unsafe, FFI and build scripts are not used in this book."
+    },
+    {
+      "q": "What does the '### Line by line' part of a lesson give you?",
+      "options": [
+        "A summary video",
+        "What, why and how for each line of the code above it",
+        "Only the output of the program",
+        "A list of links"
+      ],
+      "answer": 1,
+      "explain": "Each non-trivial line gets What, Why, How and 'Remove it and…' so nothing is magic."
+    },
+    {
+      "q": "Where is the full, working code for a lesson?",
+      "options": [
+        "Nowhere, you type it from the page",
+        "In the code/ folder of the book's repository, linked under each listing",
+        "In a zip you email for",
+        "On the Rust Playground"
+      ],
+      "answer": 1,
+      "explain": "Every listing is included from a real crate in code/, which CI compiles and tests."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Which crates does this book use for web and database?",
+      "back": "Axum (web framework) and SeaORM (ORM), on top of Tokio (async runtime) and PostgreSQL (database)."
+    },
+    {
+      "front": "What are the three exercise tiers?",
+      "back": "🟢 Guided (fill in), 🟡 Tweak (change working code), 🔴 From scratch (write from a one-line spec)."
+    }
+  ]
 }
