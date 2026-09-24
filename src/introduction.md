@@ -9,9 +9,9 @@ linked in the [Glossary](glossary.md) so you can look it up again later.
 
 ## What you'll build
 
-Along the way you'll build several small **APIs** of your own. An API is a set of addresses your
-program answers, so that other programs — a website, a phone app, another service — can ask it for
-data or ask it to do something. By the end of Part A, you will have built:
+Along the way you'll build several small [**APIs**](glossary.md#api) of your own. An API is a set
+of addresses your program answers, so that other programs — a website, a phone app, another
+service — can ask it for data or ask it to do something. By the end of Part A, you will have built:
 
 - **Library database** — design tables and write real SQL queries for a small library system,
   straight in Postgres.
@@ -43,8 +43,9 @@ Coming from JS/Python/Java/Go? Good — every lesson has a box translating to wh
 
 ## How every lesson works
 
-Every topic lesson (Part A onward) follows the same eleven sections in the same order, so you
-always know where to look for what you need:
+Every lesson in this book, starting with Part 0, follows the same eleven sections in the same
+order, so you always know where to look for what you need. (The build-it projects, cheat sheets and
+the readiness checklist you'll meet later are not lessons, so they use their own, shorter formats.)
 
 | # | Heading | Contents |
 |---|---|---|

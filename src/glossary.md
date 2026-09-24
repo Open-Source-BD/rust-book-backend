@@ -3,6 +3,13 @@
 Every technical word in this book, in plain language. Lessons link here the first time they use a
 word. Terms are in A–Z order.
 
+### API
+
+A set of addresses a program answers, so that other programs — a website, a phone app, another
+service — can ask it for data or ask it to do something (short for Application Programming
+Interface).
+**First used in:** [Introduction](introduction.md)
+
 ### Async
 
 Code that can pause while it waits for something slow (the network, the [database](#database)…) so
