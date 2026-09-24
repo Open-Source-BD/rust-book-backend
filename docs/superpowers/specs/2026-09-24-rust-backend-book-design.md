@@ -200,7 +200,7 @@ rust-book-backend/
 │   ├── topics/<slug>/                # one small crate per Part A lesson that needs code
 │   ├── projects/<slug>/              # reference solutions for the Build-it projects
 │   └── shop/step-NN/                 # complete ShopRS snapshot after each capstone chapter
-├── docker-compose.yml                # Postgres 17
+├── docker-compose.yml                # Postgres 18
 └── .github/workflows/
     ├── deploy.yml                    # generate → mdbook build → GitHub Pages
     └── code.yml                      # Postgres service → fmt --check, clippy -D warnings, test
@@ -238,7 +238,8 @@ Lessons show the changed parts only, and each chapter says which files changed.
 ### Versions
 All crate versions pinned once in `[workspace.dependencies]`, set to the latest stable releases
 (Axum, Tokio, SeaORM + sea-orm-migration, serde, tower-http, tracing, argon2, jsonwebtoken, utoipa,
-etc.), verified against crates.io when the plan is written. Postgres 17. MSRV = current stable Rust.
+etc.), verified against crates.io when the plan is written. Postgres 18. MSRV = current stable Rust.
+Verified 2026-09-24: Node 24 in CI (Node 20 is deprecated), axum 0.8.9, tokio 1.53.1, tower 0.5.3, sea-orm / sea-orm-migration 2.0.3, tower-http 0.7.1, tracing 0.1.44. docker-compose maps Postgres to host port 5433 so it never clashes with a locally installed Postgres on 5432.
 
 ## 5. Quality bar & testing
 
@@ -252,7 +253,7 @@ etc.), verified against crates.io when the plan is written. Postgres 17. MSRV = 
 
 **CI:**
 - `deploy.yml`: Node 20, mdBook, `generate.mjs`, `validate.mjs`, `mdbook build`, publish.
-- `code.yml`: Postgres 17 service container; `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test --workspace`.
+- `code.yml`: Postgres 18 service container; `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test --workspace`.
 
 ## 6. Rollout phases
 

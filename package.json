@@ -1,0 +1,10 @@
+{
+  "name": "rust-backend-for-humans",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"tools/test/*.test.mjs\"",
+    "gen": "node tools/generate.mjs",
+    "validate": "node tools/validate.mjs"
+  }
+}

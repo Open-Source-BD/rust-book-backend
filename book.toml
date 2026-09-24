@@ -1,0 +1,28 @@
+[book]
+title = "Rust Backend for Humans"
+description = "Learn to build real web backends with Rust, Axum, SeaORM and PostgreSQL — every line explained, from your first route to a production e-commerce API."
+authors = ["Md Shamirul Islam"]
+language = "en"
+src = "src"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "navy"
+git-repository-url = ""
+additional-css = ["theme/retention.css"]
+additional-js = ["theme/questions.data.js", "theme/retention.js"]
+
+[output.html.playground]
+editable = true
+copyable = true
+line-numbers = false
+
+[output.html.search]
+enable = true
+limit-results = 30
+use-boolean-and = true
+boost-title = 2
+
+[output.html.fold]
+enable = true
+level = 1
