@@ -1,4 +1,5 @@
 // lib.mjs — pure functions shared by generate.mjs and validate.mjs (no file I/O here).
+import { dirname as _dirname, resolve as _resolve } from "node:path";
 
 export const PARTS = [
   { id: "0", title: "Part 0 · Before you start", dir: "part-0-start" },
@@ -116,3 +117,132 @@ export const questionStub = (t) =>
   JSON.stringify({ topic: t.slug, title: t.title, quiz: [], flashcards: [] }, null, 2) + "\n";
 
 export { quizzable };
+
+// ---------------------------------------------------------------------------
+// Validation
+
+const FENCE = /^ {0,3}(```|~~~)/;
+
+export function stripFences(md) {
+  let inFence = false;
+  return md.split("\n").map((line) => {
+    if (FENCE.test(line)) { inFence = !inFence; return ""; }
+    return inFence ? "" : line;
+  }).join("\n");
+}
+
+export function headingId(text) {
+  let id = "";
+  for (const ch of text) {
+    if (/[\p{L}\p{N}_-]/u.test(ch)) id += ch.toLowerCase();
+    else if (/\s/.test(ch)) id += "-";
+  }
+  return id;
+}
+
+export function glossaryIds(md) {
+  const ids = new Set();
+  for (const m of stripFences(md).matchAll(/^#{2,4} +(.+)$/gm)) ids.add(headingId(m[1].trim()));
+  return ids;
+}
+
+const BANNED = ["simply", "just", "obviously", "trivially"];
+
+function sectionBody(prose, heading) {
+  const start = prose.indexOf(`\n${heading}\n`);
+  if (start < 0) return "";
+  const rest = prose.slice(start + heading.length + 2);
+  const end = rest.search(/^## /m);
+  return end < 0 ? rest : rest.slice(0, end);
+}
+
+export function checkPage({ topic: t, md, mdFile, root, glossary, exists, read }) {
+  const errors = [], warnings = [];
+  const prose = stripFences(md);
+  const required = HEADINGS[t.kind] || [];
+
+  // 1. required headings: present, and in order
+  const found = [...prose.matchAll(/^## .+$/gm)].map((m) => m[0].trim());
+  for (const h of required) if (!found.includes(h)) errors.push(`missing section "${h}"`);
+  const seq = found.filter((h) => required.includes(h));
+  if (required.every((h) => found.includes(h)) && seq.join("|") !== required.join("|"))
+    errors.push(`sections out of order: expected ${required.join(" → ")}`);
+
+  // 2. lesson-only rules
+  if (t.kind === "lesson") {
+    if (!md.includes(`<div class="quiz" data-topic="${t.slug}"></div>`)) errors.push("quiz mount div missing or wrong slug");
+    const turn = sectionBody(prose, "## Your turn");
+    let at = -1;
+    for (const tier of TIERS) {
+      const i = turn.indexOf(tier);
+      if (i <= at) errors.push(`"## Your turn" is missing "${tier}" (or it is out of order)`);
+      else at = i;
+    }
+    if (md.split("\n").some((l) => FENCE.test(l)) && !/^### Line by line$/m.test(prose))
+      errors.push('page has code but no "### Line by line" section');
+  }
+
+  // 3. checklist items must link to a lesson
+  if (t.kind === "checklist")
+    for (const line of prose.split("\n"))
+      if (/^- \[ \]/.test(line) && !line.includes("]("))
+        errors.push(`checklist item has no lesson link: ${line.slice(6).trim()}`);
+  if (t.kind === "cheatsheet" && !prose.includes("](")) warnings.push("cheat sheet links to no lessons");
+
+  // 4. includes resolve (scan raw md: includes live inside fences)
+  for (const m of md.matchAll(/\{\{#include\s+([^}\s]+)\s*\}\}/g)) {
+    const [rel, ...rest] = m[1].split(":");
+    const file = _resolve(_dirname(mdFile), rel);
+    if (!exists(file)) { errors.push(`include file not found: ${rel}`); continue; }
+    if (!rest.length) continue;
+    if (/^\d/.test(rest[0])) { warnings.push(`include ${m[1]} uses line numbers — use an ANCHOR so edits can't shift it`); continue; }
+    const name = rest[0];
+    const src = read(file);
+    const esc = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (!new RegExp(`ANCHOR:\\s*${esc}\\b`).test(src) || !new RegExp(`ANCHOR_END:\\s*${esc}\\b`).test(src))
+      errors.push(`anchor "${name}" not found (ANCHOR + ANCHOR_END) in ${rel}`);
+  }
+
+  // 5. leftovers, banned words, glossary links, codeDir
+  if (md.includes("AUTHORING:")) errors.push("leftover AUTHORING placeholder");
+  const plain = prose.replace(/`[^`\n]*`/g, "");
+  for (const w of BANNED) {
+    const n = (plain.match(new RegExp(`\\b${w}\\b`, "gi")) || []).length;
+    if (n) warnings.push(`banned word "${w}" used ${n}×`);
+  }
+  for (const m of md.matchAll(/glossary\.md#([\w-]+)/g))
+    if (!glossary.has(m[1])) warnings.push(`glossary link #${m[1]} has no matching glossary heading`);
+  if (t.codeDir && !exists(_resolve(root, t.codeDir))) errors.push(`codeDir does not exist: ${t.codeDir}`);
+
+  return { errors, warnings };
+}
+
+export function checkBank(t, bank) {
+  const errors = [], warnings = [];
+  const quiz = Array.isArray(bank.quiz) ? bank.quiz : [];
+  const cards = Array.isArray(bank.flashcards) ? bank.flashcards : [];
+  if (quiz.length < 4) warnings.push(`quiz has fewer than 4 questions (${quiz.length})`);
+  if (!cards.length) warnings.push("no flashcards");
+  quiz.forEach((q, i) => {
+    if (!q.q) errors.push(`quiz[${i}] missing question text`);
+    if (!Array.isArray(q.options) || q.options.length < 2) errors.push(`quiz[${i}] needs at least 2 options`);
+    if (typeof q.answer !== "number" || q.answer < 0 || q.answer >= (q.options || []).length)
+      errors.push(`quiz[${i}] answer index out of range`);
+    if (!q.explain) warnings.push(`quiz[${i}] has no explanation`);
+  });
+  cards.forEach((c, i) => { if (!c.front || !c.back) errors.push(`flashcard[${i}] missing front/back`); });
+  return { errors, warnings };
+}
+
+export function checkTopics(topics) {
+  const errors = [], seen = new Set();
+  for (const t of topics) {
+    if (seen.has(t.slug)) errors.push(`duplicate slug ${t.slug}`);
+    seen.add(t.slug);
+    if (!PARTS.some((p) => p.id === t.part)) errors.push(`${t.slug}: unknown part ${t.part}`);
+    if (!(t.kind in HEADINGS)) errors.push(`${t.slug}: unknown kind ${t.kind}`);
+    if (t.status === "published" && t.kind === "lesson" && (!t.outcomes || t.outcomes.length < 2))
+      errors.push(`${t.slug}: published lesson needs at least 2 outcomes`);
+  }
+  return errors;
+}
