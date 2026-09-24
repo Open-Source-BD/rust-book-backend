@@ -169,3 +169,27 @@ test("checkTopics catches duplicate slugs and bad parts", () => {
   assert.ok(errs.some((e) => e.includes("duplicate slug a")));
   assert.ok(errs.some((e) => e.includes("unknown part X")));
 });
+
+test("stripFences handles a nested inner fence inside an outer 4-backtick fence", () => {
+  const md = "````md\n```rust\nfn a(){}\n```\n## Your turn\n````\nafter\n";
+  const out = stripFences(md);
+  assert.equal(out.split("\n").length, md.split("\n").length);
+  assert.ok(!out.includes("## Your turn"));
+  assert.ok(!out.includes("fn a(){}"));
+  assert.ok(out.includes("after"));
+});
+
+test("a ~~~ fence is not closed by a ``` line", () => {
+  const md = "~~~\n```\n## should stay hidden\n~~~\nafter\n";
+  const out = stripFences(md);
+  assert.equal(out.split("\n").length, md.split("\n").length);
+  assert.ok(!out.includes("## should stay hidden"));
+  assert.ok(out.includes("after"));
+});
+
+test("checkPage: heading whose only occurrence is inside a nested fence still counts as missing", () => {
+  const nested = "\n````md\n```rust\nfn a(){}\n```\n## Common mistakes\n````\n";
+  const md = good().replace("\n## Common mistakes\n", nested);
+  const r = checkPage(ctx(md));
+  assert.ok(r.errors.some((e) => e.includes('missing section "## Common mistakes"')), r.errors.join("\n"));
+});

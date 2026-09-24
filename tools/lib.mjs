@@ -121,13 +121,24 @@ export { quizzable };
 // ---------------------------------------------------------------------------
 // Validation
 
-const FENCE = /^ {0,3}(```|~~~)/;
+// CommonMark fence rule: an opener is 0-3 spaces + a run of >=3 backticks or
+// tildes (an info string may follow). A line only closes it if it is 0-3
+// spaces + a run of the SAME char with length >= the opener's run, followed
+// by nothing but whitespace. Anything else inside the fence is just content
+// (including lines that look like a different/shorter fence).
+const FENCE_OPEN = /^ {0,3}(`{3,}|~{3,})/;
 
 export function stripFences(md) {
-  let inFence = false;
+  let fence = null; // { char, len } while inside an open fence
   return md.split("\n").map((line) => {
-    if (FENCE.test(line)) { inFence = !inFence; return ""; }
-    return inFence ? "" : line;
+    if (fence) {
+      const close = new RegExp(`^ {0,3}${fence.char}{${fence.len},}\\s*$`);
+      if (close.test(line)) fence = null;
+      return "";
+    }
+    const m = FENCE_OPEN.exec(line);
+    if (m) { fence = { char: m[1][0], len: m[1].length }; return ""; }
+    return line;
   }).join("\n");
 }
 
@@ -178,7 +189,7 @@ export function checkPage({ topic: t, md, mdFile, root, glossary, exists, read }
       if (i <= at) errors.push(`"## Your turn" is missing "${tier}" (or it is out of order)`);
       else at = i;
     }
-    if (md.split("\n").some((l) => FENCE.test(l)) && !/^### Line by line$/m.test(prose))
+    if (md.split("\n").some((l) => FENCE_OPEN.test(l)) && !/^### Line by line$/m.test(prose))
       errors.push('page has code but no "### Line by line" section');
   }
 
