@@ -22,7 +22,7 @@ pause it with `.await`.
 The part of a website or app that runs on a [server](#server) instead of on your own device: it
 stores data, checks rules, and sends answers back. Think of a restaurant kitchen — customers never
 walk into it, but every order goes through it before food comes out.
-**First used in:** [How to use this book](part-0-start/how-to-use-this-book.md)
+**First used in:** [Introduction](introduction.md)
 
 ### Client
 
@@ -132,13 +132,13 @@ The message a [server](#server) sends back to the [client](#client) that made a
 A common style for designing a [backend](#backend) where each [endpoint](#endpoint) stands for one
 "thing" (like a user or an order), and you act on it using the request's method — GET to read, POST
 to create, and so on.
-**First used in:** [How a web backend works](part-0-start/how-a-web-backend-works.md)
+**First used in:** [Introduction](introduction.md)
 
 ### Route
 
 A rule that pairs one address and one HTTP method (like GET `/users`) with the
 [handler](#handler) that should answer it.
-**First used in:** [How to use this book](part-0-start/how-to-use-this-book.md)
+**First used in:** [Introduction](introduction.md)
 
 ### Runtime
 
@@ -150,7 +150,7 @@ paused task picks back up. Tokio is the runtime this book uses.
 
 A program that waits for [request](#request)s and sends back [response](#response)s. It keeps
 running in the background, ready for the next request at any time.
-**First used in:** [How to use this book](part-0-start/how-to-use-this-book.md)
+**First used in:** [Introduction](introduction.md)
 
 ### SQL
 

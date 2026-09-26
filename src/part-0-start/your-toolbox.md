@@ -611,8 +611,8 @@ Error response from daemon: failed to set up container networking: driver failed
 
 Another program (often another project's database container) is already listening on port 5433.
 **Fix:** either stop that other program, or give the book's database a different door. Change the
-*left* number in `docker-compose.yml` (for example `"5440:5432"`), change the port in your `.env`
-to match (`…@localhost:5440/rbh`), then run `docker compose up -d --wait` again. To find out who's
+*left* number in `docker-compose.yml` (for example `"5434:5432"`), change the port in your `.env`
+to match (`…@localhost:5434/rbh`), then run `docker compose up -d --wait` again. To find out who's
 using the port, see "Check which program is using a port" in **More examples**.
 
 **`psql` isn't installed.**

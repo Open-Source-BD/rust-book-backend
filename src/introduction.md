@@ -15,8 +15,10 @@ service — can ask it for data or ask it to do something. By the end of Part A,
 
 - **Library database** — design tables and write real SQL queries for a small library system,
   straight in Postgres.
-- **Todo API** — an in-memory [REST](glossary.md#rest) API for a to-do list, with a
-  [route](glossary.md#route) for every basic operation: add, view, change, remove.
+- **Todo API** — an in-memory [REST](glossary.md#rest) API for a to-do list (REST is a common
+  style where each address stands for one thing, like a to-do, and the request's method says what
+  to do with it), with a [route](glossary.md#route) — a rule pairing one address and method with
+  the code that answers it — for every basic operation: add, view, change, remove.
 - **Blog data layer** — the data side of a blog (users, posts and comments), built with SeaORM
   instead of raw SQL.
 - **Notes API** — a full API backed by a real Postgres database, combining everything Axum and
@@ -32,11 +34,17 @@ and you build and deploy every part of it yourself.
 ## Is this book for me?
 
 This book does not re-teach the Rust language — it assumes you already know basic Rust. You're
-ready if you've finished *Rust for Humans*, or if you're already comfortable with these four ideas:
+ready if you've finished *Rust for Humans*, or if you're already comfortable with these six ideas
+(the first lesson walks you through checking each one):
 
 - [Rust for Humans: Ownership](https://open-source-bd.github.io/rustbook-for-human/ownership/ownership.html)
+  and [Borrowing](https://open-source-bd.github.io/rustbook-for-human/ownership/borrowing.html)
+- [Rust for Humans: Structs](https://open-source-bd.github.io/rustbook-for-human/language-basics/structs.html)
+  and [Enums](https://open-source-bd.github.io/rustbook-for-human/language-basics/enums.html)
 - [Rust for Humans: Result and Option](https://open-source-bd.github.io/rustbook-for-human/abstractions/result-and-option.html)
+  and [the question mark operator](https://open-source-bd.github.io/rustbook-for-human/abstractions/the-question-mark-operator.html)
 - [Rust for Humans: Traits basics](https://open-source-bd.github.io/rustbook-for-human/abstractions/traits-basics.html)
+- [Rust for Humans: Closures](https://open-source-bd.github.io/rustbook-for-human/abstractions/closures.html)
 - [Rust for Humans: Async basics](https://open-source-bd.github.io/rustbook-for-human/runtime-and-ecosystem/async-basics.html)
 
 Coming from JS/Python/Java/Go? Good — every lesson has a box translating to what you know.
@@ -96,7 +104,7 @@ project itself.
 
 Every lesson ends with a `## Quick check` — a handful of questions on that lesson alone. Cards you
 find tricky come back more often on the [Review & flashcards](review.md) page, which collects the
-key question from every lesson you've read into one shuffled deck. Everything is saved in your own
+key questions from every published lesson into one shuffled deck. Everything is saved in your own
 browser, so you can dip in and out without losing progress.
 
 ## Start here
