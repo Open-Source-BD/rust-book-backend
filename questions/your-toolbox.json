@@ -1,6 +1,60 @@
 {
   "topic": "your-toolbox",
   "title": "Your toolbox",
-  "quiz": [],
-  "flashcards": []
+  "quiz": [
+    {
+      "q": "In `ports: \"5433:5432\"`, what is 5433?",
+      "options": [
+        "The port inside the container",
+        "The port on your computer",
+        "The Postgres version",
+        "The number of connections"
+      ],
+      "answer": 1,
+      "explain": "The left side is your computer (host), the right side is inside the container. We use 5433 so it can't clash with a Postgres already using 5432."
+    },
+    {
+      "q": "Why do we run Postgres in Docker?",
+      "options": [
+        "Postgres only works in Docker",
+        "It keeps Postgres in an isolated box that is easy to start, stop and delete",
+        "Docker makes queries faster",
+        "Rust requires Docker"
+      ],
+      "answer": 1,
+      "explain": "Docker gives everyone the same Postgres 18 without installing it into your system, and you can throw it away and start fresh any time."
+    },
+    {
+      "q": "What does `docker compose down -v` do that `down` does not?",
+      "options": [
+        "Shows a verbose log",
+        "Deletes the data volume — your data is gone",
+        "Updates Postgres",
+        "Nothing different"
+      ],
+      "answer": 1,
+      "explain": "`-v` removes volumes. Use it only when you want a completely fresh database."
+    },
+    {
+      "q": "What goes in `.env`?",
+      "options": [
+        "Your Rust code",
+        "Settings like DATABASE_URL that change between computers",
+        "The docker image",
+        "Test results"
+      ],
+      "answer": 1,
+      "explain": "`.env` holds environment variables such as the database address. It is never committed to git."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Shape of a Postgres URL?",
+      "back": "`postgres://USER:PASSWORD@HOST:PORT/DATABASE`"
+    },
+    {
+      "front": "Start / stop the book's database?",
+      "back": "`docker compose up -d --wait` / `docker compose down`"
+    }
+  ]
 }
