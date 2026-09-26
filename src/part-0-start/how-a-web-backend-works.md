@@ -96,7 +96,7 @@ Accept: application/json
 `Accept: application/json`
 - **What:** a header saying which format the client would like the answer in.
 - **Why:** the same product could be sent as a web page or as data. This app wants data, in a
-  format called JSON (Step 5).
+  format called [JSON](../glossary.md#json) (Step 5).
 - **How:** `application/json` is a **media type**, a standard name for a data format.
   `text/html` is a web page, `text/plain` is plain text, and `*/*` means "anything is fine".
 - **Remove it and…** the server picks a format itself. Most backends send JSON anyway, so this is

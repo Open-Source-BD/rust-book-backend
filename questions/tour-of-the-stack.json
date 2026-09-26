@@ -1,6 +1,60 @@
 {
   "topic": "tour-of-the-stack",
   "title": "Tour of the stack",
-  "quiz": [],
-  "flashcards": []
+  "quiz": [
+    {
+      "q": "Which tool decides which function answers `GET /`?",
+      "options": [
+        "Tokio",
+        "Axum's Router",
+        "SeaORM",
+        "Postgres"
+      ],
+      "answer": 1,
+      "explain": "The Router matches the method and path to a handler. Tokio runs the async machinery; SeaORM and Postgres handle data."
+    },
+    {
+      "q": "What does `#[tokio::main]` do?",
+      "options": [
+        "Makes the program run faster",
+        "Starts the Tokio async runtime and runs your async main on it",
+        "Connects to the database",
+        "Opens port 3000"
+      ],
+      "answer": 1,
+      "explain": "`main` can't be async on its own. The attribute builds a runtime and runs your async main inside it."
+    },
+    {
+      "q": "Why is it `get(hello)` and not `get(hello())`?",
+      "options": [
+        "Style preference",
+        "We give Axum the function to call later, not the result of calling it now",
+        "Parentheses are not allowed in Rust",
+        "hello() would call the database"
+      ],
+      "answer": 1,
+      "explain": "Axum calls `hello` each time a matching request arrives. `hello()` would call it once, right now."
+    },
+    {
+      "q": "What does SeaORM do in this stack?",
+      "options": [
+        "Serves HTTP",
+        "Lets Rust code read and write Postgres rows as structs",
+        "Schedules async tasks",
+        "Stores the data on disk"
+      ],
+      "answer": 1,
+      "explain": "SeaORM is the ORM: it turns rows into Rust structs and back. Postgres itself stores the data."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "The four layers, request order?",
+      "back": "Tokio (runtime) → Axum (routing/handlers) → SeaORM (ORM) → Postgres (database)."
+    },
+    {
+      "front": "Minimal Axum server lines?",
+      "back": "`Router::new().route(\"/\", get(handler))`, `TcpListener::bind(addr).await`, `axum::serve(listener, app).await`."
+    }
+  ]
 }
