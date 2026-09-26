@@ -437,3 +437,14 @@ test("carry: a footnote definition is not a page link; a normal reference defini
   const normal = checkLinks({ md: "[id]: missing.md\n", mdFile: "/r/src/a1-postgres/x.md", exists: () => false, publishedPaths: new Set() });
   assert.equal(normal.length, 1, normal.join("\n"));
 });
+
+test("sql: a hand-typed sql fence is an error; include and ignore pass", () => {
+  const files = { "/r/code/x/src/main.rs": "// ANCHOR: app\nfn a(){}\n// ANCHOR_END: app\n", "/r/code/sql/hello/01-a.sql": "SELECT 1;\n" };
+  const withFence = (f) => good().replace("### Line by line", `${f}\n\n### Line by line`);
+  const bad = checkPage(ctx(withFence("```sql\nSELECT 1;\n```"), files));
+  assert.ok(bad.errors.some((e) => e.includes("hand-typed SQL")));
+  const inc = checkPage(ctx(withFence("```sql\n{{#include ../../code/sql/hello/01-a.sql}}\n```"), files));
+  assert.ok(!inc.errors.some((e) => e.includes("hand-typed")));
+  const ign = checkPage(ctx(withFence("```sql,ignore\nSELEC 1;\n```"), files));
+  assert.ok(!ign.errors.some((e) => e.includes("hand-typed")));
+});

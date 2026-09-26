@@ -247,6 +247,21 @@ nothing else:
 - ` ```rust,noplayground,ignore ` — deliberately broken code under `## Common mistakes`, always
   shown next to the real compiler error it produces.
 
+The same rule covers SQL listings in Part A1: every ` ```sql ` fence must be
+`{{#include ../../code/sql/<slug>/NN-name.sql}}`, and its output is
+`{{#include ../../code/sql/<slug>/NN-name.out}}` in a ` ```text ` fence — never hand-typed SQL or a
+pasted-in result. `tools/sql-check.mjs` is the real runner: for each `code/sql/<slug>/` it drops
+and recreates a database named after the slug (`dbNameFor`, e.g. `crud-in-sql` → `crud_in_sql`),
+pipes every `NN-*.sql` file into `psql` in name order, and diffs the normalized output against the
+committed `NN-name.out`; `.out` files are written only by `node tools/sql-check.mjs --update
+<slug>`, never hand-edited. `--check-twice` re-runs each lesson a second time and fails if the
+output differs, catching nondeterministic SQL (`now()`, `random()`, `gen_random_uuid()`) before it
+reaches CI. `validate.mjs` errors on a hand-typed ` ```sql ` fence; the only exception is
+` ```sql,ignore ` for deliberately broken SQL shown next to its real error, mirroring
+`rust,noplayground,ignore`. CI's `sql` job (`.github/workflows/code.yml`) runs
+`node tools/sql-check.mjs --check-twice` against a fresh `postgres:18` service container on every
+push and pull request.
+
 ### Capstone snapshots
 `code/shop/step-NN/` is a full, independent crate (`shop-step-NN`). Each step is created by copying
 the previous one and applying that chapter's changes, so readers can start from any chapter.

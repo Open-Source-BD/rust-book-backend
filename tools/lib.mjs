@@ -352,6 +352,22 @@ export function checkPage({ topic: t, md, mdFile, root, glossary, exists, read, 
       errors.push(`line ${b.line}: hand-typed Rust in a \`\`\`${b.info} fence — {{#include}} it from code/, or use rust,editable (pure std) / rust,noplayground,ignore (deliberately broken)`);
   }
 
+  // 5b. SQL listings come from code/sql/<slug>/NN-name.sql, run for real by tools/sql-check.mjs.
+  //     Exception: fences tagged `ignore` (deliberately broken Common-mistakes code, shown next to
+  //     its real error). Same mixing rule as Rust: a fence may hold only {{#include}} lines, never
+  //     an include mixed with hand-typed SQL.
+  for (const b of fencedBlocks(md)) {
+    if (!/^sql\b/.test(b.info)) continue;
+    const tags = b.info.split(",").map((x) => x.trim());
+    if (tags.includes("ignore")) continue;
+    const inc = b.body.filter((l) => /\{\{#include\s/.test(l));
+    const other = b.body.filter((l) => l.trim() && !inc.includes(l));
+    if (inc.length && other.length)
+      errors.push(`line ${b.line}: fence mixes an {{#include}} with hand-typed lines — put all of it in code/`);
+    else if (!inc.length)
+      errors.push(`line ${b.line}: hand-typed SQL in a \`\`\`${b.info} fence — put it in code/sql/<slug>/NN-name.sql and {{#include}} it`);
+  }
+
   // 6. links and stale "coming soon"
   errors.push(...checkLinks({ md, mdFile, exists, publishedPaths }));
   errors.push(...checkComingSoon(md, publishedTitles));

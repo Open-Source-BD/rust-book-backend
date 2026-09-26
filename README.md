@@ -17,14 +17,21 @@ cargo install mdbook --locked --version 0.5.4   # or: brew install mdbook
 Then, from the repo root:
 
 ```bash
-npm test                  # runs the generator/validator unit tests
+npm test                  # runs the generator/validator/SQL-runner unit tests
 node tools/generate.mjs   # writes any missing page stubs, regenerates SUMMARY.md and questions.data.js
 node tools/validate.mjs   # checks every published page against the format rules
+npm run sql               # re-runs every code/sql/<slug>/NN-*.sql for real and checks its .out
 mdbook serve --open       # builds the book and opens it in your browser, rebuilding on save
 ```
 
 `npm test` runs `node --test "tools/test/*.test.mjs"` (a quoted glob). Node 24 rejects a bare
 directory argument (`node --test tools/test`), so don't drop the quotes or the glob.
+
+`npm run sql` (= `node tools/sql-check.mjs`) needs a reachable Postgres — either
+`docker compose up -d --wait` (below) or `RBH_PSQL` pointed at another one. Pass one or more lesson
+slugs to check just those, `--update <slug>` to regenerate that lesson's `.out` files after an
+intentional SQL change, and `--check-twice` to also verify the output is the same on a second run
+(what CI does).
 
 ## Run the book's code
 

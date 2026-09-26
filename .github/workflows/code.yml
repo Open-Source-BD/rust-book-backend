@@ -36,3 +36,31 @@ jobs:
       - run: cargo fmt --all --check
       - run: cargo clippy --workspace --all-targets -- -D warnings
       - run: cargo test --workspace --all-targets   # --all-targets also runs the tests in examples/*.rs
+
+  sql:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: rbh
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U postgres -d rbh"
+          --health-interval 2s --health-timeout 3s --health-retries 15
+    env:
+      # psql runs inside the postgres:18 image (same version as the server); stderr is merged into
+      # stdout INSIDE the container so error lines keep their place in the output.
+      RBH_PSQL: docker run --rm -i --network host -e PGPASSWORD=postgres postgres:18 sh -c 'psql -X -h 127.0.0.1 -p 5433 -U postgres -d "$0" 2>&1'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+      - name: Pull psql image once
+        run: docker pull postgres:18
+      - name: Every SQL listing runs and matches its committed output (twice)
+        run: node tools/sql-check.mjs --check-twice

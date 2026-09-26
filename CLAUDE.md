@@ -36,6 +36,42 @@ cd code && cargo fmt --all --check && cargo clippy --workspace --all-targets -- 
   check would report healthy too early, while Postgres's temporary first-start server is still
   only listening on the Unix socket.
 
+## SQL listings
+
+Part A1 (PostgreSQL & SQL) lessons show real `psql` output, checked by CI instead of hand-typed.
+
+- **File layout and numbering:** `code/sql/<slug>/NN-name.sql`, a two-digit prefix, run in name
+  order inside one database. Ranges: `01`–`49` for "The idea, slowly", `50`–`69` for "More
+  examples", `70`–`79` for "Common mistakes", `90`–`99` for "Your turn" solutions.
+- **One database per lesson:** the database name is the slug with `-` → `_` (e.g. `crud-in-sql` →
+  `crud_in_sql`, via `dbNameFor` in `tools/sql.mjs`). Readers create it once with `docker compose
+  exec db createdb -U postgres <name>` and run a file with `docker compose exec -T db psql -U
+  postgres -d <name> < code/sql/<slug>/NN-name.sql`.
+- **Rerunnable preamble:** a file that creates tables starts with `SET client_min_messages =
+  warning;` and `DROP TABLE IF EXISTS …;`, so running it twice gives identical output, not
+  "relation already exists".
+- **No nondeterministic SQL:** no `now()`, `random()`, `gen_random_uuid()`, `\timing` or
+  `version()` — use fixed date literals instead. `EXPLAIN` always uses `(COSTS OFF)`, or
+  `(ANALYZE, COSTS OFF, TIMING OFF, SUMMARY OFF, BUFFERS OFF)`. `tools/sql-check.mjs
+  --check-twice` runs each lesson's files twice and fails if the output differs between runs.
+- **`.out` files are never hand-edited.** They come only from `node tools/sql-check.mjs --update
+  <slug>`, which drops and recreates that lesson's database, pipes each `NN-*.sql` file into
+  `psql` for real, and writes the normalized output next to it as `NN-name.out`. Lessons show it
+  via `{{#include ../../code/sql/<slug>/NN-name.out}}` in a ` ```text ` fence.
+- **Running the checker:** `npm run sql` (= `node tools/sql-check.mjs`) checks every lesson;
+  `node tools/sql-check.mjs <slug>` checks one; `--update <slug>` regenerates that lesson's `.out`
+  files; `--check-twice` also verifies determinism. `RBH_PSQL` is a shell command prefix that runs
+  `psql` — the runner appends the database name and pipes SQL on stdin. It defaults to `docker
+  compose exec -T db sh -c 'psql -X -U postgres -d "$0" 2>&1'` (the book's own `docker-compose.yml`
+  on port 5433). Point it at a different Postgres — a scratch instance on another port, or CI's
+  service container — by exporting `RBH_PSQL` yourself, e.g. `export RBH_PSQL="docker compose -p
+  rbh-sql -f /path/to/docker-compose.yml exec -T db sh -c 'psql -X -U postgres -d \"\$0\" 2>&1'"`.
+- **Validator's SQL-fence rule:** every ` ```sql ` fence in a lesson must be an
+  `{{#include ../../code/sql/<slug>/NN-name.sql}}`, never hand-typed SQL — the same "comes from
+  real, checked code" rule as Rust listings, so `validate.mjs` errors on a hand-typed one and CI
+  actually runs what the page shows. The exception is ` ```sql,ignore `, for deliberately broken
+  SQL shown next to its real error (mirrors `rust,noplayground,ignore`).
+
 ## Publishing a draft page
 
 1. Set `status: "published"` for that page's entry in `tools/topics.data.js`.
