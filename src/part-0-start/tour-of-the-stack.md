@@ -317,21 +317,14 @@ Last, the `main` function, which opens port 3000 and starts serving:
   async code, and `main` is where the program starts, so nobody else could.
 - **How:** behind the scenes, it turns your `async fn main` into roughly this ordinary `main`:
 
-  ```rust,noplayground
-  fn main() {
-      tokio::runtime::Builder::new_multi_thread()
-          .enable_all()
-          .build()
-          .expect("Failed building the Runtime")
-          .block_on(async {
-              // the body of your async main goes here
-          })
-  }
-  ```
+```rust,noplayground
+{{#include ../../code/topics/tour-of-the-stack/examples/tokio-main-expanded.rs:expanded}}
+```
 
-  That is: build a multi-threaded Tokio runtime, switch on everything it can do (network, timers),
-  stop with the message `Failed building the Runtime` in the rare case it can't be built, then
-  `block_on` your async code: run it and don't return until it's finished.
+That is: build a multi-threaded Tokio runtime, switch on everything it can do (network, timers),
+stop with the message `Failed building the Runtime` in the rare case it can't be built, then
+`block_on` your async code: run it and don't return until it's finished.
+
 - **Remove it and…** ``error[E0752]: `main` function is not allowed to be `async` ``.
 
 `async fn main() {`
@@ -416,7 +409,10 @@ curl -i http://127.0.0.1:3000/
 - **Why:** the workspace lives in `code/`, so Cargo must run from there.
 - **How:** `&&` runs the second command only if the first worked. `-p tour-of-the-stack` picks
   which project in the workspace to run.
-- **Remove it and…** (the `-p …`) Cargo doesn't know which of the workspace's projects you mean.
+- **Remove it and…** (the `-p …`) today it still works, because `tour-of-the-stack` is the only
+  program in the workspace. Once the workspace holds more than one project, as later lessons add
+  their own, Cargo needs `-p` to know which one to run, and stops with an error asking you to
+  choose.
 
 `curl -i http://127.0.0.1:3000/` (second terminal)
 - **What:** sends `GET /` to your server and prints the whole response.
@@ -726,23 +722,17 @@ counting on another crate to switch it on for you.
 
 ## More examples
 
-These aren't in the book's code folder. Try each one in the crate: change `src/main.rs`, run
-`cargo run -p tour-of-the-stack` again (stop the old server with `Ctrl+C` first), and curl it.
+Try each one in the crate: change `src/main.rs`, run `cargo run -p tour-of-the-stack` again (stop
+the old server with `Ctrl+C` first), and curl it. Each one is also a complete program in
+`code/topics/tour-of-the-stack/examples/`, which you can run as it is with
+`cargo run -p tour-of-the-stack --example <name>` (for example `--example about`).
 
 ### A second page: `GET /about`
 
 A second route is one more handler and one more `.route(…)`.
 
 ```rust,noplayground
-async fn about() -> &'static str {
-    "ShopRS: a small online shop, built while learning Rust."
-}
-
-fn app() -> Router {
-    Router::new()
-        .route("/", get(hello))
-        .route("/about", get(about))
-}
+{{#include ../../code/topics/tour-of-the-stack/examples/about.rs:about}}
 ```
 
 ```text
@@ -763,11 +753,7 @@ When the text isn't fixed, build it with `format!` and return an owned `String` 
 `&'static str`.
 
 ```rust,noplayground
-async fn greet() -> String {
-    let name = "Ada";
-    let items_in_cart = 3;
-    format!("Hello, {name}! You have {items_in_cart} items in your cart.")
-}
+{{#include ../../code/topics/tour-of-the-stack/examples/greet.rs:greet}}
 ```
 
 Add `.route("/greet", get(greet))` to `app()`:
@@ -791,15 +777,9 @@ A `String` gets the same `200 OK` plain-text response as a `&'static str`.
 Return a pair (a *tuple*) of a status code and a body, and Axum uses your status instead of `200`.
 
 ```rust,noplayground
-use axum::{
-    Router,
-    http::StatusCode,
-    routing::{get, post},
-};
+{{#include ../../code/topics/tour-of-the-stack/examples/status-code.rs:imports}}
 
-async fn make_thing() -> (StatusCode, &'static str) {
-    (StatusCode::CREATED, "made")
-}
+{{#include ../../code/topics/tour-of-the-stack/examples/status-code.rs:handler}}
 ```
 
 Add `.route("/things", post(make_thing))` to `app()`. `post` works like `get`, for `POST`
@@ -824,10 +804,7 @@ Change the address in two places in `main`, the `bind` and the message (and the 
 `.expect` text, so it stays honest):
 
 ```rust,noplayground
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:8080")
-        .await
-        .expect("port 8080 is busy: stop the other program using it, or change the port");
-    println!("Listening on http://127.0.0.1:8080");
+{{#include ../../code/topics/tour-of-the-stack/examples/other-port.rs:bind}}
 ```
 
 ```text
@@ -856,9 +833,7 @@ curl it.
 Change the text inside `hello` (here for someone called Ada):
 
 ```rust,noplayground
-async fn hello() -> &'static str {
-    "Hello from Ada!"
-}
+{{#include ../../code/topics/tour-of-the-stack/examples/hello-name.rs:hello}}
 ```
 
 Stop the old server with `Ctrl+C`, then `cargo run -p tour-of-the-stack` again. A running program
@@ -891,28 +866,13 @@ monitoring tools can ask "are you alive?". Then add a test for it: open `src/mai
 Add the handler and its route:
 
 ```rust,noplayground
-async fn health() -> &'static str {
-    "ok"
-}
-
-fn app() -> Router {
-    Router::new()
-        .route("/", get(hello))
-        .route("/health", get(health))
-}
+{{#include ../../code/topics/tour-of-the-stack/examples/health.rs:health}}
 ```
 
 And, inside `mod tests`, a test for it:
 
 ```rust,noplayground
-    #[tokio::test]
-    async fn health_says_ok() {
-        let request = Request::builder().uri("/health").body(Body::empty()).unwrap();
-        let response = app().oneshot(request).await.unwrap();
-        assert_eq!(response.status(), StatusCode::OK);
-        let body = response.into_body().collect().await.unwrap().to_bytes();
-        assert_eq!(&body[..], b"ok");
-    }
+{{#include ../../code/topics/tour-of-the-stack/examples/health.rs:health_test}}
 ```
 
 How the test works, line by line:
@@ -965,15 +925,9 @@ from Rust's standard library; nothing new goes in `Cargo.toml`.
 <details><summary>Solution</summary>
 
 ```rust,noplayground
-use std::time::{SystemTime, UNIX_EPOCH};
+{{#include ../../code/topics/tour-of-the-stack/examples/time.rs:use_time}}
 
-async fn time() -> String {
-    let seconds = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .expect("the computer's clock is set before 1970")
-        .as_secs();
-    seconds.to_string()
-}
+{{#include ../../code/topics/tour-of-the-stack/examples/time.rs:time}}
 ```
 
 and in `app()`, `.route("/time", get(time))`.
