@@ -1,6 +1,60 @@
 {
   "topic": "how-a-web-backend-works",
   "title": "How a web backend works",
-  "quiz": [],
-  "flashcards": []
+  "quiz": [
+    {
+      "q": "Which part of `GET /products/42?currency=usd` is the query string?",
+      "options": [
+        "GET",
+        "/products/42",
+        "currency=usd",
+        "HTTP/1.1"
+      ],
+      "answer": 2,
+      "explain": "Everything after `?` is the query string: optional extra options for the request."
+    },
+    {
+      "q": "Which status code means 'created successfully'?",
+      "options": [
+        "200",
+        "201",
+        "204",
+        "404"
+      ],
+      "answer": 1,
+      "explain": "201 Created is returned after a POST creates something new."
+    },
+    {
+      "q": "A logged-in user tries to open an admin-only page. Which status?",
+      "options": [
+        "401",
+        "403",
+        "404",
+        "500"
+      ],
+      "answer": 1,
+      "explain": "403 Forbidden: we know who you are, you're not allowed. 401 means we don't know who you are."
+    },
+    {
+      "q": "Why store a price as 1299 instead of 12.99?",
+      "options": [
+        "It's shorter",
+        "Whole numbers of cents avoid floating-point rounding errors with money",
+        "JSON can't hold decimals",
+        "Postgres requires it"
+      ],
+      "answer": 1,
+      "explain": "0.1 + 0.2 is not exactly 0.3 in floating point. Counting cents as integers keeps money exact."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Five parts of an HTTP request?",
+      "back": "Method, path (+ query string), version, headers, body."
+    },
+    {
+      "front": "401 vs 403?",
+      "back": "401: not logged in (who are you?). 403: logged in but not allowed."
+    }
+  ]
 }
