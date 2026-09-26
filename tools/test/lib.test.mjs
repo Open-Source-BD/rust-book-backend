@@ -411,3 +411,29 @@ test("carry: marker text inside a code fence is not treated as the Next block", 
   assert.ok(after.startsWith("```md\n<!-- next:start -->\nexample\n<!-- next:end -->\n```\n"), "fenced example untouched");
   assert.ok(after.includes("- [B](../a1-postgres/b.md)"));
 });
+
+// ---------------------------------------------------------------------------
+// Fix round 1 (review findings on Task 1)
+
+test("carry: marker text inside a CRLF code fence is not treated as the Next block", () => {
+  const a = pub({ slug: "a", title: "A", next: ["b"] });
+  const b = pub({ slug: "b", title: "B", part: "A1" });
+  const before = "```md\r\n<!-- next:start -->\r\nexample\r\n<!-- next:end -->\r\n```\r\n\r\n<!-- next:start -->\r\n<!-- next:end -->\r\n";
+  const after = regenerateNext(before, a, map([a, b]));
+  assert.ok(after.startsWith("```md\r\n<!-- next:start -->\r\nexample\r\n<!-- next:end -->\r\n```\r\n"), "fenced example byte-identical");
+  assert.ok(after.includes("- [B](../a1-postgres/b.md)"));
+});
+
+test("carry: stripFences is CRLF-safe — a \\r\\n-terminated fence still blanks its content", () => {
+  const md = "```md\r\nx\r\n```\r\n";
+  const out = stripFences(md);
+  assert.equal(out.split("\n").length, md.split("\n").length);
+  assert.ok(!out.includes("x"));
+});
+
+test("carry: a footnote definition is not a page link; a normal reference definition still is", () => {
+  const footnote = checkLinks({ md: "[^1]: ../part-0-start/nope.md\n", mdFile: "/r/src/a1-postgres/x.md", exists: () => false, publishedPaths: new Set() });
+  assert.equal(footnote.length, 0, footnote.join("\n"));
+  const normal = checkLinks({ md: "[id]: missing.md\n", mdFile: "/r/src/a1-postgres/x.md", exists: () => false, publishedPaths: new Set() });
+  assert.equal(normal.length, 1, normal.join("\n"));
+});

@@ -68,13 +68,14 @@ function nextBlock(t, bySlug) {
 }
 
 // Rewrites only the marked Next block; a page without both markers is returned unchanged.
-// The markers are located on lines outside any fence (via stripFences, which preserves line
-// count 1:1 with `md`), so example markers inside a ```md fence are never mistaken for the real
-// block. Line indices are then mapped back to character offsets in the original (untouched)
-// string, so a CRLF page keeps its CRLF line endings in the freshly generated block.
+// The markers are located on lines outside any fence (via stripFences on a CRLF-normalized copy,
+// which preserves line count 1:1 with `md`), so example markers inside a ```md fence are never
+// mistaken for the real block. Line indices are then mapped back to character offsets in the
+// original, UNTOUCHED `md` string (offset arithmetic and CRLF detection both use the raw text),
+// so a CRLF page keeps its CRLF line endings in the freshly generated block.
 export function regenerateNext(md, t, bySlug) {
   const mdLines = md.split("\n");
-  const strippedLines = stripFences(md).split("\n");
+  const strippedLines = stripFences(md.replace(/\r\n/g, "\n")).split("\n");
   const offsetOfLine = (idx) => {
     let off = 0;
     for (let k = 0; k < idx; k++) off += mdLines[k].length + 1; // +1 for the split-on "\n"
@@ -183,7 +184,9 @@ const FENCE_OPEN = /^[ \t>]*(`{3,}|~{3,})/;
 export function stripFences(md) {
   let fence = null; // { char, len } while inside an open fence
   return md.split("\n").map((line) => {
-    const stripped = line.replace(FENCE_PREFIX, "");
+    // A trailing \r survives `line.split("\n")` on raw (non-normalized) CRLF text; strip it only
+    // for the opener/closer tests below — the line returned for a non-fenced line is untouched.
+    const stripped = line.replace(FENCE_PREFIX, "").replace(/\r$/, "");
     if (fence) {
       const close = new RegExp(`^${fence.char}{${fence.len},}\\s*$`);
       if (close.test(stripped)) fence = null;
@@ -225,13 +228,14 @@ function sectionBody(prose, heading) {
 }
 
 // Every fenced code block: its info string and body lines (CommonMark rules, as stripFences).
-// Body lines have the same leading spaces/tabs/blockquote-marker prefix stripped as the fence
-// markers themselves, so a fence nested in a list item or blockquote reads like a top-level one.
+// Body lines have the same leading spaces/tabs/blockquote-marker prefix (and, on raw CRLF text, a
+// trailing \r) stripped as the fence markers themselves, so a fence nested in a list item or
+// blockquote reads like a top-level one, and CRLF input doesn't hide fences from the opener test.
 export function fencedBlocks(md) {
   const blocks = [];
   let open = null;
   md.split("\n").forEach((line, n) => {
-    const stripped = line.replace(FENCE_PREFIX, "");
+    const stripped = line.replace(FENCE_PREFIX, "").replace(/\r$/, "");
     if (open) {
       if (new RegExp(`^${open.char}{${open.len},}\\s*$`).test(stripped)) { blocks.push(open); open = null; }
       else open.body.push(stripped);
@@ -252,7 +256,9 @@ export function checkLinks({ md, mdFile, exists, publishedPaths }) {
   const plain = stripFences(md.replace(/\r\n/g, "\n")).replace(/`[^`\n]*`/g, "");
   const LINK_PATTERNS = [
     /\]\((?![a-z][a-z0-9+.-]*:)([^)\s#]+\.md)(#[^)\s]*)?(?:\s+"[^"]*")?\)/gi,
-    /^\s*\[[^\]]+\]:\s*(?![a-z][a-z0-9+.-]*:)(\S+?\.md)(#\S*)?\s*$/gim,
+    // Reference-style link definition — but not a footnote definition (`[^1]: ...`), which is
+    // not a page link at all.
+    /^\s*\[(?!\^)[^\]]+\]:\s*(?![a-z][a-z0-9+.-]*:)(\S+?\.md)(#\S*)?\s*$/gim,
     /<a\s[^>]*href="(?![a-z][a-z0-9+.-]*:)([^"#]+\.md)(#[^"]*)?"/gi,
   ];
   for (const LINK of LINK_PATTERNS) {
