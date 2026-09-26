@@ -348,3 +348,66 @@ test("I2: a lesson without Next markers warns", () => {
   assert.ok(checkPage(ctx(md)).warnings.some((w) => w.includes("next:start")));
   assert.ok(!checkPage(ctx(good())).warnings.some((w) => w.includes("next:start")));
 });
+
+// ---------------------------------------------------------------------------
+// Phase 1 carry-over fixes
+
+import { fencedBlocks, checkComingSoon } from "../lib.mjs";
+
+test("carry: a fence indented 4+ spaces inside a list item hides its headings", () => {
+  const md = good().replace("\n## Common mistakes\n", "\n- item:\n\n      ```md\n      ## Common mistakes\n      ```\n");
+  assert.ok(checkPage(ctx(md)).errors.some((e) => e.includes('"## Common mistakes"')));
+});
+
+test("carry: a fence inside a blockquote is a fence", () => {
+  const md = "> ```rust\n> fn main() {}\n> ```\n";
+  const blocks = fencedBlocks(md);
+  assert.equal(blocks.length, 1);
+  assert.equal(blocks[0].info, "rust");
+});
+
+test("carry: hand-typed rust inside an indented list fence is caught", () => {
+  const md = good().replace("## Common mistakes\n\ntext", "## Common mistakes\n\n1. step:\n\n    ```rust,noplayground\n    fn main() {}\n    ```");
+  assert.ok(checkPage(ctx(md)).errors.some((e) => e.includes("hand-typed Rust")));
+});
+
+test("carry: reference-style and <a href> links to missing pages are errors", () => {
+  const md = "See [the toolbox][tb] and <a href=\"../part-0-start/nope.md\">this</a>.\n\n[tb]: ../part-0-start/your-tolbox.md\n";
+  const errs = checkLinks({ md, mdFile: "/r/src/a1-postgres/x.md", exists: () => false, publishedPaths: new Set() });
+  assert.equal(errs.length, 2);
+});
+
+test("carry: '* ' and '+ ' bullets count for stale coming-soon", () => {
+  const titles = new Set(["Indexes"]);
+  assert.equal(checkComingSoon("* Indexes (coming soon)\n", titles).length, 1);
+  assert.equal(checkComingSoon("+ Indexes (coming soon)\n", titles).length, 1);
+});
+
+test("carry: a rust fence mixing an include with hand-typed lines is an error", () => {
+  const md = good().replace("{{#include ../../code/x/src/main.rs:app}}", "{{#include ../../code/x/src/main.rs:app}}\nfn extra() {}");
+  assert.ok(checkPage(ctx(md)).errors.some((e) => e.includes("mixes")));
+});
+
+test("carry: a rust fence holding only {{#playground}} counts as included", () => {
+  const files = { "/r/code/x/src/main.rs": "// ANCHOR: app\nfn a(){}\n// ANCHOR_END: app\n", "/r/code/x/examples/p.rs": "fn main(){}\n" };
+  const md = good().replace("### Line by line", "```rust\n{{#playground ../../code/x/examples/p.rs}}\n```\n\n### Line by line");
+  assert.ok(!checkPage(ctx(md, files)).errors.some((e) => e.includes("hand-typed")));
+});
+
+test("carry: regenerateNext keeps CRLF line endings in a CRLF page", () => {
+  const a = pub({ slug: "a", title: "A", next: ["b"] });
+  const b = pub({ slug: "b", title: "B", part: "A1" });
+  const before = "# A\r\n\r\n<!-- next:start -->\r\n<!-- next:end -->\r\n";
+  const after = regenerateNext(before, a, map([a, b]));
+  assert.ok(after.includes("- [B](../a1-postgres/b.md)"));
+  assert.ok(!/[^\r]\n/.test(after), "every \\n is preceded by \\r");
+});
+
+test("carry: marker text inside a code fence is not treated as the Next block", () => {
+  const a = pub({ slug: "a", title: "A", next: ["b"] });
+  const b = pub({ slug: "b", title: "B", part: "A1" });
+  const before = "```md\n<!-- next:start -->\nexample\n<!-- next:end -->\n```\n\n<!-- next:start -->\n<!-- next:end -->\n";
+  const after = regenerateNext(before, a, map([a, b]));
+  assert.ok(after.startsWith("```md\n<!-- next:start -->\nexample\n<!-- next:end -->\n```\n"), "fenced example untouched");
+  assert.ok(after.includes("- [B](../a1-postgres/b.md)"));
+});

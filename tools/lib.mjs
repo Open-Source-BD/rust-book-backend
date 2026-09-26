@@ -68,11 +68,38 @@ function nextBlock(t, bySlug) {
 }
 
 // Rewrites only the marked Next block; a page without both markers is returned unchanged.
+// The markers are located on lines outside any fence (via stripFences, which preserves line
+// count 1:1 with `md`), so example markers inside a ```md fence are never mistaken for the real
+// block. Line indices are then mapped back to character offsets in the original (untouched)
+// string, so a CRLF page keeps its CRLF line endings in the freshly generated block.
 export function regenerateNext(md, t, bySlug) {
-  const i = md.indexOf(NEXT_START);
-  const j = md.indexOf(NEXT_END);
-  if (i < 0 || j < i) return md;
-  return md.slice(0, i) + nextBlock(t, bySlug) + md.slice(j + NEXT_END.length);
+  const mdLines = md.split("\n");
+  const strippedLines = stripFences(md).split("\n");
+  const offsetOfLine = (idx) => {
+    let off = 0;
+    for (let k = 0; k < idx; k++) off += mdLines[k].length + 1; // +1 for the split-on "\n"
+    return off;
+  };
+
+  let start = -1;
+  for (let i = 0; i < strippedLines.length && start < 0; i++) {
+    const col = strippedLines[i].indexOf(NEXT_START);
+    if (col >= 0) start = offsetOfLine(i) + col;
+  }
+  if (start < 0) return md;
+
+  let end = -1;
+  for (let i = 0; i < strippedLines.length && end < 0; i++) {
+    const col = strippedLines[i].indexOf(NEXT_END);
+    if (col < 0) continue;
+    const off = offsetOfLine(i) + col;
+    if (off > start) end = off;
+  }
+  if (end < 0) return md;
+
+  let block = nextBlock(t, bySlug);
+  if (md[start + NEXT_START.length] === "\r") block = block.replace(/\n/g, "\r\n");
+  return md.slice(0, start) + block + md.slice(end + NEXT_END.length);
 }
 
 function goDeeper(t, bySlug) {
@@ -142,22 +169,27 @@ export { quizzable };
 // ---------------------------------------------------------------------------
 // Validation
 
-// CommonMark fence rule: an opener is 0-3 spaces + a run of >=3 backticks or
-// tildes (an info string may follow). A line only closes it if it is 0-3
-// spaces + a run of the SAME char with length >= the opener's run, followed
-// by nothing but whitespace. Anything else inside the fence is just content
-// (including lines that look like a different/shorter fence).
-const FENCE_OPEN = /^ {0,3}(`{3,}|~{3,})/;
+// CommonMark fence rule, widened: an opener is a run of leading spaces/tabs/
+// blockquote markers (so a fence nested in a list item's indented content or
+// inside a blockquote is still recognized), then a run of >=3 backticks or
+// tildes (an info string may follow). A line only closes it if — after the
+// same prefix-stripping — it is a run of the SAME char with length >= the
+// opener's run, followed by nothing but whitespace. Anything else inside the
+// fence is just content (including lines that look like a different/shorter
+// fence).
+export const FENCE_PREFIX = /^[ \t>]*/;
+const FENCE_OPEN = /^[ \t>]*(`{3,}|~{3,})/;
 
 export function stripFences(md) {
   let fence = null; // { char, len } while inside an open fence
   return md.split("\n").map((line) => {
+    const stripped = line.replace(FENCE_PREFIX, "");
     if (fence) {
-      const close = new RegExp(`^ {0,3}${fence.char}{${fence.len},}\\s*$`);
-      if (close.test(line)) fence = null;
+      const close = new RegExp(`^${fence.char}{${fence.len},}\\s*$`);
+      if (close.test(stripped)) fence = null;
       return "";
     }
-    const m = FENCE_OPEN.exec(line);
+    const m = /^(`{3,}|~{3,})(.*)$/.exec(stripped);
     if (m) { fence = { char: m[1][0], len: m[1].length }; return ""; }
     return line;
   }).join("\n");
@@ -193,32 +225,42 @@ function sectionBody(prose, heading) {
 }
 
 // Every fenced code block: its info string and body lines (CommonMark rules, as stripFences).
+// Body lines have the same leading spaces/tabs/blockquote-marker prefix stripped as the fence
+// markers themselves, so a fence nested in a list item or blockquote reads like a top-level one.
 export function fencedBlocks(md) {
   const blocks = [];
   let open = null;
   md.split("\n").forEach((line, n) => {
+    const stripped = line.replace(FENCE_PREFIX, "");
     if (open) {
-      if (new RegExp(`^ {0,3}${open.char}{${open.len},}\\s*$`).test(line)) { blocks.push(open); open = null; }
-      else open.body.push(line);
+      if (new RegExp(`^${open.char}{${open.len},}\\s*$`).test(stripped)) { blocks.push(open); open = null; }
+      else open.body.push(stripped);
       return;
     }
-    const m = /^ {0,3}(`{3,}|~{3,})(.*)$/.exec(line);
+    const m = /^(`{3,}|~{3,})(.*)$/.exec(stripped);
     if (m) open = { char: m[1][0], len: m[1].length, info: m[2].trim(), body: [], line: n + 1 };
   });
   if (open) blocks.push(open);
   return blocks;
 }
 
-// Relative links to .md pages must resolve to an existing, published page.
+// Relative links to .md pages must resolve to an existing, published page. Checks inline links
+// (`[x](y.md)`), reference-style definitions (`[x]: y.md`) and HTML anchors (`<a href="y.md">`).
 // publishedPaths: absolute paths of every published page (+ introduction/glossary/review).
 export function checkLinks({ md, mdFile, exists, publishedPaths }) {
   const errors = [];
   const plain = stripFences(md.replace(/\r\n/g, "\n")).replace(/`[^`\n]*`/g, "");
-  const LINK = /\]\((?![a-z][a-z0-9+.-]*:)([^)\s#]+\.md)(#[^)\s]*)?(?:\s+"[^"]*")?\)/gi;
-  for (const m of plain.matchAll(LINK)) {
-    const file = _resolve(_dirname(mdFile), m[1]);
-    if (!exists(file)) errors.push(`link target not found: ${m[1]}`);
-    else if (publishedPaths && !publishedPaths.has(file)) errors.push(`link to a page that is not published: ${m[1]}`);
+  const LINK_PATTERNS = [
+    /\]\((?![a-z][a-z0-9+.-]*:)([^)\s#]+\.md)(#[^)\s]*)?(?:\s+"[^"]*")?\)/gi,
+    /^\s*\[[^\]]+\]:\s*(?![a-z][a-z0-9+.-]*:)(\S+?\.md)(#\S*)?\s*$/gim,
+    /<a\s[^>]*href="(?![a-z][a-z0-9+.-]*:)([^"#]+\.md)(#[^"]*)?"/gi,
+  ];
+  for (const LINK of LINK_PATTERNS) {
+    for (const m of plain.matchAll(LINK)) {
+      const file = _resolve(_dirname(mdFile), m[1]);
+      if (!exists(file)) errors.push(`link target not found: ${m[1]}`);
+      else if (publishedPaths && !publishedPaths.has(file)) errors.push(`link to a page that is not published: ${m[1]}`);
+    }
   }
   return errors;
 }
@@ -226,7 +268,7 @@ export function checkLinks({ md, mdFile, exists, publishedPaths }) {
 // "- Title (coming soon)" is stale once Title is published.
 export function checkComingSoon(md, publishedTitles) {
   const errors = [];
-  for (const m of stripFences(md.replace(/\r\n/g, "\n")).matchAll(/^- (.+?) \(coming soon\)\s*$/gm))
+  for (const m of stripFences(md.replace(/\r\n/g, "\n")).matchAll(/^[-*+] (.+?) \(coming soon\)\s*$/gm))
     if (publishedTitles && publishedTitles.has(m[1]))
       errors.push(`"${m[1]} (coming soon)" is stale: that page is published — link it (run node tools/generate.mjs)`);
   return errors;
@@ -290,12 +332,18 @@ export function checkPage({ topic: t, md, mdFile, root, glossary, exists, read, 
 
   // 5. Rust listings come from compiled code. Exceptions: ```rust,editable (pure-std, runs on
   //    the Playground) and fences tagged `ignore` (deliberately broken Common-mistakes code).
+  //    A fence may hold only {{#include}}/{{#rustdoc_include}}/{{#playground}} lines — never a
+  //    mix of an include and hand-typed code, which would silently drift from the real source.
   for (const b of fencedBlocks(md)) {
     if (!/^rust\b/.test(b.info)) continue;
     const tags = b.info.split(",").map((x) => x.trim());
     if (tags[1] === "editable" || tags.includes("ignore")) continue;
-    if (b.body.some((l) => /\{\{#(include|rustdoc_include)\s/.test(l))) continue;
-    errors.push(`line ${b.line}: hand-typed Rust in a \`\`\`${b.info} fence — {{#include}} it from code/, or use rust,editable (pure std) / rust,noplayground,ignore (deliberately broken)`);
+    const inc = b.body.filter((l) => /\{\{#(include|rustdoc_include|playground)\s/.test(l));
+    const other = b.body.filter((l) => l.trim() && !inc.includes(l));
+    if (inc.length && other.length)
+      errors.push(`line ${b.line}: fence mixes an {{#include}} with hand-typed lines — put all of it in code/`);
+    else if (!inc.length)
+      errors.push(`line ${b.line}: hand-typed Rust in a \`\`\`${b.info} fence — {{#include}} it from code/, or use rust,editable (pure std) / rust,noplayground,ignore (deliberately broken)`);
   }
 
   // 6. links and stale "coming soon"

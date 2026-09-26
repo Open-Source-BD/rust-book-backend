@@ -176,7 +176,7 @@ is where the versions really live:
 
 `[workspace]` · `resolver = "3"` · `members = ["topics/*"]`
 - **What:** declares `code/` as a workspace whose members are every folder inside `topics/`.
-- **Why:** one `cargo test --workspace` from `code/` builds and tests every project in the book.
+- **Why:** one `cargo test --workspace --all-targets` from `code/` builds and tests every project in the book — `--all-targets` also runs the tests inside each project's `examples/` folder, which plain `cargo test --workspace` skips.
 - **How:** `resolver = "3"` picks the newest rules Cargo uses to choose crate versions (the
   default for edition 2024).
 - **Remove it and…** (`members`) Cargo doesn't know `tour-of-the-stack` belongs here:
