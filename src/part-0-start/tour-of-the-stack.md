@@ -10,7 +10,7 @@
 
 ## What & why
 
-Meet the four tools of this book, see how one request flows through them, and run a 10-line Axum server.
+Meet the four tools of this book, see how one request flows through them, and run your first Axum server: under twenty lines of Rust.
 
 In the last lesson you saw what a [request](../glossary.md#request) and a
 [response](../glossary.md#response) look like. Now: who, inside a Rust
@@ -261,7 +261,7 @@ Next, the table of routes, with the `use` line from the top of `src/main.rs` tha
 and `get` into scope:
 
 ```rust,noplayground
-use axum::{Router, routing::get};
+{{#include ../../code/topics/tour-of-the-stack/src/main.rs:imports}}
 
 {{#include ../../code/topics/tour-of-the-stack/src/main.rs:app}}
 ```
@@ -322,7 +322,7 @@ Last, the `main` function, which opens port 3000 and starts serving:
       tokio::runtime::Builder::new_multi_thread()
           .enable_all()
           .build()
-          .unwrap()
+          .expect("Failed building the Runtime")
           .block_on(async {
               // the body of your async main goes here
           })
@@ -330,7 +330,8 @@ Last, the `main` function, which opens port 3000 and starts serving:
   ```
 
   That is: build a multi-threaded Tokio runtime, switch on everything it can do (network, timers),
-  then `block_on` your async code: run it and don't return until it's finished.
+  stop with the message `Failed building the Runtime` in the rare case it can't be built, then
+  `block_on` your async code: run it and don't return until it's finished.
 - **Remove it and…** ``error[E0752]: `main` function is not allowed to be `async` ``.
 
 `async fn main() {`
@@ -633,18 +634,18 @@ Delete the first `.await` in `main` (after `bind(…)`) and build:
 
 ```text
 error[E0599]: no method named `expect` found for opaque type `impl Future<Output = Result<tokio::net::TcpListener, std::io::Error>>` in the current scope
-  --> src/main.rs:19:10
+  --> src/main.rs:21:10
    |
-18 |       let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
+20 |       let listener = tokio::net::TcpListener::bind("127.0.0.1:3000")
    |  ____________________-
-19 | |         .expect("port 3000 is busy: stop the other program using it, or change the port");
+21 | |         .expect("port 3000 is busy: stop the other program using it, or change the port");
    | |         -^^^^^^ method not found in `impl Future<Output = Result<tokio::net::TcpListener, std::io::Error>>`
    | |_________|
    |
    |
 help: consider `await`ing on the `Future` and calling the method on its `Output`
    |
-19 |         .await.expect("port 3000 is busy: stop the other program using it, or change the port");
+21 |         .await.expect("port 3000 is busy: stop the other program using it, or change the port");
    |          ++++++
 ```
 
@@ -656,9 +657,9 @@ do what the `help:` line says and put `.await` back before `.expect`.
 
 ```text
 error[E0277]: the trait bound `impl Future<Output = &'static str>: Handler<_, _>` is not satisfied
-   --> src/main.rs:11:34
+   --> src/main.rs:13:34
     |
- 11 |     Router::new().route("/", get(hello()))
+ 13 |     Router::new().route("/", get(hello()))
     |                              --- ^^^^^^^ the trait `Handler<_, _>` is not implemented for `impl Future<Output = &'static str>`
     |                              |
     |                              required by a bound introduced by this call
@@ -676,7 +677,7 @@ parentheses, `get(hello)`.
 **The port is already in use.**
 
 ```text
-thread 'main' (3121600) panicked at topics/tour-of-the-stack/src/main.rs:20:10:
+thread 'main' (3233257) panicked at topics/tour-of-the-stack/src/main.rs:22:10:
 port 3000 is busy: stop the other program using it, or change the port: Os { code: 48, kind: AddrInUse, message: "Address already in use" }
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```
@@ -691,9 +692,9 @@ Take `rt-multi-thread` out of the `tokio` line's features in `code/Cargo.toml` a
 
 ```text
 error: The default runtime flavor is `multi_thread`, but the `rt-multi-thread` feature is disabled.
-  --> src/main.rs:16:1
+  --> src/main.rs:18:1
    |
-16 | #[tokio::main]
+18 | #[tokio::main]
    | ^^^^^^^^^^^^^^
    |
    = note: this error originates in the attribute macro `tokio::main` (in Nightly builds, run with -Z macro-backtrace for more info)

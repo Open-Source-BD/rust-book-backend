@@ -22,7 +22,7 @@ has one job:
 | **Docker** | Runs programs inside sealed-off boxes, so you can use Postgres without installing it into your system. | Now. |
 | **PostgreSQL** ("Postgres") | The [database](../glossary.md#database): it stores your app's data safely, even when your program stops. | Now, *inside* Docker. |
 | **`psql`** | A command-line program for typing [SQL](../glossary.md#sql) (the language databases understand) straight to Postgres. | Now, or use it through Docker with nothing to install. |
-| **curl** | Sends [HTTP](../glossary.md#http) requests (the messages web programs send each other) from your terminal, so you can test your backend without a website. | Now (it's usually already there). |
+| **curl** | An HTTP [client](../glossary.md#client) (a program that sends requests): it sends [HTTP](../glossary.md#http) requests (the messages web programs send each other) from your terminal, so you can test your backend without a website. | Now (it's usually already there). |
 | **Bruno** | Optional: a desktop app that does the same job as curl, with buttons and forms instead of typed commands. | Only if you prefer clicking to typing. |
 | **`sea-orm-cli`** | A helper for SeaORM, the database library this book uses. | **Later**, in Part A3. You don't need it yet. |
 

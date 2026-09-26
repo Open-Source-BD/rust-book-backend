@@ -1,4 +1,6 @@
+// ANCHOR: imports
 use axum::{Router, routing::get};
+// ANCHOR_END: imports
 
 // ANCHOR: handler
 async fn hello() -> &'static str {

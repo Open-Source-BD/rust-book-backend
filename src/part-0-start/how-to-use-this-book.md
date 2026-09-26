@@ -60,7 +60,8 @@ takes an afternoon, and it will save you days of confusion later.
   → [Traits basics](https://open-source-bd.github.io/rustbook-for-human/abstractions/traits-basics.html)
 - [ ] **Closures**: small unnamed functions you can store or pass around, written `|x| x + 1`.
   → [Closures](https://open-source-bd.github.io/rustbook-for-human/abstractions/closures.html)
-- [ ] **`async fn` and `.await`**: functions that can pause while they wait for something slow.
+- [ ] **`async fn` and `.await`**: [async](../glossary.md#async) functions can pause while they wait
+  for something slow.
   → [Async basics](https://open-source-bd.github.io/rustbook-for-human/runtime-and-ecosystem/async-basics.html)
 
 You don't need to be an expert in any of these. "I've seen it, I roughly get it, I know where to

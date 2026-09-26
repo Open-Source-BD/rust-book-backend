@@ -70,7 +70,7 @@ export default [
       "You can follow one request through all four layers.",
       "You have run your first Axum server and seen it answer.",
     ],
-    summary: "Meet the four tools of this book, see how one request flows through them, and run a 10-line Axum server.",
+    summary: "Meet the four tools of this book, see how one request flows through them, and run your first Axum server: under twenty lines of Rust.",
     prereq: ["how-a-web-backend-works"],
     next: ["what-is-a-database"],
     codeDir: "code/topics/tour-of-the-stack",
