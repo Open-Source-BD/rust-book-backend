@@ -814,6 +814,10 @@ action, the path names a thing, and the status tells the truth.
 - [httpbin.org](https://httpbin.org/) — Every practice endpoint httpbin offers.
 - [JSON.org](https://www.json.org/json-en.html) — The whole JSON format on one page.
 
+<!-- next:start -->
+
 **Next:**
 
 - [Tour of the stack](../part-0-start/tour-of-the-stack.md)
+
+<!-- next:end -->

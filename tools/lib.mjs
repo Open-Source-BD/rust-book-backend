@@ -9,7 +9,11 @@ export const PARTS = [
   { id: "A4", title: "Part A4 · Putting it together", dir: "a4-together" },
   { id: "B", title: "Part B · Capstone: ShopRS", dir: "b-capstone" },
 ];
-const partOf = (t) => PARTS.find((p) => p.id === t.part);
+const partOf = (t) => {
+  const p = PARTS.find((p) => p.id === t.part);
+  if (!p) throw new Error(`${t.slug}: unknown part ${t.part}`);
+  return p;
+};
 
 export const HEADINGS = {
   lesson: [
@@ -51,14 +55,31 @@ function linkTo(slug, bySlug) {
   return t.status === "published" ? `- [${t.title}](../${pagePath(t)})` : `- ${t.title} (coming soon)`;
 }
 
+// The Next block is generator-owned: it lives between these markers inside "## Go deeper" and
+// is rewritten on every `generate.mjs` run, so "(coming soon)" never goes stale. Everything
+// outside the markers (the RFH/official links) is human-owned.
+export const NEXT_START = "<!-- next:start -->";
+export const NEXT_END = "<!-- next:end -->";
+
+function nextBlock(t, bySlug) {
+  const next = (t.next || []).map((s) => linkTo(s, bySlug)).filter(Boolean);
+  const inner = next.length ? `\n\n**Next:**\n\n${next.join("\n")}\n\n` : "\n";
+  return `${NEXT_START}${inner}${NEXT_END}`;
+}
+
+// Rewrites only the marked Next block; a page without both markers is returned unchanged.
+export function regenerateNext(md, t, bySlug) {
+  const i = md.indexOf(NEXT_START);
+  const j = md.indexOf(NEXT_END);
+  if (i < 0 || j < i) return md;
+  return md.slice(0, i) + nextBlock(t, bySlug) + md.slice(j + NEXT_END.length);
+}
+
 function goDeeper(t, bySlug) {
-  const parts = [];
   const refs = [...(t.rfhLinks || []), ...(t.links || [])]
     .map((l) => `- [${l.label}](${l.href})${l.note ? ` — ${l.note}` : ""}`);
-  if (refs.length) parts.push(refs.join("\n"));
-  const next = (t.next || []).map((s) => linkTo(s, bySlug)).filter(Boolean);
-  if (next.length) parts.push(`**Next:**\n\n${next.join("\n")}`);
-  return parts.join("\n\n") || authoring("official docs + Rust for Humans links");
+  const head = refs.length ? refs.join("\n") : authoring("official docs + Rust for Humans links");
+  return `${head}\n\n${nextBlock(t, bySlug)}`;
 }
 
 function lessonStub(t, bySlug) {
@@ -158,17 +179,64 @@ export function glossaryIds(md) {
 }
 
 const BANNED = ["simply", "just", "obviously", "trivially"];
+const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
+// Body of a "## …" (or "### …") section: from the heading line (trailing whitespace allowed)
+// to the next heading of the same or a higher level.
 function sectionBody(prose, heading) {
-  const start = prose.indexOf(`\n${heading}\n`);
-  if (start < 0) return "";
-  const rest = prose.slice(start + heading.length + 2);
-  const end = rest.search(/^## /m);
+  const level = heading.match(/^#+/)[0].length;
+  const m = new RegExp(`^${esc(heading)}[ \\t]*$`, "m").exec(prose);
+  if (!m) return "";
+  const rest = prose.slice(m.index + m[0].length);
+  const end = rest.search(new RegExp(`^#{1,${level}} `, "m"));
   return end < 0 ? rest : rest.slice(0, end);
 }
 
-export function checkPage({ topic: t, md, mdFile, root, glossary, exists, read }) {
+// Every fenced code block: its info string and body lines (CommonMark rules, as stripFences).
+export function fencedBlocks(md) {
+  const blocks = [];
+  let open = null;
+  md.split("\n").forEach((line, n) => {
+    if (open) {
+      if (new RegExp(`^ {0,3}${open.char}{${open.len},}\\s*$`).test(line)) { blocks.push(open); open = null; }
+      else open.body.push(line);
+      return;
+    }
+    const m = /^ {0,3}(`{3,}|~{3,})(.*)$/.exec(line);
+    if (m) open = { char: m[1][0], len: m[1].length, info: m[2].trim(), body: [], line: n + 1 };
+  });
+  if (open) blocks.push(open);
+  return blocks;
+}
+
+// Relative links to .md pages must resolve to an existing, published page.
+// publishedPaths: absolute paths of every published page (+ introduction/glossary/review).
+export function checkLinks({ md, mdFile, exists, publishedPaths }) {
+  const errors = [];
+  const plain = stripFences(md.replace(/\r\n/g, "\n")).replace(/`[^`\n]*`/g, "");
+  const LINK = /\]\((?![a-z][a-z0-9+.-]*:)([^)\s#]+\.md)(#[^)\s]*)?(?:\s+"[^"]*")?\)/gi;
+  for (const m of plain.matchAll(LINK)) {
+    const file = _resolve(_dirname(mdFile), m[1]);
+    if (!exists(file)) errors.push(`link target not found: ${m[1]}`);
+    else if (publishedPaths && !publishedPaths.has(file)) errors.push(`link to a page that is not published: ${m[1]}`);
+  }
+  return errors;
+}
+
+// "- Title (coming soon)" is stale once Title is published.
+export function checkComingSoon(md, publishedTitles) {
+  const errors = [];
+  for (const m of stripFences(md.replace(/\r\n/g, "\n")).matchAll(/^- (.+?) \(coming soon\)\s*$/gm))
+    if (publishedTitles && publishedTitles.has(m[1]))
+      errors.push(`"${m[1]} (coming soon)" is stale: that page is published — link it (run node tools/generate.mjs)`);
+  return errors;
+}
+
+const INCLUDE = /\{\{#(include|rustdoc_include|playground)\s+([^}\s]+)[^}]*\}\}/g;
+
+export function checkPage({ topic: t, md, mdFile, root, glossary, exists, read, publishedPaths, publishedTitles }) {
   const errors = [], warnings = [];
+  md = md.replace(/\r\n/g, "\n");
   const prose = stripFences(md);
   const required = HEADINGS[t.kind] || [];
 
@@ -185,12 +253,17 @@ export function checkPage({ topic: t, md, mdFile, root, glossary, exists, read }
     const turn = sectionBody(prose, "## Your turn");
     let at = -1;
     for (const tier of TIERS) {
-      const i = turn.indexOf(tier);
-      if (i <= at) errors.push(`"## Your turn" is missing "${tier}" (or it is out of order)`);
-      else at = i;
+      const m = new RegExp(`^${esc(tier)}[ \\t]*$`, "m").exec(turn);
+      const i = m ? m.index : -1;
+      if (i <= at) { errors.push(`"## Your turn" is missing "${tier}" (or it is out of order)`); continue; }
+      at = i;
+      if (!sectionBody(turn, tier).includes("<details>"))
+        errors.push(`"${tier}" has no <details> solution block`);
     }
-    if (md.split("\n").some((l) => FENCE_OPEN.test(l)) && !/^### Line by line$/m.test(prose))
+    if (md.split("\n").some((l) => FENCE_OPEN.test(l)) && !/^### Line by line[ \t]*$/m.test(prose))
       errors.push('page has code but no "### Line by line" section');
+    if (!md.includes(NEXT_START) || !md.includes(NEXT_END))
+      warnings.push(`no ${NEXT_START} … ${NEXT_END} markers in "## Go deeper": generate.mjs can't keep the Next block current`);
   }
 
   // 3. checklist items must link to a lesson
@@ -201,20 +274,35 @@ export function checkPage({ topic: t, md, mdFile, root, glossary, exists, read }
   if (t.kind === "cheatsheet" && !prose.includes("](")) warnings.push("cheat sheet links to no lessons");
 
   // 4. includes resolve (scan raw md: includes live inside fences)
-  for (const m of md.matchAll(/\{\{#include\s+([^}\s]+)\s*\}\}/g)) {
-    const [rel, ...rest] = m[1].split(":");
+  for (const m of md.matchAll(INCLUDE)) {
+    const [kind, arg] = [m[1], m[2]];
+    const [rel, ...rest] = arg.split(":");
     const file = _resolve(_dirname(mdFile), rel);
-    if (!exists(file)) { errors.push(`include file not found: ${rel}`); continue; }
+    if (!exists(file)) { errors.push(`${kind} file not found: ${rel}`); continue; }
     if (!rest.length) continue;
-    if (/^\d/.test(rest[0])) { warnings.push(`include ${m[1]} uses line numbers — use an ANCHOR so edits can't shift it`); continue; }
-    const name = rest[0];
+    if (kind === "playground") { errors.push(`playground ${arg} takes no anchor or line range — point it at a whole file`); continue; }
+    if (rest[0] === "" || /^\d/.test(rest[0])) { warnings.push(`${kind} ${arg} uses line numbers — use an ANCHOR so edits can't shift it`); continue; }
+    const name = esc(rest[0]);
     const src = read(file);
-    const esc = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    if (!new RegExp(`ANCHOR:\\s*${esc}\\b`).test(src) || !new RegExp(`ANCHOR_END:\\s*${esc}\\b`).test(src))
-      errors.push(`anchor "${name}" not found (ANCHOR + ANCHOR_END) in ${rel}`);
+    if (!new RegExp(`ANCHOR:\\s*${name}(?![\\w-])`).test(src) || !new RegExp(`ANCHOR_END:\\s*${name}(?![\\w-])`).test(src))
+      errors.push(`anchor "${rest[0]}" not found (ANCHOR + ANCHOR_END) in ${rel}`);
   }
 
-  // 5. leftovers, banned words, glossary links, codeDir
+  // 5. Rust listings come from compiled code. Exceptions: ```rust,editable (pure-std, runs on
+  //    the Playground) and fences tagged `ignore` (deliberately broken Common-mistakes code).
+  for (const b of fencedBlocks(md)) {
+    if (!/^rust\b/.test(b.info)) continue;
+    const tags = b.info.split(",").map((x) => x.trim());
+    if (tags[1] === "editable" || tags.includes("ignore")) continue;
+    if (b.body.some((l) => /\{\{#(include|rustdoc_include)\s/.test(l))) continue;
+    errors.push(`line ${b.line}: hand-typed Rust in a \`\`\`${b.info} fence — {{#include}} it from code/, or use rust,editable (pure std) / rust,noplayground,ignore (deliberately broken)`);
+  }
+
+  // 6. links and stale "coming soon"
+  errors.push(...checkLinks({ md, mdFile, exists, publishedPaths }));
+  errors.push(...checkComingSoon(md, publishedTitles));
+
+  // 7. leftovers, banned words, glossary links, codeDir
   if (md.includes("AUTHORING:")) errors.push("leftover AUTHORING placeholder");
   const plain = prose.replace(/`[^`\n]*`/g, "");
   for (const w of BANNED) {
@@ -255,5 +343,11 @@ export function checkTopics(topics) {
     if (t.status === "published" && t.kind === "lesson" && (!t.outcomes || t.outcomes.length < 2))
       errors.push(`${t.slug}: published lesson needs at least 2 outcomes`);
   }
+  const slugs = new Set(topics.map((t) => t.slug));
+  for (const t of topics)
+    for (const field of ["next", "prereq"])
+      for (const s of t[field] || [])
+        if (!slugs.has(s)) errors.push(`${t.slug}: ${field} names unknown slug "${s}"`);
   return errors;
 }
+

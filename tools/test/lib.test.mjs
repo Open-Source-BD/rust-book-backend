@@ -136,8 +136,9 @@ test("unknown glossary anchor warns", () => {
 test("checklist items must link", () => {
   const t = pub({ slug: "ready", title: "R", kind: "checklist" });
   const md = "# R\n\n- [ ] I can add a route ([lesson](../a2-axum/x.md))\n- [ ] I can write a migration\n";
-  const r = checkPage({ ...ctx(md), topic: t });
-  assert.equal(r.errors.length, 1);
+  const files = { "/r/code/x/src/main.rs": "", "/r/src/a2-axum/x.md": "# X\n" }; // the linked lesson exists
+  const r = checkPage({ ...ctx(md, files), topic: t });
+  assert.equal(r.errors.length, 1, r.errors.join("\n"));
   assert.ok(r.errors[0].includes("I can write a migration"));
 });
 
@@ -192,4 +193,158 @@ test("checkPage: heading whose only occurrence is inside a nested fence still co
   const md = good().replace("\n## Common mistakes\n", nested);
   const r = checkPage(ctx(md));
   assert.ok(r.errors.some((e) => e.includes('missing section "## Common mistakes"')), r.errors.join("\n"));
+});
+
+// ---------------------------------------------------------------------------
+// Final fix wave (I1-I5 + minors)
+
+import { regenerateNext, checkLinks } from "../lib.mjs";
+
+const linkCtx = (md, extra = {}) => {
+  const files = {
+    "/r/code/x/src/main.rs": "// ANCHOR: app\nfn a(){}\n// ANCHOR_END: app\n",
+    "/r/src/part-0-start/other.md": "# Other\n",
+    "/r/src/a1-postgres/draft.md": "# Draft\n",
+    "/r/src/introduction.md": "# Introduction\n",
+    ...(extra.files || {}),
+  };
+  return {
+    ...ctx(md, files),
+    publishedPaths: new Set(["/r/src/part-0-start/other.md", "/r/src/introduction.md"]),
+    publishedTitles: new Set(["Other"]),
+    ...extra,
+    files: undefined,
+  };
+};
+
+test("I1: link to a missing .md file is an error", () => {
+  const r = checkPage(linkCtx(good() + "\nSee [gone](gone.md).\n"));
+  assert.ok(r.errors.some((e) => e.includes("gone.md") && e.includes("not found")), r.errors.join("\n"));
+});
+
+test("I1: link to a draft page is an error", () => {
+  const r = checkPage(linkCtx(good() + "\nSee [d](../a1-postgres/draft.md).\n"));
+  assert.ok(r.errors.some((e) => e.includes("draft.md") && e.includes("not published")), r.errors.join("\n"));
+});
+
+test("I1: valid links (plain, #fragment, external, pure #frag, in code) pass", () => {
+  const md = good() + "\nSee [o](other.md), [o2](other.md#some-part), [i](../introduction.md#x), " +
+    "[w](https://example.com/x.md), [m](mailto:a@b.c), [f](#local).\n\n`[c](nope.md)`\n\n```md\n[c](nope2.md)\n```\n";
+  const r = checkPage(linkCtx(md));
+  assert.deepEqual(r.errors, []);
+});
+
+test("I1: link with #fragment to a missing file is still an error", () => {
+  const r = checkPage(linkCtx(good() + "\nSee [g](gone.md#part).\n"));
+  assert.ok(r.errors.some((e) => e.includes("gone.md")), r.errors.join("\n"));
+});
+
+test("I1: checkLinks is usable on non-topic pages", () => {
+  const errs = checkLinks({ md: "[a](part-0-start/other.md) [b](a1-postgres/draft.md)", mdFile: "/r/src/introduction.md",
+    exists: (p) => p === "/r/src/part-0-start/other.md" || p === "/r/src/a1-postgres/draft.md",
+    publishedPaths: new Set(["/r/src/part-0-start/other.md"]), publishedTitles: new Set() });
+  assert.equal(errs.length, 1);
+  assert.ok(errs[0].includes("draft.md"));
+});
+
+test("I2: stub wraps the Next block in markers", () => {
+  const a = pub({ slug: "a", title: "A", next: ["b"] });
+  const b = pub({ slug: "b", title: "B", status: "draft", part: "A1" });
+  const md = stubFor(a, map([a, b]));
+  assert.match(md, /<!-- next:start -->\n\n\*\*Next:\*\*\n\n- B \(coming soon\)\n\n<!-- next:end -->/);
+});
+
+test("I2: regenerateNext reflects a newly published topic and leaves the rest byte-identical", () => {
+  const a = pub({ slug: "a", title: "A", next: ["b"] });
+  const bDraft = pub({ slug: "b", title: "B", status: "draft", part: "A1" });
+  const before = "# A\r\nhuman text ✅\n\n## Go deeper\n\n- [RFH](https://x)\n\n<!-- next:start -->\n\n**Next:**\n\n- B (coming soon)\n\n<!-- next:end -->\n\ntrailing human text\n";
+  assert.equal(regenerateNext(before, a, map([a, bDraft])), before, "idempotent when nothing changed");
+  const bPub = { ...bDraft, status: "published" };
+  const after = regenerateNext(before, a, map([a, bPub]));
+  assert.ok(after.includes("- [B](../a1-postgres/b.md)"));
+  assert.ok(!after.includes("coming soon"));
+  const [pre, post] = [before.split("<!-- next:start -->"), before.split("<!-- next:end -->")];
+  assert.ok(after.startsWith(pre[0] + "<!-- next:start -->"));
+  assert.ok(after.endsWith("<!-- next:end -->" + post[1]));
+});
+
+test("I2: regenerateNext leaves a page without markers untouched", () => {
+  const a = pub({ slug: "a", title: "A", next: ["b"] });
+  const b = pub({ slug: "b", title: "B", part: "A1" });
+  const md = "# A\n\n## Go deeper\n\n**Next:**\n\n- B (coming soon)\n";
+  assert.equal(regenerateNext(md, a, map([a, b])), md);
+});
+
+test("I2: validator catches a stale (coming soon) naming a published topic", () => {
+  const md = good() + "\n- Other (coming soon)\n- Still Draft (coming soon)\n";
+  const r = checkPage(linkCtx(md));
+  const stale = r.errors.filter((e) => e.includes("coming soon"));
+  assert.equal(stale.length, 1, r.errors.join("\n"));
+  assert.ok(stale[0].includes("Other"));
+});
+
+test("I3: rustdoc_include and playground are validated like include", () => {
+  const md = good() + "\n```rust,noplayground\n{{#rustdoc_include ../../code/x/src/main.rs:nope}}\n```\n\n" +
+    "```rust,editable\n{{#playground ../../code/x/src/missing.rs editable}}\n```\n\n" +
+    "```rust,noplayground\n{{#rustdoc_include ../../code/x/src/main.rs:app}}\n```\n";
+  const r = checkPage(ctx(md));
+  assert.ok(r.errors.some((e) => e.includes('anchor "nope"')), r.errors.join("\n"));
+  assert.ok(r.errors.some((e) => e.includes("not found: ../../code/x/src/missing.rs")), r.errors.join("\n"));
+  assert.equal(r.errors.length, 2, r.errors.join("\n"));
+});
+
+test("I3: playground with an anchor is an error", () => {
+  const md = good() + "\n```rust,editable\n{{#playground ../../code/x/src/main.rs:app}}\n```\n";
+  assert.ok(checkPage(ctx(md)).errors.some((e) => e.includes("playground")));
+});
+
+test("I4: anchor renamed — include asks for app, file only has app-state", () => {
+  const r = checkPage(ctx(good(), { "/r/code/x/src/main.rs": "// ANCHOR: app-state\nfn a(){}\n// ANCHOR_END: app-state\n" }));
+  assert.ok(r.errors.some((e) => e.includes('anchor "app"')), r.errors.join("\n"));
+});
+
+test("I5: a hand-typed rust fence is an error; editable, ignore and include fences pass", () => {
+  const bad = good() + "\n```rust,noplayground\nfn typed() {}\n```\n\n```rust\nfn typed2() {}\n```\n\n  ```rust,noplayground\n  fn indented() {}\n  ```\n";
+  const r = checkPage(ctx(bad));
+  assert.equal(r.errors.filter((e) => e.includes("hand-typed Rust")).length, 3, r.errors.join("\n"));
+  const ok = good() + "\n```rust,editable\nfn main() {}\n```\n\n```rust,noplayground,ignore\nfn broken( {}\n```\n\n```text\nfn not_rust() {}\n```\n";
+  assert.deepEqual(checkPage(ctx(ok)).errors, []);
+});
+
+test("minor: CRLF page passes like its LF twin", () => {
+  assert.deepEqual(checkPage(ctx(good().replace(/\n/g, "\r\n"))).errors, []);
+});
+
+test("minor: a heading with a trailing space still counts", () => {
+  const md = good().replace("## Your turn\n", "## Your turn \n").replace("### Line by line\n", "### Line by line  \n");
+  assert.deepEqual(checkPage(ctx(md)).errors, []);
+});
+
+test("minor: file::N is a line range — warn, don't look up an empty anchor", () => {
+  const r = checkPage(ctx(good().replace(":app}}", "::3}}")));
+  assert.ok(r.warnings.some((w) => w.includes("use an ANCHOR")), r.warnings.join("\n"));
+  assert.ok(!r.errors.some((e) => e.includes("anchor")), r.errors.join("\n"));
+});
+
+test("minor: each Your turn tier needs a <details> solution", () => {
+  const i = good().indexOf("### 🟡 Tweak");
+  const j = good().indexOf("### 🔴 From scratch");
+  const md = good().slice(0, i) + "### 🟡 Tweak\n\nno solution here\n\n" + good().slice(j);
+  const r = checkPage(ctx(md));
+  const e = r.errors.filter((x) => x.includes("<details>"));
+  assert.equal(e.length, 1, r.errors.join("\n"));
+  assert.ok(e[0].includes("🟡 Tweak"));
+});
+
+test("minor: checkTopics catches unknown next/prereq slugs", () => {
+  const errs = checkTopics([pub({ slug: "a", title: "A", next: ["ghost"], prereq: ["b"] }), pub({ slug: "b", title: "B", prereq: ["phantom"] })]);
+  assert.ok(errs.some((e) => e.includes("a: next") && e.includes("ghost")), errs.join("\n"));
+  assert.ok(errs.some((e) => e.includes("b: prereq") && e.includes("phantom")), errs.join("\n"));
+  assert.equal(errs.length, 2, errs.join("\n"));
+});
+
+test("I2: a lesson without Next markers warns", () => {
+  const md = good().replace(/<!-- next:(start|end) -->/g, "");
+  assert.ok(checkPage(ctx(md)).warnings.some((w) => w.includes("next:start")));
+  assert.ok(!checkPage(ctx(good())).warnings.some((w) => w.includes("next:start")));
 });

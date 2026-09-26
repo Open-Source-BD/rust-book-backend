@@ -399,6 +399,10 @@ for, and by the end of this book you'll have built all of these pieces.
 - [The Rust Book](https://doc.rust-lang.org/book/) — The official Rust guide.
 - [Rust editions](https://doc.rust-lang.org/edition-guide/) — What an edition is and what 2024 changed.
 
+<!-- next:start -->
+
 **Next:**
 
 - [Your toolbox](../part-0-start/your-toolbox.md)
+
+<!-- next:end -->

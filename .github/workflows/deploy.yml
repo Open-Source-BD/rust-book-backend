@@ -34,7 +34,18 @@ jobs:
       - name: Validate
         run: node tools/validate.mjs
       - name: Build book
-        run: mdbook build
+        # mdBook exits 0 even when a preprocessor fails (e.g. an {{#include}} it can't read), so
+        # also fail on any ERROR line it prints. The default shell is `bash -e {0}` (no pipefail):
+        # set pipefail so a failing `mdbook build` isn't hidden behind `tee`'s exit status.
+        env:
+          NO_COLOR: "1"
+        run: |
+          set -o pipefail
+          mdbook build 2>&1 | tee mdbook.log
+          if grep -Eq '(^|[[:space:]])ERROR[[:space:]]' mdbook.log; then
+            echo "::error::mdBook printed an ERROR line (see the log above)"
+            exit 1
+          fi
       - uses: actions/upload-pages-artifact@v5
         if: github.ref == 'refs/heads/main'
         with:
