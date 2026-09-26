@@ -226,9 +226,10 @@ Warnings: fewer than 4 quiz questions; banned words; glossary terms linked but m
 
 ### Code ↔ book link
 Source files mark snippets with `// ANCHOR: name` / `// ANCHOR_END: name`. Lessons include them with
-`{{#include ../../code/<path>:name}}`. Axum/SeaORM listings use plain ` ```rust ` fences (no Run
-button) followed by `📁 Full code: code/<path>` and the `cargo run -p <crate>` command. Pure-std
-snippets may still use ` ```rust,editable `.
+`{{#include ../../code/<path>:name}}`. Axum/SeaORM listings use ` ```rust,noplayground ` fences (no
+Run button) followed by `📁 Full code: code/<path>` and the `cargo run -p <crate>` command — plain
+` ```rust ` would get a Run button (`book.toml` sets `playground.editable = true`) that fails on a
+bare snippet with no `Cargo.toml`. Pure-std snippets may still use ` ```rust,editable `.
 
 ### Capstone snapshots
 `code/shop/step-NN/` is a full, independent crate (`shop-step-NN`). Each step is created by copying
