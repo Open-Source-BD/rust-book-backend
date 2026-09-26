@@ -21,6 +21,11 @@ async, `Arc`), the lesson gives a one-sentence reminder and links to the matchin
 **Success criteria:**
 - A reader who completes the book has a working, tested, deployed ShopRS API.
 - Every code listing in the book compiles and passes tests in CI (no drift between book and code).
+  Every Rust listing anywhere in a lesson (including `## More examples` and `## Your turn`
+  solutions) is `{{#include}}`/`{{#rustdoc_include}}`d from compiled code under `code/`. Two
+  exceptions only: ` ```rust,editable ` blocks of pure-std code that run on the Playground, and
+  fences tagged ` ```rust,noplayground,ignore ` holding deliberately broken code under Common
+  mistakes, each next to its real compiler error. `validate.mjs` errors on any other Rust fence.
 - Every line of every listing is explained (What / Why / How / Remove it and…).
 - Every lesson states its outcomes up front and passes `tools/validate.mjs`.
 - Before Part B, the reader has built 5 working projects of their own (library schema, Todo API,
@@ -229,7 +234,18 @@ Source files mark snippets with `// ANCHOR: name` / `// ANCHOR_END: name`. Lesso
 `{{#include ../../code/<path>:name}}`. Axum/SeaORM listings use ` ```rust,noplayground ` fences (no
 Run button) followed by `📁 Full code: code/<path>` and the `cargo run -p <crate>` command — plain
 ` ```rust ` would get a Run button (`book.toml` sets `playground.editable = true`) that fails on a
-bare snippet with no `Cargo.toml`. Pure-std snippets may still use ` ```rust,editable `.
+bare snippet with no `Cargo.toml`.
+
+The rule has no other way out: every Rust listing anywhere in a lesson — `## The idea, slowly`,
+`## More examples`, `## Your turn` solutions — comes from compiled code via `{{#include}}` or
+`{{#rustdoc_include}}`. Variations of a lesson's crate (an extra route, a solution) live as full
+small programs in `code/topics/<slug>/examples/<name>.rs` with anchors around the part shown; a
+solution's test goes in that file under `#[cfg(test)]` (CI runs `cargo test --workspace
+--all-targets`, which includes examples). The only two exceptions, which `validate.mjs` allows and
+nothing else:
+- ` ```rust,editable ` — pure-std code that runs on the Playground as it is.
+- ` ```rust,noplayground,ignore ` — deliberately broken code under `## Common mistakes`, always
+  shown next to the real compiler error it produces.
 
 ### Capstone snapshots
 `code/shop/step-NN/` is a full, independent crate (`shop-step-NN`). Each step is created by copying
@@ -253,8 +269,9 @@ Verified 2026-09-24: Node 24 in CI (Node 20 is deprecated), axum 0.8.9, tokio 1.
 6. It passed a "confused beginner" read-through: no undefined terms, no unexplained magic, no banned words.
 
 **CI:**
-- `deploy.yml`: Node 20, mdBook, `generate.mjs`, `validate.mjs`, `mdbook build`, publish.
-- `code.yml`: Postgres 18 service container; `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test --workspace`.
+- `deploy.yml`: Node 24, mdBook, `generate.mjs`, `validate.mjs`, `mdbook build` (fails on any
+  mdBook `ERROR` line, since mdBook exits 0 on a broken include), publish.
+- `code.yml`: Postgres 18 service container; `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test --workspace --all-targets`.
 
 ## 6. Rollout phases
 

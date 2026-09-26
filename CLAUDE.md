@@ -20,8 +20,11 @@ mdbook build               # or `mdbook serve --open` while iterating
 ```bash
 cp .env.example .env
 docker compose up -d --wait   # Postgres 18 on host port 5433
-cd code && cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace
+cd code && cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace --all-targets
 ```
+
+`--all-targets` matters: it also runs the tests inside `examples/*.rs` (plain `cargo test
+--workspace` skips them). CI (`code.yml`) runs the same command.
 
 - Postgres listens on host port **5433**, not 5432, so it doesn't clash with a locally installed
   Postgres. If `docker compose up` fails with "port is already allocated", something else on the
@@ -37,9 +40,15 @@ cd code && cargo fmt --all --check && cargo clippy --workspace --all-targets -- 
 
 1. Set `status: "published"` for that page's entry in `tools/topics.data.js`.
 2. Run `node tools/generate.mjs` (writes the stub if missing; regenerates SUMMARY.md and
-   questions.data.js).
-3. Fill in the stub.
-4. Run `node tools/validate.mjs` and fix everything it reports.
+   questions.data.js; rewrites the Next block between `<!-- next:start -->` and
+   `<!-- next:end -->` in every published page, so pages whose Next said "X (coming soon)" now
+   link to X).
+3. Fill in the stub. Keep the two `next:` markers in `## Go deeper`: the generator owns what's
+   between them (edit `next` in `topics.data.js` instead); the RFH/official links above them are
+   yours.
+4. Run `node tools/validate.mjs` and fix everything it reports (it errors on a stale
+   "(coming soon)", a link to a missing or draft page, and hand-typed Rust).
+5. Commit the page together with the other pages whose Next block `generate.mjs` updated.
 
 ## Hard rules
 
@@ -47,12 +56,20 @@ cd code && cargo fmt --all --check && cargo clippy --workspace --all-targets -- 
   `tools/generate.mjs` from `tools/topics.data.js`; a manual edit is silently overwritten (and
   drifts from the source of truth) the next time `generate.mjs` runs. Edit `topics.data.js`
   instead and regenerate.
-- **Every Rust listing in a lesson must come from `code/` via `{{#include path:anchor}}`** —
-  including `use` lines. Never hand-type a Rust snippet into a lesson's Markdown: it will drift
-  from the real, tested code. Mark the source with `// ANCHOR: name` / `// ANCHOR_END: name` and
-  include it by anchor. Example: the tour-of-the-stack crate
-  (`code/topics/tour-of-the-stack/src/main.rs`) defines anchors `imports`, `handler`, `app` and
-  `main`; the lesson includes all four separately instead of the whole file.
+- **Every Rust listing anywhere in a lesson must come from compiled code under `code/` via
+  `{{#include path:anchor}}` or `{{#rustdoc_include path:anchor}}`** — including `use` lines, and
+  including `## More examples` and `## Your turn` solutions. Never hand-type a Rust snippet into a
+  lesson's Markdown: it will drift from the real, tested code. Mark the source with
+  `// ANCHOR: name` / `// ANCHOR_END: name` and include it by anchor. Example: the
+  tour-of-the-stack crate (`code/topics/tour-of-the-stack/src/main.rs`) defines anchors `imports`,
+  `handler`, `app` and `main`; the lesson includes all four separately instead of the whole file.
+  Variations (an extra route, an exercise solution) are full small programs in
+  `code/topics/<slug>/examples/<name>.rs`, with anchors around the part the lesson shows; a
+  solution's test goes in that file under `#[cfg(test)]` (run by `--all-targets`). Only two
+  exceptions, and `validate.mjs` errors on anything else:
+  - ` ```rust,editable ` — pure-std code that runs on the Playground as it is.
+  - ` ```rust,noplayground,ignore ` — deliberately broken code under `## Common mistakes`, always
+    next to the real compiler error it produces.
 - **Paste only real command output.** Run the command yourself and paste what it actually printed
   — never a plausible-looking reconstruction. The only edits allowed to pasted output: replace a
   personal username/path with `you`, and replace a public IP address with an RFC 5737 example

@@ -34,7 +34,7 @@ run them yourself:
 ```bash
 cp .env.example .env
 docker compose up -d --wait   # starts Postgres 18 on host port 5433
-cd code && cargo test --workspace
+cd code && cargo test --workspace --all-targets   # --all-targets also runs examples/*.rs tests
 ```
 
 `docker compose up -d --wait` only returns once Postgres is actually ready to accept connections:
@@ -55,19 +55,27 @@ pages show up in the sidebar greyed out (no link) and are skipped by the validat
 
 1. Set `status: "published"` for that page's entry in `tools/topics.data.js`.
 2. Run `node tools/generate.mjs` — this writes a stub file with the required headings (if the page
-   doesn't already exist) and regenerates `src/SUMMARY.md` and `theme/questions.data.js`.
-3. Fill in the stub.
-4. Run `node tools/validate.mjs` and fix anything it reports.
+   doesn't already exist), regenerates `src/SUMMARY.md` and `theme/questions.data.js`, and
+   rewrites the Next block between `<!-- next:start -->` and `<!-- next:end -->` in every
+   published page — so a page whose Next said "X (coming soon)" now links to X.
+3. Fill in the stub. Leave the two `next:` markers in `## Go deeper` alone: the generator owns
+   what's between them (change `next` in `topics.data.js` instead); the links above them are yours.
+4. Run `node tools/validate.mjs` and fix anything it reports. It errors on a stale
+   "(coming soon)", a link to a missing or draft page, and hand-typed Rust.
+5. Commit the new page together with any pages whose Next block `generate.mjs` updated.
 
 Never hand-edit `src/SUMMARY.md` or `theme/questions.data.js` — both are generated and any manual
 edit will be overwritten (and drift from `topics.data.js`) the next time `generate.mjs` runs.
 
 ## Include/anchor rules
 
-Every Rust listing shown in a lesson — including `use` lines — comes from a real file under
-`code/` via mdBook's `{{#include path:anchor}}`, using `// ANCHOR: name` / `// ANCHOR_END: name`
-markers in the source. Nothing is hand-typed into the Markdown. This keeps the book and the code
-from drifting apart: `validate.mjs` errors if an include's path or anchor doesn't resolve.
+Every Rust listing anywhere in a lesson — including `use` lines, `## More examples` and
+`## Your turn` solutions — comes from a real, compiled file under `code/` via mdBook's
+`{{#include path:anchor}}` (or `{{#rustdoc_include}}`), using `// ANCHOR: name` /
+`// ANCHOR_END: name` markers in the source. Variations and exercise solutions live as small full
+programs in `code/topics/<slug>/examples/<name>.rs`. Nothing is hand-typed into the Markdown. This
+keeps the book and the code from drifting apart: `validate.mjs` errors if an include's path or
+anchor doesn't resolve, and on any Rust fence with no include, except the two below.
 
 Fence choice matters:
 
@@ -77,9 +85,12 @@ Fence choice matters:
   `main`, and fail. `noplayground` shows the code without the Run button.
 - Pure-std runnable snippets (no external crates) may use ` ```rust,editable ` instead, since they
   really can run standalone in the playground.
+- Deliberately broken code shown under `## Common mistakes` uses ` ```rust,noplayground,ignore `,
+  always next to the real compiler error it produces.
 
 ## Deploy
 
 The site deploys via GitHub Actions (`.github/workflows/deploy.yml`) on every push to `main`. In
 the repo's GitHub settings: **Settings → Pages → Source: GitHub Actions**. The workflow runs
-`generate.mjs`, `validate.mjs` and `mdbook build`, then publishes `book/` to GitHub Pages.
+`generate.mjs`, `validate.mjs` and `mdbook build` (failing on any mdBook `ERROR` line, because
+mdBook itself exits 0 on a broken include), then publishes `book/` to GitHub Pages.
