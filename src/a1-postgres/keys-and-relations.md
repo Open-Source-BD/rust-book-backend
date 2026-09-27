@@ -789,9 +789,13 @@ author's books, and make sure she's in the list with `0`.
 ```
 
 `LEFT JOIN` keeps **every** author, even one with no matching book; her book columns are filled
-with NULL. (A plain `JOIN` would drop her: the next example shows it.) `GROUP BY authors.name`
-gathers the joined rows into one group per author, and `count(books.id)` counts the books in each
-group. It counts only the values that aren't NULL, so Ursula's group, whose one row has a NULL
+with NULL. (A plain `JOIN` would drop her: the next example shows it.) `GROUP BY authors.id,
+authors.name` gathers the joined rows into one group per author, and `count(books.id)` counts the
+books in each group. Why `authors.id` as well as the name? Here `name` is `UNIQUE`, so the name
+alone would work, but in most tables names can repeat: two members, or two customers, can share a
+name. Grouping by the name alone would then merge them into one row and add their counts
+together. The `id` is always unique, so grouping by it keeps them apart, and the name is there so
+you can show it. Make it a habit: group by the `id`, plus whatever you want to show. It counts only the values that aren't NULL, so Ursula's group, whose one row has a NULL
 `books.id`, counts `0`. (`count(*)` would count that row and say `1`.) The last line removes her
 again.
 

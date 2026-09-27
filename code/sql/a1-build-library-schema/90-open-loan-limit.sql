@@ -3,7 +3,7 @@ SELECT members.name AS member, count(loans.id) AS open_loans
 FROM members
 JOIN loans ON loans.member_id = members.id
 WHERE loans.returned_on IS NULL
-GROUP BY members.name
+GROUP BY members.id, members.name
 HAVING count(loans.id) > 3
 ORDER BY members.name;
 
@@ -17,7 +17,7 @@ SELECT members.name AS member, count(loans.id) AS open_loans
 FROM members
 JOIN loans ON loans.member_id = members.id
 WHERE loans.returned_on IS NULL
-GROUP BY members.name
+GROUP BY members.id, members.name
 HAVING count(loans.id) > 3
 ORDER BY members.name;
 ROLLBACK;

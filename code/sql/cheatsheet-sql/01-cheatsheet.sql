@@ -55,7 +55,7 @@ ORDER BY shop_orders.id;
 SELECT shop_items.name, count(shop_orders.id) AS orders
 FROM shop_items
 LEFT JOIN shop_orders ON shop_orders.item_id = shop_items.id
-GROUP BY shop_items.name
+GROUP BY shop_items.id, shop_items.name
 ORDER BY shop_items.name;
 -- ANCHOR_END: left-join-count
 -- ANCHOR: index

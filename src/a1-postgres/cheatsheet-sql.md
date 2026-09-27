@@ -110,7 +110,8 @@ Explained in: [Postgres data types](postgres-data-types.md).
 `PRIMARY KEY` gives each order a unique id. `REFERENCES shop_items (id)` makes `item_id` a
 [foreign key](../glossary.md#foreign-key): Postgres refuses an order for an item that doesn't
 exist. `CHECK (quantity > 0)` is a [check constraint](../glossary.md#check-constraint): it refuses
-a zero or negative quantity.
+a zero or negative quantity. The `INSERT` adds three orders: the join, count and explain examples
+below all read these rows.
 
 Explained in: [Keys and relations](keys-and-relations.md).
 
@@ -133,8 +134,9 @@ Explained in: [Keys and relations](keys-and-relations.md).
 ```
 
 `LEFT JOIN` keeps every item, even one with no orders at all. `count(shop_orders.id)` counts only
-real orders, so such an item shows `0` instead of vanishing. `GROUP BY` makes one result row per
-item.
+real orders, so such an item shows `0` instead of vanishing. `GROUP BY shop_items.id,
+shop_items.name` makes one result row per item: the `id` keeps two items that share a name apart,
+and the name is there so you can show it.
 
 Explained in: [Keys and relations](keys-and-relations.md).
 

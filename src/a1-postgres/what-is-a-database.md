@@ -450,7 +450,8 @@ this book uses from Part A3, supports it fully.
 
 **"Where is my data actually stored?"**
 In the Docker volume from [Your toolbox](../part-0-start/your-toolbox.md) (`pgdata`, which Compose
-names `rust-book-backend_pgdata` after the book's folder). `rbh`, `what_is_a_database` and every
+names `rust-book-backend_pgdata` after the book's folder; the part before `_pgdata` is your
+project folder's name). `rbh`, `what_is_a_database` and every
 lesson database you make later all live in the same Postgres server, so they all live in that one
 volume. It survives `docker compose down`; only `docker compose down -v` deletes it.
 

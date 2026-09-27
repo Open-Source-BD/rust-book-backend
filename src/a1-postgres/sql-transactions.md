@@ -586,8 +586,10 @@ change Ada's balance at the same moment.
 **"Why did `COMMIT` print `ROLLBACK`?"**
 Because that's what happened. After an error inside a transaction (Step 7), the transaction is
 aborted and can't be saved. Postgres still accepts `COMMIT` as a way to end it, but it rolls back
-instead, and the tag tells you so. Your Rust code gets told the same thing: the commit fails, and
-you can react to it. Always read the tag: `COMMIT` means saved, `ROLLBACK` means not.
+instead, and the tag tells you so. Always read the tag: `COMMIT` means saved, `ROLLBACK` means
+not. In Rust, the statement that failed is the one that returns the error, so handle it there
+(the `?` you already know stops your function before it ever reaches the commit). Don't rely on
+the commit to warn you. Part A3's *Transactions in SeaORM* shows this in real code.
 
 **"Can a transaction be too long?"**
 Yes. Every row you change stays **locked** until you commit or roll back, so any other connection

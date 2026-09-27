@@ -641,8 +641,10 @@ The two queries find the same 10,000 refunded rows. The first uses the index; th
 letters". An index is sorted by the **start** of each value, like a dictionary, and a dictionary
 is no help at all for finding words that **end** in *unded*: you'd have to read every word. So
 Postgres reads every row. (Even `LIKE 'ref%'`, with the `%` at the end, can't use this index in the
-book's Postgres: it needs an index built a different way, which is beyond this lesson.) **Fix:** if you know the whole value, use `=`. If you really need "contains"
-searches on a big table, Postgres has other kinds of index for that (the `pg_trgm` extension, and
+book's Postgres: it needs an index built a different way, which is beyond this lesson.)
+
+**Fix:** if you know the whole value, use `=`. If you really need "contains" searches on a big
+table, Postgres has other kinds of index for that (the `pg_trgm` extension, and
 full-text search), which are beyond this lesson.
 
 ## More examples

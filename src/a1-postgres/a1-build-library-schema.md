@@ -815,7 +815,11 @@ finds every member **over** the limit, with how many open loans they have.
 {{#include ../../code/sql/a1-build-library-schema/90-open-loan-limit.out}}
 ```
 
-The query counts each member's open loans with `JOIN`, `WHERE … IS NULL` and `GROUP BY`. The new
+The query counts each member's open loans with `JOIN`, `WHERE … IS NULL` and `GROUP BY`. It
+groups by `members.id, members.name`, not the name alone: two members can share a name (only
+the email is `UNIQUE`), and grouping by the name would merge them into one row and add their loans
+together. The `id`
+keeps them apart; the name is there so you can show it. The new
 word is **`HAVING`**: it's a `WHERE` for groups. `WHERE` filters rows **before** they're grouped,
 so it can't see a count yet; `HAVING` filters the groups **after** they're counted.
 `HAVING count(loans.id) > 3` keeps only members with more than 3.
@@ -828,7 +832,11 @@ query works, so the second half **tests** it: inside a transaction, Alan borrows
 
 Why a query and not a `CHECK`? A check constraint sees **one row** at a time, and "at most 3" is
 about **many** rows. The usual answer is to check in your app, inside the borrowing transaction,
-before the `INSERT`: count the member's open loans, and refuse if it's already 3.
+before the `INSERT`: count the member's open loans, and refuse if it's already 3. One catch: if
+the same member borrows twice at the same moment (two browser tabs, say), both transactions can
+count 2 open loans and both go ahead, ending at 4. Real apps close that gap by locking the
+member's row first (`SELECT … FOR UPDATE`) or with a constraint; that's beyond A1, so here it's
+enough to know the gap exists.
 
 </details>
 
@@ -848,7 +856,8 @@ Find the member with the most loans ever, returned or not, and how many.
 {{#include ../../code/sql/a1-build-library-schema/91-top-borrower.out}}
 ```
 
-Count loans per member (no `WHERE` this time: every loan counts), sort the biggest count first, and
+Count loans per member (no `WHERE` this time: every loan counts), grouped by `members.id,
+members.name` again so two members who share a name stay two rows. Sort the biggest count first, and
 keep one row with `LIMIT 1`, from [CRUD in SQL](crud-in-sql.md). Grace has 3: two from the seed
 data, and *A Wizard of Earthsea* from Step 5. A plain `JOIN` is right here: a member with no loans
 can't be the top borrower. If two members tied, `members.name` would pick the first by name. To see
