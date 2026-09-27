@@ -1,0 +1,7 @@
+INSERT 0 1
+ id |     name     |       email       |   joined
+----+--------------+-------------------+------------
+  1 | Ada Lovelace | ada@example.com   | 2026-01-15
+  2 | Alan Turing  | alan@example.com  | 2026-02-01
+  3 | Grace Hopper | grace@example.com | 2026-03-10
+(3 rows)

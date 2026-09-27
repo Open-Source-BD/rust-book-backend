@@ -1,0 +1,3 @@
+ERROR:  column "nickname" does not exist
+LINE 1: SELECT nickname FROM members;
+               ^

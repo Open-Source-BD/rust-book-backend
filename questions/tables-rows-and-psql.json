@@ -1,0 +1,60 @@
+{
+  "topic": "tables-rows-and-psql",
+  "title": "Tables, rows and psql",
+  "quiz": [
+    {
+      "q": "What does `\\d members` show?",
+      "options": [
+        "The rows in members",
+        "The columns and types of members",
+        "All databases",
+        "It deletes members"
+      ],
+      "answer": 1,
+      "explain": "\\d describes a table's shape: its columns, their types and rules."
+    },
+    {
+      "q": "Why doesn't `\\dt` end with a semicolon?",
+      "options": [
+        "It's a typo",
+        "It's a psql command, not SQL",
+        "Semicolons are optional everywhere",
+        "It only works in scripts"
+      ],
+      "answer": 1,
+      "explain": "Backslash commands are handled by psql itself and end at the end of the line."
+    },
+    {
+      "q": "`INSERT 0 2` means…",
+      "options": [
+        "Error in row 0",
+        "2 rows were inserted",
+        "0 rows were inserted",
+        "The table has 2 columns"
+      ],
+      "answer": 1,
+      "explain": "The last number is how many rows were inserted; the 0 is a historical leftover that is always 0."
+    },
+    {
+      "q": "`ERROR: relation \"member\" does not exist` most likely means…",
+      "options": [
+        "Postgres is down",
+        "You misspelled the table name",
+        "The table is empty",
+        "You need a semicolon"
+      ],
+      "answer": 1,
+      "explain": "Relation means table here. Check the spelling with \\dt."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "psql: list tables / describe one / quit?",
+      "back": "`\\dt` / `\\d name` / `\\q`"
+    },
+    {
+      "front": "Pick columns instead of all?",
+      "back": "`SELECT name, joined FROM members;`"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+ERROR:  relation "member" does not exist
+LINE 1: SELECT * FROM member;
+                      ^

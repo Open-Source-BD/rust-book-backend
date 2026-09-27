@@ -1,0 +1,9 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 2
+    title
+-------------
+ Book club
+ Rust meetup
+(2 rows)

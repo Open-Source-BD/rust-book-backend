@@ -1,0 +1,11 @@
+ALTER TABLE
+              Table "public.members"
+ Column |  Type   | Collation | Nullable | Default
+--------+---------+-----------+----------+---------
+ id     | integer |           |          |
+ name   | text    |           |          |
+ email  | text    |           |          |
+ joined | date    |           |          |
+ phone  | text    |           |          |
+
+ALTER TABLE

@@ -1,0 +1,16 @@
+SET
+DROP TABLE
+CREATE TABLE
+           List of tables
+ Schema |  Name   | Type  |  Owner
+--------+---------+-------+----------
+ public | members | table | postgres
+ public | scratch | table | postgres
+(2 rows)
+
+DROP TABLE
+           List of tables
+ Schema |  Name   | Type  |  Owner
+--------+---------+-------+----------
+ public | members | table | postgres
+(1 row)

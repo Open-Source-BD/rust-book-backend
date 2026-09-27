@@ -1,0 +1,11 @@
+SET
+DROP TABLE
+DROP TABLE
+CREATE TABLE
+              Table "public.members"
+ Column |  Type   | Collation | Nullable | Default
+--------+---------+-----------+----------+---------
+ id     | integer |           |          |
+ name   | text    |           |          |
+ email  | text    |           |          |
+ joined | date    |           |          |

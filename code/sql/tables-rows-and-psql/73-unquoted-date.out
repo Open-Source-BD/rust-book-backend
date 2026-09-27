@@ -1,0 +1,4 @@
+ERROR:  column "joined" is of type date but expression is of type integer
+LINE 2:     (4, 'Linus Torvalds', 'linus@example.com', 2026-04-01);
+                                                       ^
+HINT:  You will need to rewrite or cast the expression.

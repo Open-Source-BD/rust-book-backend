@@ -705,6 +705,6 @@ with `relation "books" already exists`, and the books appear twice.
 
 **Next:**
 
-- Tables, rows and psql (coming soon)
+- [Tables, rows and psql](../a1-postgres/tables-rows-and-psql.md)
 
 <!-- next:end -->

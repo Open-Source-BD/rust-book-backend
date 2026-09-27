@@ -13,7 +13,7 @@
 # Part A1 · PostgreSQL & SQL
 
 - [What is a database?](a1-postgres/what-is-a-database.md)
-- [Tables, rows and psql]()
+- [Tables, rows and psql](a1-postgres/tables-rows-and-psql.md)
 - [Postgres data types]()
 - [CRUD in SQL]()
 - [Keys and relations]()

@@ -24,6 +24,13 @@ stores data, checks rules, and sends answers back. Think of a restaurant kitchen
 walk into it, but every order goes through it before food comes out.
 **First used in:** [Introduction](introduction.md)
 
+### Backslash command
+
+A short command that starts with a backslash (`\`), such as `\dt` or `\q`, typed into
+[psql](#psql). It isn't [SQL](#sql): psql handles it itself instead of sending it to the
+[database](#database) server, so it needs no semicolon and ends at the end of the line.
+**First used in:** [Tables, rows and psql](a1-postgres/tables-rows-and-psql.md)
+
 ### Client
 
 A program that asks for information or asks for something to be done, and shows the answer to a
