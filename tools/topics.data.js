@@ -83,7 +83,25 @@ export default [
   },
 
   // ---- Part A1 · PostgreSQL & SQL ----
-  draft("what-is-a-database", "What is a database?", "A1", "lesson", "Beginner"),
+  {
+    slug: "what-is-a-database",
+    title: "What is a database?",
+    part: "A1", kind: "lesson", level: "Beginner", status: "published",
+    outcomes: [
+      "You can say what a database is and why apps don't keep their data in plain files.",
+      "You know what a table, a row and a column are.",
+      "You have run your first two SQL queries against your own Postgres.",
+    ],
+    summary: "Why apps store data in a database, what Postgres and SQL are, and your first queries.",
+    prereq: ["tour-of-the-stack"],
+    next: ["tables-rows-and-psql"],
+    codeDir: "code/sql/what-is-a-database",
+    rfhLinks: [],
+    links: [
+      { label: "PostgreSQL tutorial", href: "https://www.postgresql.org/docs/18/tutorial.html", note: "The official beginner's tour of Postgres." },
+      { label: "SQL Language", href: "https://www.postgresql.org/docs/18/sql.html", note: "The full reference for Postgres's SQL." },
+    ],
+  },
   draft("tables-rows-and-psql", "Tables, rows and psql", "A1", "lesson", "Beginner"),
   draft("postgres-data-types", "Postgres data types", "A1", "lesson", "Beginner"),
   draft("crud-in-sql", "CRUD in SQL", "A1", "lesson", "Beginner"),

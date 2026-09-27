@@ -1,0 +1,10 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 3
+ name | kind
+------+------
+ Rex  | dog
+ Tom  | cat
+ Nemo | fish
+(3 rows)

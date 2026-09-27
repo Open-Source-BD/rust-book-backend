@@ -992,6 +992,6 @@ Your number will be bigger: it goes up by one every second.
 
 **Next:**
 
-- What is a database? (coming soon)
+- [What is a database?](../a1-postgres/what-is-a-database.md)
 
 <!-- next:end -->

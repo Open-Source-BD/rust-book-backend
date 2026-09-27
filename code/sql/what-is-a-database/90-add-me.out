@@ -1,0 +1,7 @@
+INSERT 0 1
+ name  |   city
+-------+----------
+ Ada   | London
+ Linus | Helsinki
+ Mina  | Dhaka
+(3 rows)

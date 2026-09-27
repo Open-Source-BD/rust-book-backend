@@ -1,0 +1,3 @@
+ERROR:  syntax error at or near "SELECT"
+LINE 2: SELECT 'two' AS second;
+        ^

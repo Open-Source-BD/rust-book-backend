@@ -1,0 +1,9 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 2
+   title    |      author
+------------+------------------
+ The Hobbit | J. R. R. Tolkien
+ Matilda    | Roald Dahl
+(2 rows)

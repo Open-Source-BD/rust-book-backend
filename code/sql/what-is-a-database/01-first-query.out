@@ -1,0 +1,9 @@
+     greeting
+------------------
+ Hello, Postgres!
+(1 row)
+
+ answer
+--------
+      5
+(1 row)

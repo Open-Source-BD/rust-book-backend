@@ -30,6 +30,12 @@ A program that asks for information or asks for something to be done, and shows 
 person. A web browser or a phone app is a client; it talks to a [server](#server).
 **First used in:** [Your toolbox](part-0-start/your-toolbox.md)
 
+### Column
+
+One named field that every [row](#row) in a [table](#table) has, such as `name` or `city`. A
+column holds the same kind of value in every row: all text, or all numbers, and so on.
+**First used in:** [What is a database?](a1-postgres/what-is-a-database.md)
+
 ### Container
 
 A small, sealed-off box that runs a program together with its own copy of everything that program
@@ -115,6 +121,19 @@ A numbered door on a computer; one program listens behind each door, e.g. our se
 Postgres on 5433.
 **First used in:** [Your toolbox](part-0-start/your-toolbox.md)
 
+### psql
+
+Postgres's own command-line program. You type [SQL](#sql) into it (or feed it a file of SQL), it
+sends the SQL to the [database](#database) server, and it prints the answer as a text table.
+**First used in:** [What is a database?](a1-postgres/what-is-a-database.md)
+
+### Query
+
+One question or instruction you send to a [database](#database), written in [SQL](#sql), such as
+`SELECT * FROM friends;`. Strictly, a query is a question that reads data, but people often call
+any SQL statement a query.
+**First used in:** [What is a database?](a1-postgres/what-is-a-database.md)
+
 ### Request
 
 The message a [client](#client) sends to ask a [server](#server) for something, or ask it to do
@@ -140,6 +159,12 @@ A rule that pairs one address and one HTTP method (like GET `/users`) with the
 [handler](#handler) that should answer it.
 **First used in:** [Introduction](introduction.md)
 
+### Row
+
+One record in a [table](#table): one friend, one book, one order. A row has one value for each
+[column](#column) of its table.
+**First used in:** [What is a database?](a1-postgres/what-is-a-database.md)
+
 ### Runtime
 
 The program running underneath your code that carries out [async](#async) work, deciding when each
@@ -163,3 +188,9 @@ this row" or "find every order from this user" (short for Structured Query Langu
 A short number a [server](#server) sends back with every [response](#response) to say what
 happened, such as `200` for success or `404` for "not found".
 **First used in:** [How a web backend works](part-0-start/how-a-web-backend-works.md)
+
+### Table
+
+A named list of data inside a [database](#database), laid out like a spreadsheet: the
+[columns](#column) go across the top, and each [row](#row) below them is one record.
+**First used in:** [What is a database?](a1-postgres/what-is-a-database.md)

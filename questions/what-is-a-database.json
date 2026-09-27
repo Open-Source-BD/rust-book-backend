@@ -1,0 +1,60 @@
+{
+  "topic": "what-is-a-database",
+  "title": "What is a database?",
+  "quiz": [
+    {
+      "q": "What is a database?",
+      "options": [
+        "A program whose job is to store data safely and find it fast",
+        "A spreadsheet file",
+        "A folder of text files",
+        "A web server"
+      ],
+      "answer": 0,
+      "explain": "A database server like Postgres stores data, keeps it correct, and finds it fast — even with many users at once."
+    },
+    {
+      "q": "In SQL, how do you write the text Hello?",
+      "options": [
+        "\"Hello\"",
+        "'Hello'",
+        "`Hello`",
+        "Hello"
+      ],
+      "answer": 1,
+      "explain": "Text values use single quotes. Double quotes mean a column or table name, which is why \"Hello\" gives 'column does not exist'."
+    },
+    {
+      "q": "What does `AS answer` do in `SELECT 2 + 3 AS answer;`?",
+      "options": [
+        "Stores 5 in a variable",
+        "Names the result column 'answer'",
+        "Creates a table",
+        "Nothing"
+      ],
+      "answer": 1,
+      "explain": "AS gives the output column a name you can read."
+    },
+    {
+      "q": "What is a row?",
+      "options": [
+        "One column's type",
+        "One record in a table, like one friend",
+        "A SQL command",
+        "A database"
+      ],
+      "answer": 1,
+      "explain": "Each row is one thing you stored — one friend, one book. Columns are the fields every row has."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Table vs row vs column?",
+      "back": "Table = the whole list. Row = one record. Column = one field every record has."
+    },
+    {
+      "front": "Run a SQL file against a lesson database?",
+      "back": "`docker compose exec -T db psql -U postgres -d <db> < file.sql`"
+    }
+  ]
+}

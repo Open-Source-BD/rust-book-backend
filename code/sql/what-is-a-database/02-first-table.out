@@ -1,0 +1,9 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 2
+ name  |   city
+-------+----------
+ Ada   | London
+ Linus | Helsinki
+(2 rows)
