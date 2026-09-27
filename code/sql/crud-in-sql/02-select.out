@@ -1,0 +1,30 @@
+    title    | year
+-------------+------
+ Dune        | 1965
+ Emma        | 1815
+ Neuromancer | 1984
+ Persuasion  | 1817
+(4 rows)
+
+   title
+------------
+ Emma
+ Persuasion
+(2 rows)
+
+    title    | year
+-------------+------
+ Neuromancer | 1984
+ Dune        | 1965
+(2 rows)
+
+ title
+-------
+ Dune
+ Emma
+(2 rows)
+
+ austen_books
+--------------
+            2
+(1 row)

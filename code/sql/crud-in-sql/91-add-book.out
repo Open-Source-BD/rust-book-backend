@@ -1,0 +1,5 @@
+INSERT 0 1
+ id |   title    | copies
+----+------------+--------
+  6 | The Hobbit |      5
+(1 row)

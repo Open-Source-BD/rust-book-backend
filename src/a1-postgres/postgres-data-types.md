@@ -792,6 +792,6 @@ not NULL: the price is known, and it's zero.
 
 **Next:**
 
-- CRUD in SQL (coming soon)
+- [CRUD in SQL](../a1-postgres/crud-in-sql.md)
 
 <!-- next:end -->

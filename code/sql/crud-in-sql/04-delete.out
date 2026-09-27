@@ -1,0 +1,7 @@
+DELETE 1
+ id |    title
+----+-------------
+  1 | Dune
+  3 | Neuromancer
+  4 | Persuasion
+(3 rows)

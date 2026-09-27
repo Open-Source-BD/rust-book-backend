@@ -1,0 +1,60 @@
+{
+  "topic": "crud-in-sql",
+  "title": "CRUD in SQL",
+  "quiz": [
+    {
+      "q": "Which SQL statement matches an HTTP POST that creates something?",
+      "options": [
+        "SELECT",
+        "INSERT",
+        "UPDATE",
+        "DELETE"
+      ],
+      "answer": 1,
+      "explain": "POST creates, INSERT adds a new row."
+    },
+    {
+      "q": "What happens with `UPDATE books SET copies = 0;` (no WHERE)?",
+      "options": [
+        "Error",
+        "Only the first row changes",
+        "Every row changes",
+        "Nothing"
+      ],
+      "answer": 2,
+      "explain": "Without WHERE, UPDATE and DELETE apply to every row in the table."
+    },
+    {
+      "q": "Without ORDER BY, the order of rows is…",
+      "options": [
+        "Alphabetical",
+        "By id",
+        "Not guaranteed",
+        "Newest first"
+      ],
+      "answer": 2,
+      "explain": "Postgres returns rows in whatever order is fastest. Always ORDER BY when order matters."
+    },
+    {
+      "q": "`SELECT title FROM books ORDER BY title LIMIT 2;` returns…",
+      "options": [
+        "The last 2 titles",
+        "The first 2 titles alphabetically",
+        "2 random titles",
+        "Titles with 2 letters"
+      ],
+      "answer": 1,
+      "explain": "ORDER BY sorts A→Z, LIMIT keeps the first 2."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "CRUD in SQL?",
+      "back": "Create = INSERT, Read = SELECT, Update = UPDATE, Delete = DELETE."
+    },
+    {
+      "front": "Newest first?",
+      "back": "`ORDER BY year DESC`"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+ id |  title
+----+---------
+  5 | Kindred
+(1 row)
+
+INSERT 0 1
+  title
+---------
+ Kindred
+(1 row)
+
+DELETE 1

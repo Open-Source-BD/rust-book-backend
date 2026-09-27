@@ -1,0 +1,8 @@
+UPDATE 1
+DELETE 1
+ id |   title    | copies
+----+------------+--------
+  1 | Dune       |      3
+  4 | Persuasion |      1
+  6 | The Hobbit |      5
+(3 rows)

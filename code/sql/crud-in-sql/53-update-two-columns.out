@@ -1,0 +1,9 @@
+UPDATE 1
+ id |      title       | copies
+----+------------------+--------
+  3 | Neuromancer      |      2
+  4 | Persuasion       |      1
+  1 | Dune (paperback) |     10
+(3 rows)
+
+UPDATE 1

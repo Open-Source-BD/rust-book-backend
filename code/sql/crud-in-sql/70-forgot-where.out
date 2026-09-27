@@ -1,0 +1,16 @@
+BEGIN
+UPDATE 3
+    title    | copies
+-------------+--------
+ Dune        |      0
+ Neuromancer |      0
+ Persuasion  |      0
+(3 rows)
+
+ROLLBACK
+    title    | copies
+-------------+--------
+ Dune        |      3
+ Neuromancer |      2
+ Persuasion  |      1
+(3 rows)

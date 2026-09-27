@@ -63,6 +63,13 @@ A package of Rust code that you can add to your own project, written by you or b
 is Rust's word for what other languages call a library or a package.
 **First used in:** [How to use this book](part-0-start/how-to-use-this-book.md)
 
+### CRUD
+
+The four things a program does with stored data: **C**reate, **R**ead, **U**pdate and **D**elete.
+In [SQL](#sql) they are `INSERT`, `SELECT`, `UPDATE` and `DELETE`; over [HTTP](#http) they are
+usually `POST`, `GET`, `PUT` and `DELETE`.
+**First used in:** [CRUD in SQL](a1-postgres/crud-in-sql.md)
+
 ### Data type
 
 The kind of value a [column](#column) (or any value) holds, such as `integer`, `text`, `boolean` or
@@ -221,3 +228,10 @@ happened, such as `200` for success or `404` for "not found".
 A named list of data inside a [database](#database), laid out like a spreadsheet: the
 [columns](#column) go across the top, and each [row](#row) below them is one record.
 **First used in:** [What is a database?](a1-postgres/what-is-a-database.md)
+
+### WHERE
+
+The part of an [SQL](#sql) statement that picks which [rows](#row) it works on, such as
+`WHERE id = 4`. Postgres keeps only the rows where the condition is true. A `SELECT` without it
+reads every row; an `UPDATE` or `DELETE` without it changes or removes every row.
+**First used in:** [CRUD in SQL](a1-postgres/crud-in-sql.md)
