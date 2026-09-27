@@ -28,3 +28,12 @@ export function planRun(entries) {
   const orphans = entries.filter((e) => e.endsWith(".out") && !bases.has(e.slice(0, -4))).sort();
   return { sql, orphans };
 }
+
+// The DROP/CREATE setup script run once per lesson, before any of its NN-*.sql files. It — and
+// only it — sets ON_ERROR_STOP: without it psql exits 0 even when a statement fails (e.g. the
+// target database can't be dropped), so a broken setup would silently run the lesson's files
+// against a stale database and "pass". Lesson files themselves must NOT get ON_ERROR_STOP: a
+// Common-mistakes file's whole point is to run to completion and capture its own real error.
+export function setupScript(db) {
+  return `\\set ON_ERROR_STOP 1\nDROP DATABASE IF EXISTS ${db} WITH (FORCE);\nCREATE DATABASE ${db};\n`;
+}

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { dbNameFor, normalizeOutput, diffLines, planRun } from "../sql.mjs";
+import { dbNameFor, normalizeOutput, diffLines, planRun, setupScript } from "../sql.mjs";
 
 test("dbNameFor turns a slug into a database name", () => {
   assert.equal(dbNameFor("crud-in-sql"), "crud_in_sql");
@@ -24,4 +24,11 @@ test("planRun sorts .sql files and finds orphan .out files", () => {
   assert.deepEqual(r.sql, ["01-create.sql", "02-select.sql"]);
   assert.deepEqual(r.orphans, ["09-old.out"]);
   assert.throws(() => planRun(["select.sql"]), /NN-/);
+});
+
+test("setupScript sets ON_ERROR_STOP so a failed DROP/CREATE actually fails, and only for setup", () => {
+  assert.equal(
+    setupScript("crud_in_sql"),
+    "\\set ON_ERROR_STOP 1\nDROP DATABASE IF EXISTS crud_in_sql WITH (FORCE);\nCREATE DATABASE crud_in_sql;\n"
+  );
 });

@@ -52,18 +52,32 @@ Part A1 (PostgreSQL & SQL) lessons show real `psql` output, checked by CI instea
   "relation already exists".
 - **No nondeterministic SQL:** no `now()`, `random()`, `gen_random_uuid()`, `\timing` or
   `version()` — use fixed date literals instead. `EXPLAIN` always uses `(COSTS OFF)`, or
-  `(ANALYZE, COSTS OFF, TIMING OFF, SUMMARY OFF, BUFFERS OFF)`. `tools/sql-check.mjs
-  --check-twice` runs each lesson's files twice and fails if the output differs between runs.
+  `(ANALYZE, COSTS OFF, TIMING OFF, SUMMARY OFF, BUFFERS OFF)`.
+- **`--check-twice` re-runs the lesson in the SAME database, not a fresh one.** After the normal
+  (fresh-database) pass, it runs every `NN-*.sql` file again from `01` in that same database, with
+  no `DROP`/`CREATE` in between, and fails if the output differs. This is exactly what a reader
+  does when they rerun a lesson, so it proves two things at once: the SQL is deterministic, *and*
+  `01` actually resets its own tables (the rerunnable-preamble rule above) — a lesson missing that
+  preamble fails `--check-twice` even though its single-run output is correct. CI always passes
+  `--check-twice`.
+- **A failed setup is fatal, never silent.** Before running a lesson's files, the runner drops and
+  recreates its database with `\set ON_ERROR_STOP 1` — so if that `DROP`/`CREATE` itself fails
+  (e.g. the database can't be dropped), `sql-check.mjs` exits 2 immediately with a message naming
+  the setup step and showing psql's real error, instead of quietly running the lesson's files
+  against a stale database and reporting a false "all SQL outputs match". Lesson files themselves
+  never get `ON_ERROR_STOP`: a Common-mistakes file's job is to run to completion and capture its
+  own real error in its `.out`.
 - **`.out` files are never hand-edited.** They come only from `node tools/sql-check.mjs --update
   <slug>`, which drops and recreates that lesson's database, pipes each `NN-*.sql` file into
   `psql` for real, and writes the normalized output next to it as `NN-name.out`. Lessons show it
   via `{{#include ../../code/sql/<slug>/NN-name.out}}` in a ` ```text ` fence.
 - **Running the checker:** `npm run sql` (= `node tools/sql-check.mjs`) checks every lesson;
   `node tools/sql-check.mjs <slug>` checks one; `--update <slug>` regenerates that lesson's `.out`
-  files; `--check-twice` also verifies determinism. `RBH_PSQL` is a shell command prefix that runs
-  `psql` — the runner appends the database name and pipes SQL on stdin. It defaults to `docker
-  compose exec -T db sh -c 'psql -X -U postgres -d "$0" 2>&1'` (the book's own `docker-compose.yml`
-  on port 5433). Point it at a different Postgres — a scratch instance on another port, or CI's
+  files; `--check-twice` also runs the same-database rerun check above. `RBH_PSQL` is a shell
+  command prefix that runs `psql` — the runner appends the database name and pipes SQL on stdin.
+  It defaults to `docker compose exec -T db sh -c 'psql -X -U postgres -d "$0" 2>&1'` (the book's
+  own `docker-compose.yml` on port 5433). Point it at a different Postgres — a scratch instance on
+  another port, or CI's
   service container — by exporting `RBH_PSQL` yourself, e.g. `export RBH_PSQL="docker compose -p
   rbh-sql -f /path/to/docker-compose.yml exec -T db sh -c 'psql -X -U postgres -d \"\$0\" 2>&1'"`.
 - **Validator's SQL-fence rule:** every ` ```sql ` fence in a lesson must be an
