@@ -1,0 +1,12 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 3
+ERROR:  insert or update on table "books" violates foreign key constraint "books_author_id_fkey"
+DETAIL:  Key (author_id)=(99) is not present in table "authors".
+ id |   title    | author_id
+----+------------+-----------
+  1 | Emma       |         1
+  2 | Persuasion |         1
+  3 | Dune       |         2
+(3 rows)

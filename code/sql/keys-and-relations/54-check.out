@@ -1,0 +1,10 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 1
+ERROR:  new row for relation "members" violates check constraint "members_username_check"
+DETAIL:  Failing row contains (2, this_username_is_much_too_long_to_fit).
+ id |  username
+----+------------
+  1 | austen_fan
+(1 row)

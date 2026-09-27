@@ -1,0 +1,11 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 2
+ERROR:  new row for relation "reviews" violates check constraint "reviews_stars_check"
+DETAIL:  Failing row contains (3, 1, 6, Best book ever!).
+   title    | stars |      body
+------------+-------+-----------------
+ Emma       |     5 | Witty and warm.
+ Persuasion |     4 | Quietly moving.
+(2 rows)

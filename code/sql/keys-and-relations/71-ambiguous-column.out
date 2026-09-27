@@ -1,0 +1,8 @@
+ERROR:  column reference "id" is ambiguous
+LINE 1: SELECT id FROM books JOIN authors ON authors.id = books.auth...
+               ^
+ id
+----
+  1
+  2
+(2 rows)

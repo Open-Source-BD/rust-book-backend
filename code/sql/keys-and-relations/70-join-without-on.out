@@ -1,0 +1,8 @@
+ERROR:  syntax error at or near ";"
+LINE 1: SELECT * FROM books JOIN authors;
+                                        ^
+ id |   title    | author_id | id |    name
+----+------------+-----------+----+-------------
+  1 | Emma       |         1 |  1 | Jane Austen
+  2 | Persuasion |         1 |  1 | Jane Austen
+(2 rows)

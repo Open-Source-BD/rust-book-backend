@@ -38,6 +38,12 @@ Turning a value into a different [data type](#data-type), such as the text `'42'
 that type, Postgres refuses with an error.
 **First used in:** [Postgres data types](a1-postgres/postgres-data-types.md)
 
+### Check constraint
+
+A [constraint](#constraint) that tests every new or changed [row](#row) against a condition you
+write, such as `CHECK (stars >= 1 AND stars <= 5)`, and refuses the row if the condition is false.
+**First used in:** [Keys and relations](a1-postgres/keys-and-relations.md)
+
 ### Client
 
 A program that asks for information or asks for something to be done, and shows the answer to a
@@ -49,6 +55,13 @@ person. A web browser or a phone app is a client; it talks to a [server](#server
 One named field that every [row](#row) in a [table](#table) has, such as `name` or `city`. A
 column holds the same kind of value in every row: all text, or all numbers, and so on.
 **First used in:** [What is a database?](a1-postgres/what-is-a-database.md)
+
+### Constraint
+
+A rule that a [table](#table) enforces on every row that goes into it, such as "this
+[column](#column) is never empty" (`NOT NULL`) or "no two rows share this value" (`UNIQUE`).
+Postgres refuses any `INSERT` or `UPDATE` that would break it, whichever program sends it.
+**First used in:** [Keys and relations](a1-postgres/keys-and-relations.md)
 
 ### Container
 
@@ -103,6 +116,13 @@ program can read when it starts. This book stores the [database](#database)'s lo
 in environment variables, so they are never written directly into the code.
 **First used in:** [Your toolbox](part-0-start/your-toolbox.md)
 
+### Foreign key
+
+A [column](#column) whose values must match the [primary key](#primary-key) of a row in another
+[table](#table), such as `books.author_id` pointing at `authors.id`. Postgres refuses a value that
+points at nothing, and by default refuses to delete a row that others still point at.
+**First used in:** [Keys and relations](a1-postgres/keys-and-relations.md)
+
 ### Framework
 
 A set of tools and rules that handles the repeated parts of a task, such as receiving a
@@ -122,6 +142,13 @@ The set of rules computers follow to ask for and send back information over the 
 HyperText Transfer Protocol). Every [request](#request) and [response](#response) in this book
 travels using HTTP.
 **First used in:** [Your toolbox](part-0-start/your-toolbox.md)
+
+### Join
+
+Combining rows from two [tables](#table) into one answer, by matching a column in one with a column
+in the other: `FROM books JOIN authors ON authors.id = books.author_id` puts each book next to its
+author. A `LEFT JOIN` also keeps the left table's rows that have no match.
+**First used in:** [Keys and relations](a1-postgres/keys-and-relations.md)
 
 ### JSON
 
@@ -154,6 +181,13 @@ book uses.
 A numbered door on a computer; one program listens behind each door, e.g. our server on 3000 and
 Postgres on 5433.
 **First used in:** [Your toolbox](part-0-start/your-toolbox.md)
+
+### Primary key
+
+The [column](#column) (or columns) that identifies each [row](#row) of a [table](#table): its value
+is unique and never [NULL](#null), like a member number. Other tables point at a row through its
+primary key.
+**First used in:** [Keys and relations](a1-postgres/keys-and-relations.md)
 
 ### psql
 

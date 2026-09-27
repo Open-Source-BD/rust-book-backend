@@ -641,6 +641,6 @@ same `WHERE`, and it shows exactly what would go.
 
 **Next:**
 
-- Keys and relations (coming soon)
+- [Keys and relations](../a1-postgres/keys-and-relations.md)
 
 <!-- next:end -->

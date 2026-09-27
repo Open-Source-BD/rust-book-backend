@@ -1,0 +1,13 @@
+ id
+----
+  4
+(1 row)
+
+INSERT 0 1
+INSERT 0 1
+    tag
+-----------
+ classic
+ favourite
+ romance
+(3 rows)

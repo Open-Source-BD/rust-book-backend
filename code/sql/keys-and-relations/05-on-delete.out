@@ -1,0 +1,9 @@
+ERROR:  update or delete on table "authors" violates foreign key constraint "books_author_id_fkey" on table "books"
+DETAIL:  Key (id)=(2) is still referenced from table "books".
+DELETE 1
+ dune_tag_rows
+---------------
+             0
+(1 row)
+
+DELETE 1

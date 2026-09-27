@@ -1,0 +1,60 @@
+{
+  "topic": "keys-and-relations",
+  "title": "Keys and relations",
+  "quiz": [
+    {
+      "q": "What does a foreign key guarantee?",
+      "options": [
+        "The column is unique",
+        "The value points at a row that really exists in another table",
+        "The column is indexed",
+        "The value is never NULL"
+      ],
+      "answer": 1,
+      "explain": "REFERENCES makes Postgres refuse values that don't exist in the other table."
+    },
+    {
+      "q": "How do you model books ↔ tags (many-to-many)?",
+      "options": [
+        "A tags text column in books",
+        "A third table holding (book_id, tag_id) pairs",
+        "A foreign key from tags to books",
+        "It's impossible in SQL"
+      ],
+      "answer": 1,
+      "explain": "A join table like book_tags stores one row per pairing."
+    },
+    {
+      "q": "`GENERATED ALWAYS AS IDENTITY` means…",
+      "options": [
+        "You must type every id",
+        "Postgres picks the id and you can't override it by accident",
+        "The id is random",
+        "The id is text"
+      ],
+      "answer": 1,
+      "explain": "Postgres numbers rows itself; inserting your own id is refused unless you say OVERRIDING SYSTEM VALUE."
+    },
+    {
+      "q": "Deleting an author who still has books fails because…",
+      "options": [
+        "Authors can't be deleted",
+        "The foreign key's default rule refuses to leave books pointing at nothing",
+        "You need CASCADE on authors",
+        "The table is locked"
+      ],
+      "answer": 1,
+      "explain": "By default a foreign key blocks deleting a row that others still reference."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "One-to-many in SQL?",
+      "back": "Put a foreign key column on the 'many' side (books.author_id → authors.id)."
+    },
+    {
+      "front": "JOIN vs LEFT JOIN?",
+      "back": "JOIN keeps only matches; LEFT JOIN keeps every left row, with NULLs where nothing matches."
+    }
+  ]
+}

@@ -16,7 +16,7 @@
 - [Tables, rows and psql](a1-postgres/tables-rows-and-psql.md)
 - [Postgres data types](a1-postgres/postgres-data-types.md)
 - [CRUD in SQL](a1-postgres/crud-in-sql.md)
-- [Keys and relations]()
+- [Keys and relations](a1-postgres/keys-and-relations.md)
 - [Indexes]()
 - [SQL transactions]()
 - [Build it: a library database]()

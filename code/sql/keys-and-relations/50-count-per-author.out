@@ -1,0 +1,8 @@
+INSERT 0 1
+       name        | books
+-------------------+-------
+ Jane Austen       |     2
+ Ursula K. Le Guin |     0
+(2 rows)
+
+DELETE 1

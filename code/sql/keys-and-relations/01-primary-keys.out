@@ -1,0 +1,15 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 2
+ id |     name
+----+---------------
+  1 | Jane Austen
+  2 | Frank Herbert
+(2 rows)
+
+ERROR:  duplicate key value violates unique constraint "authors_name_key"
+DETAIL:  Key (name)=(Jane Austen) already exists.
+ERROR:  cannot insert a non-DEFAULT value into column "id"
+DETAIL:  Column "id" is an identity column defined as GENERATED ALWAYS.
+HINT:  Use OVERRIDING SYSTEM VALUE to override.

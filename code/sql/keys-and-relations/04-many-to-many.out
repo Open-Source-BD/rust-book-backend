@@ -1,0 +1,12 @@
+SET
+DROP TABLE
+CREATE TABLE
+CREATE TABLE
+INSERT 0 3
+INSERT 0 6
+   title    |   tag
+------------+---------
+ Dune       | classic
+ Emma       | classic
+ Persuasion | classic
+(3 rows)

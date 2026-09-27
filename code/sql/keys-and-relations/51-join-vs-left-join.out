@@ -1,0 +1,15 @@
+INSERT 0 1
+    name     |   title
+-------------+------------
+ Jane Austen | Emma
+ Jane Austen | Persuasion
+(2 rows)
+
+       name        |   title
+-------------------+------------
+ Jane Austen       | Emma
+ Jane Austen       | Persuasion
+ Ursula K. Le Guin |
+(3 rows)
+
+DELETE 1
