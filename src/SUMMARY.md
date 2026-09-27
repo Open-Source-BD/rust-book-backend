@@ -20,7 +20,7 @@
 - [Indexes](a1-postgres/indexes.md)
 - [SQL transactions](a1-postgres/sql-transactions.md)
 - [Build it: a library database](a1-postgres/a1-build-library-schema.md)
-- [Cheat sheet: SQL]()
+- [Cheat sheet: SQL](a1-postgres/cheatsheet-sql.md)
 
 # Part A2 · Axum
 

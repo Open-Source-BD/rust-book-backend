@@ -235,7 +235,20 @@ export default [
       { label: "Aggregate functions (tutorial)", href: "https://www.postgresql.org/docs/18/tutorial-agg.html", note: "count, GROUP BY and HAVING, with worked examples." },
     ],
   },
-  draft("cheatsheet-sql", "Cheat sheet: SQL", "A1", "cheatsheet", "Beginner"),
+  {
+    slug: "cheatsheet-sql",
+    title: "Cheat sheet: SQL",
+    part: "A1", kind: "cheatsheet", level: "Beginner", status: "published",
+    summary: "Every SQL pattern from Part A1 on one page, each linked to the lesson that explains it.",
+    prereq: ["sql-transactions"],
+    next: ["hello-axum"],
+    codeDir: "code/sql/cheatsheet-sql",
+    rfhLinks: [],
+    links: [
+      { label: "SQL Commands", href: "https://www.postgresql.org/docs/18/sql-commands.html", note: "The official reference page for every SQL command, from ABORT to VALUES." },
+      { label: "psql", href: "https://www.postgresql.org/docs/18/app-psql.html", note: "Every psql option and backslash command." },
+    ],
+  },
 
   // ---- Part A2 · Axum ----
   draft("hello-axum", "Hello, Axum", "A2", "lesson", "Beginner"),

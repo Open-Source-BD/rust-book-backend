@@ -899,7 +899,7 @@ output, two books had `0`. Now only *The Left Hand of Darkness* is left, because
 
 **Next:**
 
-- Cheat sheet: SQL (coming soon)
+- [Cheat sheet: SQL](../a1-postgres/cheatsheet-sql.md)
 - Hello, Axum (coming soon)
 
 <!-- next:end -->

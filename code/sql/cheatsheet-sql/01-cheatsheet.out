@@ -1,0 +1,65 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 4
+  name  | price_cents
+--------+-------------
+ Poster |         499
+ Pen    |         199
+(2 rows)
+
+UPDATE 1
+DELETE 1
+ id |  name  | price_cents | in_stock
+----+--------+-------------+----------
+  1 | Mug    |        1299 | t
+  2 | Poster |         499 | f
+  3 | Pen    |         299 |
+(3 rows)
+
+ name
+------
+ Pen
+(1 row)
+
+  name  | in_stock_or_false
+--------+-------------------
+ Mug    | t
+ Pen    | f
+ Poster | f
+(3 rows)
+
+CREATE TABLE
+INSERT 0 3
+ id | name | quantity
+----+------+----------
+  1 | Mug  |        2
+  2 | Pen  |        5
+  3 | Mug  |        1
+(3 rows)
+
+  name  | orders
+--------+--------
+ Mug    |      2
+ Pen    |      1
+ Poster |      0
+(3 rows)
+
+CREATE INDEX
+       QUERY PLAN
+-------------------------
+ Seq Scan on shop_orders
+   Filter: (item_id = 1)
+(2 rows)
+
+BEGIN
+UPDATE 1
+INSERT 0 1
+COMMIT
+BEGIN
+DELETE 4
+ROLLBACK
+ orders_kept
+-------------
+           4
+(1 row)

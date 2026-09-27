@@ -916,6 +916,6 @@ succeeded.
 **Next:**
 
 - [Build it: a library database](../a1-postgres/a1-build-library-schema.md)
-- Cheat sheet: SQL (coming soon)
+- [Cheat sheet: SQL](../a1-postgres/cheatsheet-sql.md)
 
 <!-- next:end -->
