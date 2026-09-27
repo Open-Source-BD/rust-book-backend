@@ -366,6 +366,16 @@ export function checkPage({ topic: t, md, mdFile, root, glossary, exists, read, 
       errors.push(`line ${b.line}: fence mixes an {{#include}} with hand-typed lines — put all of it in code/`);
     else if (!inc.length)
       errors.push(`line ${b.line}: hand-typed SQL in a \`\`\`${b.info} fence — put it in code/sql/<slug>/NN-name.sql and {{#include}} it`);
+    // Only code/sql/ is executed by sql-check, so a sql fence including anything else would show
+    // SQL nobody runs.
+    const sqlRoot = _resolve(root, "code/sql") + "/";
+    for (const l of inc) {
+      const m = /\{\{#include\s+([^}\s]+)\s*\}\}/.exec(l);
+      if (!m) continue;
+      const rel = m[1].split(":")[0];
+      if (!_resolve(_dirname(mdFile), rel).startsWith(sqlRoot))
+        errors.push(`line ${b.line}: a \`\`\`sql fence must include a file under code/sql/ (only that folder is run by sql-check): ${rel}`);
+    }
   }
 
   // 6. links and stale "coming soon"

@@ -448,3 +448,17 @@ test("sql: a hand-typed sql fence is an error; include and ignore pass", () => {
   const ign = checkPage(ctx(withFence("```sql,ignore\nSELEC 1;\n```"), files));
   assert.ok(!ign.errors.some((e) => e.includes("hand-typed")));
 });
+
+test("sql: a sql fence's include must live under code/sql/ (the only folder sql-check runs)", () => {
+  const files = {
+    "/r/code/x/src/main.rs": "// ANCHOR: app\nfn a(){}\n// ANCHOR_END: app\n",
+    "/r/code/sql/hello/01-a.sql": "SELECT 1;\n",
+    "/r/code/topics/x/m.sql": "SELECT 1;\n",
+  };
+  const withFence = (f) => good().replace("### Line by line", `${f}\n\n### Line by line`);
+  const outside = checkPage(ctx(withFence("```sql\n{{#include ../../code/topics/x/m.sql}}\n```"), files));
+  assert.ok(outside.errors.some((e) => e.includes("under code/sql/")), outside.errors.join("\n"));
+  const inside = checkPage(ctx(withFence("```sql\n{{#include ../../code/sql/hello/01-a.sql}}\n```"), files));
+  assert.ok(!inside.errors.some((e) => e.includes("under code/sql/")), inside.errors.join("\n"));
+  assert.equal(inside.errors.length, 0, inside.errors.join("\n"));
+});

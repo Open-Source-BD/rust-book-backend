@@ -41,9 +41,15 @@ let failed = 0;
 const slugs = fs.existsSync(SQL_DIR) ? fs.readdirSync(SQL_DIR).filter((d) => fs.statSync(join(SQL_DIR, d)).isDirectory()).sort() : [];
 for (const slug of slugs.filter((s) => !only.length || only.includes(s))) {
   const dir = join(SQL_DIR, slug);
+  // A malformed folder name (e.g. "My_Lesson") is a reportable failure, not a stack trace.
+  let db;
+  try { db = dbNameFor(slug); } catch {
+    console.log(`FAIL  ${slug}: folder name must be a slug (a-z, 0-9, -)`);
+    failed++;
+    continue;
+  }
   const { sql, orphans } = planRun(fs.readdirSync(dir));
   for (const o of orphans) { console.log(`FAIL  ${slug}/${o}: no matching .sql`); failed++; }
-  const db = dbNameFor(slug);
   // ON_ERROR_STOP (inside setupScript) makes a failed DROP/CREATE fatal instead of silently
   // leaving the previous database in place. Lesson files run WITHOUT it: see psql()'s doc comment.
   psql("postgres", setupScript(db), `setting up database ${db} for lesson ${slug} (DROP/CREATE)`);
