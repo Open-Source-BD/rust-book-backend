@@ -85,7 +85,10 @@ Build-it pages use their own section order instead of the 11-section lesson form
 lessons used) → `## The spec` (requirements, endpoints/tables, acceptance checks) → `## Build it,
 step by step` (each step has a goal, hints in `<details>`, and a ✅ checkpoint command with expected
 output) → `## Reference solution, line by line` → `## Stretch goals` → `## Remember this`.
-The code lives in `code/projects/<slug>/` and is included and tested like all other code.
+The code of a Rust project lives in `code/projects/<slug>/` and is included and tested like all
+other code. A SQL-only project (such as A1's `a1-build-library-schema`) has no Rust, so it keeps its
+code in `code/sql/<slug>/` like a SQL lesson: `NN-name.sql` files whose `.out` output is written and
+checked by `tools/sql-check.mjs` (see *Code ↔ book link*).
 
 ### Part 0 · Before you start (4)
 1. `how-to-use-this-book` — prerequisites, links to Rust for Humans lessons
