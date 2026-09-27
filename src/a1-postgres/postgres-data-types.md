@@ -382,7 +382,7 @@ Now put the types to work in a table of shop products. This is
 `SELECT name FROM products WHERE in_stock IS NULL;`
 - **What:** the names of the products whose stock status is unknown.
 - **Why:** "which products haven't been counted yet?" is a real question.
-- **How:** `WHERE` keeps only the rows where the condition is **true**. `IS NULL` is SQL's way to
+- **How:** [`WHERE`](../glossary.md#where) keeps only the rows where the condition is **true**. `IS NULL` is SQL's way to
   test "has no value": it's true for the Pen, and false for the Mug.
 - **Remove it and…** (the `WHERE …` part) you get every product's name.
 

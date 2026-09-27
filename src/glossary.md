@@ -234,4 +234,4 @@ A named list of data inside a [database](#database), laid out like a spreadsheet
 The part of an [SQL](#sql) statement that picks which [rows](#row) it works on, such as
 `WHERE id = 4`. Postgres keeps only the rows where the condition is true. A `SELECT` without it
 reads every row; an `UPDATE` or `DELETE` without it changes or removes every row.
-**First used in:** [CRUD in SQL](a1-postgres/crud-in-sql.md)
+**First used in:** [Postgres data types](a1-postgres/postgres-data-types.md)
