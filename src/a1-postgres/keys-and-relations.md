@@ -16,8 +16,8 @@ Imagine a library app with two members, both called **Alan Turing**. One of them
 Which one? The name can't tell you, and neither can the city or the birthday: two people can share
 all of those. What the app needs is a number that belongs to **one** row and nobody else, like a
 library card number. And it needs a guarantee that the number is never shared, never missing, and
-never typed in wrong. In SQL, that number is called a **primary key**, and this lesson has Postgres
-look after it for you.
+never typed in wrong. In SQL, that number is called a
+[**primary key**](../glossary.md#primary-key), and this lesson has Postgres look after it for you.
 
 The second problem appears as soon as you store two kinds of thing. Books have authors. You could
 type the author's name into every book's row:
@@ -37,8 +37,9 @@ Your phone has already solved this. A text message doesn't store a copy of the s
 number and name; it **points at** a contact. Fix the contact's name once, and every message from
 them shows the new name. Databases work the same way: store each author **once**, in an `authors`
 table, and let each book **point at** its author by number. This lesson shows you how to make that
-pointer (a **foreign key**), how to make Postgres refuse pointers to nobody, and how to follow the
-pointers back to get "each book with its author's name" in one answer (a **JOIN**).
+pointer (a [**foreign key**](../glossary.md#foreign-key)), how to make Postgres refuse pointers to
+nobody, and how to follow the pointers back to get "each book with its author's name" in one answer
+(a [**JOIN**](../glossary.md#join)).
 
 ## The idea, slowly
 
@@ -146,7 +147,7 @@ getting the same one. This time, Postgres hands out the numbers, and refuses dup
   you from typing one that's already taken, unless you keep the next rule.
 
 `PRIMARY KEY`
-- **What:** makes `id` this table's [**primary key**](../glossary.md#primary-key): the column that
+- **What:** makes `id` this table's **primary key**: the column that
   says which row is which.
 - **Why:** everything else can repeat. Two authors can share a name, in theory; they can never
   share an `id`. Other tables will point at an author by this column.
@@ -313,7 +314,7 @@ This is `code/sql/keys-and-relations/02-foreign-keys.sql`:
 - **Remove it and…** a book with a NULL title is allowed.
 
 `author_id integer NOT NULL REFERENCES authors (id)`
-- **What:** makes `author_id` a [**foreign key**](../glossary.md#foreign-key): its value must be
+- **What:** makes `author_id` a **foreign key**: its value must be
   the `id` of a row that exists in `authors`.
 - **Why:** a book that points at author `99`, when there's no author `99`, is a broken arrow. The
   foreign key makes that impossible, whichever program writes the row.
@@ -368,7 +369,7 @@ The table shows three books, and no Ghost book.
 ### Step 4: JOIN — follow the pointers back
 
 The books table now holds numbers where names used to be. To show "each title with its author's
-name", you need rows from **both** tables side by side. That's a [**join**](../glossary.md#join).
+name", you need rows from **both** tables side by side. That's a **join**.
 This is `code/sql/keys-and-relations/03-join.sql`:
 
 ```sql
