@@ -1,0 +1,4 @@
+ table_size | pkey_index | customer_id_index | status_index
+------------+------------+-------------------+--------------
+ 5200 kB    | 2208 kB    | 776 kB            | 696 kB
+(1 row)

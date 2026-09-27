@@ -1,0 +1,19 @@
+SET
+DROP INDEX
+                  QUERY PLAN
+----------------------------------------------
+ Seq Scan on orders
+   Filter: (lower(status) = 'refunded'::text)
+(2 rows)
+
+CREATE INDEX
+ANALYZE
+                       QUERY PLAN
+--------------------------------------------------------
+ Bitmap Heap Scan on orders
+   Recheck Cond: (lower(status) = 'refunded'::text)
+   ->  Bitmap Index Scan on orders_lower_status_idx
+         Index Cond: (lower(status) = 'refunded'::text)
+(4 rows)
+
+DROP INDEX

@@ -1,0 +1,15 @@
+SET
+DROP TABLE
+CREATE TABLE
+CREATE INDEX
+INSERT 0 2
+ERROR:  duplicate key value violates unique constraint "users_email_idx"
+DETAIL:  Key (email)=(ada@example.com) already exists.
+                   List of indexes
+ Schema |      Name       | Type  |  Owner   | Table
+--------+-----------------+-------+----------+-------
+ public | users_email_idx | index | postgres | users
+ public | users_pkey      | index | postgres | users
+(2 rows)
+
+DROP TABLE

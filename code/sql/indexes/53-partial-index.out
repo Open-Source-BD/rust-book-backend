@@ -1,0 +1,17 @@
+SET
+DROP INDEX
+CREATE INDEX
+                              QUERY PLAN
+----------------------------------------------------------------------
+ Bitmap Heap Scan on orders
+   Recheck Cond: ((customer_id = 42) AND (status = 'refunded'::text))
+   ->  Bitmap Index Scan on orders_refunded_idx
+         Index Cond: (customer_id = 42)
+(4 rows)
+
+ all_orders_index | refunded_only_index
+------------------+---------------------
+ 776 kB           | 96 kB
+(1 row)
+
+DROP INDEX

@@ -980,6 +980,6 @@ here too. (`body` has no `NOT NULL`: a star rating with no words is allowed.)
 
 **Next:**
 
-- Indexes (coming soon)
+- [Indexes](../a1-postgres/indexes.md)
 
 <!-- next:end -->

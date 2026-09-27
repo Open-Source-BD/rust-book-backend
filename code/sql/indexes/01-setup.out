@@ -1,0 +1,9 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 100000
+ANALYZE
+ orders
+--------
+ 100000
+(1 row)

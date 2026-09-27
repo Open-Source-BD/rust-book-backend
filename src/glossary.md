@@ -116,6 +116,13 @@ program can read when it starts. This book stores the [database](#database)'s lo
 in environment variables, so they are never written directly into the code.
 **First used in:** [Your toolbox](part-0-start/your-toolbox.md)
 
+### EXPLAIN
+
+A command you put in front of a [query](#query) to see the plan Postgres will use to run it: for
+example, whether it reads every [row](#row) of a [table](#table) (`Seq Scan`) or uses an
+[index](#index). `EXPLAIN (ANALYZE)` also runs the query and shows what really happened.
+**First used in:** [Indexes](a1-postgres/indexes.md)
+
 ### Foreign key
 
 A [column](#column) whose values must match the [primary key](#primary-key) of a row in another
@@ -142,6 +149,13 @@ The set of rules computers follow to ask for and send back information over the 
 HyperText Transfer Protocol). Every [request](#request) and [response](#response) in this book
 travels using HTTP.
 **First used in:** [Your toolbox](part-0-start/your-toolbox.md)
+
+### Index
+
+A sorted list of one [column](#column)'s values, each with the addresses of its [rows](#row), kept
+next to a [table](#table), like the index at the back of a book. It lets Postgres find matching rows
+without reading the whole table. It costs disk space, and every write must update it.
+**First used in:** [Indexes](a1-postgres/indexes.md)
 
 ### Join
 
@@ -201,6 +215,13 @@ One question or instruction you send to a [database](#database), written in [SQL
 `SELECT * FROM friends;`. Strictly, a query is a question that reads data, but people often call
 any SQL statement a query.
 **First used in:** [What is a database?](a1-postgres/what-is-a-database.md)
+
+### Query planner
+
+The part of Postgres that decides **how** to run each [query](#query): read the whole
+[table](#table), or use an [index](#index), and which one. It uses statistics about the table's
+contents to pick the plan it expects to be fastest. [EXPLAIN](#explain) shows its choice.
+**First used in:** [Indexes](a1-postgres/indexes.md)
 
 ### Request
 

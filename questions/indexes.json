@@ -1,0 +1,60 @@
+{
+  "topic": "indexes",
+  "title": "Indexes",
+  "quiz": [
+    {
+      "q": "What problem does an index solve?",
+      "options": [
+        "Storing more data",
+        "Finding matching rows without reading the whole table",
+        "Backing up data",
+        "Enforcing types"
+      ],
+      "answer": 1,
+      "explain": "Like a book's index, it points straight at the rows you want."
+    },
+    {
+      "q": "In EXPLAIN output, `Seq Scan` with `Rows Removed by Filter: 99980` means…",
+      "options": [
+        "An index was used",
+        "Postgres read every row and threw away 99,980",
+        "99,980 rows were deleted",
+        "The query failed"
+      ],
+      "answer": 1,
+      "explain": "A sequential scan reads the whole table; the filter discards non-matching rows."
+    },
+    {
+      "q": "Why might Postgres ignore an index on `status` for `status = 'paid'`?",
+      "options": [
+        "The index is broken",
+        "90% of rows match, so reading the table directly is faster",
+        "Text columns can't be indexed",
+        "You forgot ANALYZE"
+      ],
+      "answer": 1,
+      "explain": "Indexes win when few rows match. For most of the table, a plain scan is cheaper."
+    },
+    {
+      "q": "What's a cost of adding an index?",
+      "options": [
+        "Queries can't use WHERE",
+        "Extra disk space and slower INSERT/UPDATE",
+        "The table becomes read-only",
+        "None"
+      ],
+      "answer": 1,
+      "explain": "Every write must also update the index, and the index takes space."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Create an index?",
+      "back": "`CREATE INDEX orders_customer_id_idx ON orders (customer_id);`"
+    },
+    {
+      "front": "See how Postgres runs a query?",
+      "back": "`EXPLAIN (COSTS OFF) SELECT …;` — add ANALYZE to really run it."
+    }
+  ]
+}

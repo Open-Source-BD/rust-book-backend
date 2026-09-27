@@ -1,0 +1,21 @@
+SET
+DROP INDEX
+                   QUERY PLAN
+------------------------------------------------
+ Seq Scan on orders (actual rows=10.00 loops=1)
+   Filter: (total_cents = 1234)
+   Rows Removed by Filter: 99990
+(3 rows)
+
+CREATE INDEX
+                                  QUERY PLAN
+-------------------------------------------------------------------------------
+ Bitmap Heap Scan on orders (actual rows=10.00 loops=1)
+   Recheck Cond: (total_cents = 1234)
+   Heap Blocks: exact=10
+   ->  Bitmap Index Scan on orders_total_cents_idx (actual rows=10.00 loops=1)
+         Index Cond: (total_cents = 1234)
+         Index Searches: 1
+(6 rows)
+
+DROP INDEX

@@ -1,0 +1,13 @@
+                   QUERY PLAN
+-------------------------------------------------
+ Bitmap Heap Scan on orders
+   Recheck Cond: (status = 'refunded'::text)
+   ->  Bitmap Index Scan on orders_status_idx
+         Index Cond: (status = 'refunded'::text)
+(4 rows)
+
+              QUERY PLAN
+--------------------------------------
+ Seq Scan on orders
+   Filter: (status ~~ '%unded'::text)
+(2 rows)

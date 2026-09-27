@@ -1,0 +1,12 @@
+SET
+DROP INDEX
+CREATE INDEX
+                                QUERY PLAN
+--------------------------------------------------------------------------
+ Bitmap Heap Scan on orders
+   Recheck Cond: ((customer_id = 42) AND (status = 'refunded'::text))
+   ->  Bitmap Index Scan on orders_customer_status_idx
+         Index Cond: ((customer_id = 42) AND (status = 'refunded'::text))
+(4 rows)
+
+DROP INDEX

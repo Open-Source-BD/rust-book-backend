@@ -1,0 +1,25 @@
+SET
+DROP INDEX
+CREATE INDEX
+ANALYZE
+            QUERY PLAN
+-----------------------------------
+ Seq Scan on orders
+   Filter: (status = 'paid'::text)
+(2 rows)
+
+                   QUERY PLAN
+-------------------------------------------------
+ Bitmap Heap Scan on orders
+   Recheck Cond: (status = 'refunded'::text)
+   ->  Bitmap Index Scan on orders_status_idx
+         Index Cond: (status = 'refunded'::text)
+(4 rows)
+
+                       List of indexes
+ Schema |          Name          | Type  |  Owner   | Table
+--------+------------------------+-------+----------+--------
+ public | orders_customer_id_idx | index | postgres | orders
+ public | orders_pkey            | index | postgres | orders
+ public | orders_status_idx      | index | postgres | orders
+(3 rows)

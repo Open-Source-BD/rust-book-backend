@@ -1,0 +1,8 @@
+DROP INDEX
+              QUERY PLAN
+---------------------------------------
+ Seq Scan on orders
+   Filter: (status = 'refunded'::text)
+(2 rows)
+
+CREATE INDEX
