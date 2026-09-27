@@ -1,0 +1,29 @@
+           title           |      author       | copies_available
+---------------------------+-------------------+------------------
+ Dune                      | Frank Herbert     |                1
+ Emma                      | Jane Austen       |                1
+ Persuasion                | Jane Austen       |                1
+ A Wizard of Earthsea      | Ursula K. Le Guin |                2
+ The Left Hand of Darkness | Ursula K. Le Guin |                1
+(5 rows)
+
+    member    | title |   due_on
+--------------+-------+------------
+ Ada Lovelace | Emma  | 2026-09-15
+ Ada Lovelace | Dune  | 2026-09-24
+ Alan Turing  | Dune  | 2026-10-04
+(3 rows)
+
+    member    | title |   due_on
+--------------+-------+------------
+ Ada Lovelace | Emma  | 2026-09-15
+(1 row)
+
+           title           | times_borrowed
+---------------------------+----------------
+ Dune                      |              3
+ Emma                      |              1
+ Persuasion                |              1
+ A Wizard of Earthsea      |              0
+ The Left Hand of Darkness |              0
+(5 rows)

@@ -915,7 +915,7 @@ succeeded.
 
 **Next:**
 
-- Build it: a library database (coming soon)
+- [Build it: a library database](../a1-postgres/a1-build-library-schema.md)
 - Cheat sheet: SQL (coming soon)
 
 <!-- next:end -->

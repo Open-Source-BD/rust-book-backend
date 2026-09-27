@@ -216,7 +216,25 @@ export default [
       { label: "BEGIN", href: "https://www.postgresql.org/docs/18/sql-begin.html", note: "The reference page for BEGIN and its options." },
     ],
   },
-  draft("a1-build-library-schema", "Build it: a library database", "A1", "project", "Beginner"),
+  {
+    slug: "a1-build-library-schema",
+    title: "Build it: a library database",
+    part: "A1", kind: "project", level: "Beginner", status: "published",
+    outcomes: [
+      "You designed a real schema of four related tables.",
+      "You wrote the queries a library app needs.",
+      "You changed data safely with transactions.",
+    ],
+    summary: "Design and query a library database — authors, books, members and loans — using everything from Part A1.",
+    prereq: ["sql-transactions"],
+    next: ["cheatsheet-sql", "hello-axum"],
+    codeDir: "code/sql/a1-build-library-schema",
+    rfhLinks: [],
+    links: [
+      { label: "Constraints", href: "https://www.postgresql.org/docs/18/ddl-constraints.html", note: "Every kind of rule a table can enforce: CHECK, NOT NULL, UNIQUE, primary and foreign keys." },
+      { label: "Aggregate functions (tutorial)", href: "https://www.postgresql.org/docs/18/tutorial-agg.html", note: "count, GROUP BY and HAVING, with worked examples." },
+    ],
+  },
   draft("cheatsheet-sql", "Cheat sheet: SQL", "A1", "cheatsheet", "Beginner"),
 
   // ---- Part A2 · Axum ----

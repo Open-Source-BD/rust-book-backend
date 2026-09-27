@@ -1,0 +1,15 @@
+BEGIN
+UPDATE 1
+ERROR:  new row for relation "books" violates check constraint "books_check"
+DETAIL:  Failing row contains (2, Persuasion, 1, 1, -1).
+ROLLBACK
+ERROR:  duplicate key value violates unique constraint "members_email_key"
+DETAIL:  Key (email)=(ada@example.com) already exists.
+ERROR:  new row for relation "loans" violates check constraint "loans_check"
+DETAIL:  Failing row contains (7, 5, 2, 2026-09-24, 2026-09-01, null).
+ERROR:  insert or update on table "loans" violates foreign key constraint "loans_book_id_fkey"
+DETAIL:  Key (book_id)=(99) is not present in table "books".
+   title    | copies_available
+------------+------------------
+ Persuasion |                1
+(1 row)

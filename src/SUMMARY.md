@@ -19,7 +19,7 @@
 - [Keys and relations](a1-postgres/keys-and-relations.md)
 - [Indexes](a1-postgres/indexes.md)
 - [SQL transactions](a1-postgres/sql-transactions.md)
-- [Build it: a library database]()
+- [Build it: a library database](a1-postgres/a1-build-library-schema.md)
 - [Cheat sheet: SQL]()
 
 # Part A2 · Axum

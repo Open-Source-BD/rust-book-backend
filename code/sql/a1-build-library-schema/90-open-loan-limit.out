@@ -1,0 +1,12 @@
+ member | open_loans
+--------+------------
+(0 rows)
+
+BEGIN
+INSERT 0 3
+   member    | open_loans
+-------------+------------
+ Alan Turing |          4
+(1 row)
+
+ROLLBACK

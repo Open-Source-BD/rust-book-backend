@@ -1,0 +1,16 @@
+SET
+DROP TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+           List of tables
+ Schema |  Name   | Type  |  Owner
+--------+---------+-------+----------
+ public | authors | table | postgres
+ public | books   | table | postgres
+ public | loans   | table | postgres
+ public | members | table | postgres
+(4 rows)
