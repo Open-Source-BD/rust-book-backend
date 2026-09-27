@@ -71,11 +71,29 @@ names across the top, one line per thing you store. Here is a small table called
                  └─────────┴────────────┘
 ```
 
-- A [**column**](../glossary.md#column) is one field that every entry has, and it has a name:
-  `name` and `city`. Columns go **across**.
-- A [**row**](../glossary.md#row) is one entry: one friend. Rows go **down**. Ada is one row;
-  Linus is another.
-- The **table** is the whole thing, with a name of its own: `friends`.
+### Line by line
+
+`columns ───▶ │ name │ city │`
+- **What:** the [**columns**](../glossary.md#column): `name` and `city`. A column is one field that
+  every entry has, and it has a name. Columns go **across**.
+- **Why:** the names say what each value means: `London` is a `city`, not a name.
+- **How:** every row below has exactly one value under each column.
+- **Remove it and…** you have values with no names, and nobody can tell what `Helsinki` is.
+
+`row 1 ───▶ │ Ada │ London │` · `row 2 ───▶ │ Linus │ Helsinki │`
+- **What:** two [**rows**](../glossary.md#row). A row is one entry: one friend. Rows go **down**.
+  Ada is one row; Linus is another.
+- **Why:** each thing you store gets a row of its own, so adding a friend means adding a row.
+- **How:** a row holds one value for each column, in the column's place: `Ada` under `name`,
+  `London` under `city`.
+- **Remove it and…** (a row) that friend is no longer stored; the columns stay.
+
+`table: friends` (the whole box)
+- **What:** the **table**: the whole thing, with a name of its own, `friends`.
+- **Why:** one database holds many tables (friends, pets, books…), and the name says which one you
+  mean.
+- **How:** you use the name in SQL to say which table to read or change, as you'll see in Step 4.
+- **Remove it and…** (the name) there is no way to ask for this table and not another one.
 
 If you've used a spreadsheet, you already know this shape: a sheet is a table, the header line
 holds the column names, and each line below it is a row. There is one big difference. In a
@@ -377,14 +395,38 @@ one:
 The arrows pointing right (`──▶`) carry your SQL in; the arrows pointing left (`◀──`) carry the
 answer back.
 
-1. Your terminal runs `docker compose exec`, which hands the file to `psql` **inside** the `db`
-   container.
-2. `psql` is only a messenger. It sends each statement, up to its `;`, to the **Postgres server**,
-   the program that's always running in that container.
-3. The server does the real work. It creates tables, stores rows, and saves them to disk, in the
-   `pgdata` volume from Your toolbox, so they survive a restart.
-4. The server sends the answer back to `psql`, and `psql` draws it as the text table you saw, in
-   your terminal.
+### Line by line
+
+`your command ──▶ psql`
+- **What:** your terminal runs `docker compose exec`, which hands the file to `psql` **inside** the
+  `db` container.
+- **Why:** `psql` is the program that can talk to Postgres, and it's already in the container, so
+  you don't need it installed.
+- **How:** the `<` in your command feeds the file to `psql`, and `-T` lets Docker accept a file
+  instead of a keyboard.
+- **Remove it and…** your SQL never leaves your terminal.
+
+`psql ──▶ Postgres server`
+- **What:** `psql` is only a messenger. It sends each statement, up to its `;`, to the **Postgres
+  server**, the program that's always running in that container.
+- **Why:** the server is the librarian from *What & why*; only it touches the data.
+- **How:** one statement at a time, in the order they appear in the file.
+- **Remove it and…** `psql` has nobody to ask, and nothing runs.
+
+`Postgres server ──▶ data on disk`
+- **What:** the server does the real work. It creates tables, stores rows, and saves them to disk,
+  in the `pgdata` volume from Your toolbox.
+- **Why:** so your data survives a restart.
+- **How:** Docker keeps the `pgdata` volume outside the container.
+- **Remove it and…** (the volume) after `docker compose down` and `up`, your tables would seem
+  to have vanished, as Your toolbox showed.
+
+The bottom line (every `◀──`)
+- **What:** the server sends the answer back to `psql`, and `psql` draws it as the text table you
+  saw, in your terminal.
+- **Why:** every statement gets an answer: rows, a command tag, or an error.
+- **How:** the answer travels back along the same path it came in on.
+- **Remove it and…** your SQL would still run, but you'd never see what it did.
 
 Later in the book, your Rust program will take `psql`'s place: it sends SQL to the same server and
 gets rows back. The server and the data don't change.
