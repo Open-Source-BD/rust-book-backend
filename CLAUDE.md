@@ -84,7 +84,15 @@ Part A1 (PostgreSQL & SQL) lessons show real `psql` output, checked by CI instea
   `{{#include ../../code/sql/<slug>/NN-name.sql}}`, never hand-typed SQL — the same "comes from
   real, checked code" rule as Rust listings, so `validate.mjs` errors on a hand-typed one and CI
   actually runs what the page shows. The exception is ` ```sql,ignore `, for deliberately broken
-  SQL shown next to its real error (mirrors `rust,noplayground,ignore`).
+  SQL shown next to its real error (mirrors `rust,noplayground,ignore`). The fence's include must
+  also resolve under `code/sql/` (the only folder sql-check runs); `validate.mjs` errors otherwise.
+- **SQL that Rust generates (Part A2+):** SQL that sqlx/SeaORM builds for you, such as a logged
+  query, is shown in a ` ```text ` fence holding real captured output — never a ` ```sql ` fence,
+  because ` ```sql ` fences are for executed `code/sql/` listing includes only.
+- **Orphan `.out` files:** `--update` never deletes files, so a `.out` whose `.sql` was renamed or
+  removed is reported as `FAIL <slug>/NN-name.out: no matching .sql` and `--update` still exits 1.
+  That's deliberate: the stale output would otherwise linger (and could still be included by a
+  page). `git rm` the orphan, then rerun.
 
 ## Publishing a draft page
 

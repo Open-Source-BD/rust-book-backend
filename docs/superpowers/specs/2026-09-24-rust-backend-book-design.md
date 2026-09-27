@@ -252,8 +252,12 @@ nothing else:
 
 The same rule covers SQL listings in Part A1: every ` ```sql ` fence must be
 `{{#include ../../code/sql/<slug>/NN-name.sql}}`, and its output is
-`{{#include ../../code/sql/<slug>/NN-name.out}}` in a ` ```text ` fence — never hand-typed SQL or a
-pasted-in result. `tools/sql-check.mjs` is the real runner: for each `code/sql/<slug>/` it drops
+`{{#include ../../code/sql/<slug>/NN-name.out}}` in a ` ```text ` fence — never hand-typed SQL,
+and never a reconstructed or hand-edited result. Output shown on a page is always real command
+output; for things sql-check cannot produce (`createdb` and `psql` command-line errors, an
+interactive `psql` transcript), pasting real output captured by hand from running the command is
+allowed, with only the username/path and IP edits the "paste only real command output" rule
+permits. `tools/sql-check.mjs` is the real runner: for each `code/sql/<slug>/` it drops
 and recreates a database named after the slug (`dbNameFor`, e.g. `crud-in-sql` → `crud_in_sql`),
 pipes every `NN-*.sql` file into `psql` in name order, and diffs the normalized output against the
 committed `NN-name.out`; `.out` files are written only by `node tools/sql-check.mjs --update
