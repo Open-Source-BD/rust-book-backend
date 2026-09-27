@@ -534,7 +534,7 @@ Use `text`. Many tutorials use `varchar(255)` ("text of at most 255 letters"), a
 databases. In Postgres, `text` and `varchar` are stored the same way and are equally fast; the only
 difference is the limit. And 255 is rarely a real rule: it's a number somebody picked. When you do
 need a limit (a username of at most 30 letters, say), keep `text` and add a `CHECK` rule to the
-column, which you'll meet in *Keys and relations*. Its error message is clearer, and changing the
+column, which you'll meet in [Keys and relations](keys-and-relations.md). Its error message is clearer, and changing the
 limit later is easier.
 
 ## Coming from another language?

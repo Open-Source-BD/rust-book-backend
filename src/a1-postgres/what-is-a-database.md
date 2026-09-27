@@ -100,7 +100,7 @@ holds the column names, and each line below it is a row. There is one big differ
 spreadsheet you can type anything into any cell. In a database, every column holds one *kind* of
 value (text, whole numbers, dates…), and the database refuses a value of the wrong kind. That's how
 it stops the `12,99` typo from the shopping list. In this lesson every column holds text; the kinds
-of values get their own lesson two lessons from now.
+of values get their own lesson, [Postgres data types](postgres-data-types.md), two lessons from now.
 
 One Postgres server can hold many **databases**, and each database holds its own tables. That's
 the next step.
@@ -536,7 +536,7 @@ cannot attach stdin to a TTY-enabled container because stdin is not a terminal
 Without `-T`, Docker expects you to be typing at a keyboard, sees a file instead, and refuses.
 **Fix:** use `docker compose exec -T db psql …` whenever you feed a file with `<`. (Without a
 file, `docker compose exec db psql -U postgres -d what_is_a_database` opens an interactive prompt
-where you type SQL yourself. That's the next lesson.)
+where you type SQL yourself. That's the next lesson, [Tables, rows and psql](tables-rows-and-psql.md).)
 
 ## More examples
 

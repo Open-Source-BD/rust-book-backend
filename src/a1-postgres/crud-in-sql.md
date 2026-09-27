@@ -369,7 +369,7 @@ Not once it's done. There's no bin and no Ctrl+Z: a deleted row is gone, and so 
 old value. The one way to undo is to start a [**transaction**](../glossary.md#transaction) first,
 with `BEGIN`: until you say [`COMMIT`](../glossary.md#commit), you can take everything back with
 [`ROLLBACK`](../glossary.md#rollback). *Common mistakes* uses it as an undo button,
-and the lesson *SQL transactions*, a few lessons from now, teaches it properly. Because there's no undo, careful
+and the lesson [SQL transactions](sql-transactions.md), a few lessons from now, teaches it properly. Because there's no undo, careful
 people run a `SELECT` with the same `WHERE` first: it shows exactly which rows the `DELETE` would
 remove, before anything is removed.
 
@@ -435,7 +435,7 @@ sold out. A `DELETE` without `WHERE` is the same, and worse: `DELETE FROM books;
 
 This file is safe to run, because of its first and fourth lines. `BEGIN` starts a transaction and
 `ROLLBACK` throws away every change made since `BEGIN` (each prints its own name as its command
-tag). Think of them as an undo button; you'll learn them properly in *SQL transactions*. The second
+tag). Think of them as an undo button; you'll learn them properly in [SQL transactions](sql-transactions.md). The second
 `SELECT`, after `ROLLBACK`, shows every book back to 3, 2 and 1 copies. Without that button, the old
 numbers would be gone.
 
@@ -588,7 +588,7 @@ with `id` `6`, then read back its `id`, title and copies.
 The `INSERT` from Step 2, with one row: `INSERT 0 1`. The `SELECT` uses `WHERE id = 6` to read
 back only the new book. (You could also have used `RETURNING id, title, copies`, from *More
 examples*, and skipped the `SELECT`.) If you run this file twice, you get two Hobbits, both with
-`id` `6`: nothing stops a repeated id yet. That's what *Keys and relations*, the next lesson, fixes.
+`id` `6`: nothing stops a repeated id yet. That's what [Keys and relations](keys-and-relations.md), the next lesson, fixes.
 
 </details>
 

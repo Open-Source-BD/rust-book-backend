@@ -361,7 +361,7 @@ rows already in the table stay. *More examples* adds a `phone` column to `member
 Right now, it's only a number we promise to keep different for each member. Nothing stops two
 members from both having `id` `1`: run `02-rows.sql` twice and you get two Adas, both with `1`.
 Postgres *can* check that an id is never repeated, and let other tables point at a row by its id;
-that's what **keys** are for, and they get their own lesson, *Keys and relations*, a few lessons
+that's what **keys** are for, and they get their own lesson, [Keys and relations](keys-and-relations.md), a few lessons
 from now.
 
 **"Why is the date in quotes?"**
