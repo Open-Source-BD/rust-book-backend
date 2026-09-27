@@ -31,6 +31,13 @@ A short command that starts with a backslash (`\`), such as `\dt` or `\q`, typed
 [database](#database) server, so it needs no semicolon and ends at the end of the line.
 **First used in:** [Tables, rows and psql](a1-postgres/tables-rows-and-psql.md)
 
+### Cast
+
+Turning a value into a different [data type](#data-type), such as the text `'42'` into the number
+`42`. In Postgres you write it with two colons: `'42'::integer`. If the value can't be turned into
+that type, Postgres refuses with an error.
+**First used in:** [Postgres data types](a1-postgres/postgres-data-types.md)
+
 ### Client
 
 A program that asks for information or asks for something to be done, and shows the answer to a
@@ -55,6 +62,13 @@ containers.
 A package of Rust code that you can add to your own project, written by you or by someone else. It
 is Rust's word for what other languages call a library or a package.
 **First used in:** [How to use this book](part-0-start/how-to-use-this-book.md)
+
+### Data type
+
+The kind of value a [column](#column) (or any value) holds, such as `integer`, `text`, `boolean` or
+`date`. It's a promise the [database](#database) enforces: a value that doesn't fit the type is
+refused.
+**First used in:** [Postgres data types](a1-postgres/postgres-data-types.md)
 
 ### Database
 
@@ -114,6 +128,12 @@ this book are JSON.
 A name that always means "this computer" — used when a program on your machine talks to a
 [server](#server) that is also running on your machine, without going out to the internet.
 **First used in:** [Your toolbox](part-0-start/your-toolbox.md)
+
+### NULL
+
+SQL's marker for "unknown" or "missing": no value at all. It isn't `0` and it isn't empty text
+`''`. Test for it with `IS NULL` or `IS NOT NULL`; comparing with `= NULL` never matches.
+**First used in:** [Postgres data types](a1-postgres/postgres-data-types.md)
 
 ### ORM
 

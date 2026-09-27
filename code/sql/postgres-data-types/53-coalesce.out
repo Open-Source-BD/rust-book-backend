@@ -1,0 +1,5 @@
+ name | in_stock | in_stock_or_false
+------+----------+-------------------
+ Mug  | t        | t
+ Pen  |          | f
+(2 rows)

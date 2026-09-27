@@ -1,0 +1,10 @@
+ days_until_holiday
+--------------------
+                 92
+(1 row)
+
+ name | days_on_sale
+------+--------------
+ Mug  |           29
+ Pen  |
+(2 rows)

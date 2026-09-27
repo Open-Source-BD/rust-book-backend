@@ -1,0 +1,8 @@
+ name
+------
+(0 rows)
+
+ equals_says | is_null_says
+-------------+--------------
+             | t
+(1 row)

@@ -1,0 +1,10 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 1
+INSERT 0 1
+ id |    title     |       starts_at        | is_free | price_cents
+----+--------------+------------------------+---------+-------------
+  1 | Rust meetup  | 2026-10-15 12:00:00+00 | t       |           0
+  2 | SQL workshop | 2026-10-22 04:00:00+00 | f       |        1500
+(2 rows)

@@ -1,0 +1,4 @@
+ERROR:  date/time field value out of range: "24/09/2026"
+LINE 1: ...SERT INTO products VALUES (4, 'Lamp', 2500, true, '24/09/202...
+                                                             ^
+HINT:  Perhaps you need a different "DateStyle" setting.

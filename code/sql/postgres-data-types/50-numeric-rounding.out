@@ -1,0 +1,7 @@
+ rounds_up | rounds_down | pads_with_zero
+-----------+-------------+----------------
+     12.35 |       12.34 |          12.50
+(1 row)
+
+ERROR:  numeric field overflow
+DETAIL:  A field with precision 10, scale 2 must round to an absolute value less than 10^8.

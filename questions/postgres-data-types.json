@@ -1,0 +1,60 @@
+{
+  "topic": "postgres-data-types",
+  "title": "Postgres data types",
+  "quiz": [
+    {
+      "q": "Best type for a price like 12.99 dollars?",
+      "options": [
+        "double precision",
+        "integer holding 1299 cents",
+        "text",
+        "boolean"
+      ],
+      "answer": 1,
+      "explain": "Whole cents in an integer are exact. Floating-point types can't store 0.1 exactly."
+    },
+    {
+      "q": "`SELECT 7 / 2;` returns…",
+      "options": [
+        "3.5",
+        "3",
+        "4",
+        "an error"
+      ],
+      "answer": 1,
+      "explain": "Both sides are integers, so Postgres does whole-number division. Use 7 / 2.0 for 3.5."
+    },
+    {
+      "q": "How do you find rows where in_stock is unknown?",
+      "options": [
+        "WHERE in_stock = NULL",
+        "WHERE in_stock IS NULL",
+        "WHERE in_stock = ''",
+        "WHERE in_stock = 0"
+      ],
+      "answer": 1,
+      "explain": "NULL means unknown; comparing with = never matches. Use IS NULL."
+    },
+    {
+      "q": "Which type stores a moment in time correctly across time zones?",
+      "options": [
+        "date",
+        "text",
+        "timestamptz",
+        "integer"
+      ],
+      "answer": 2,
+      "explain": "timestamptz stores the exact moment and displays it in your session's time zone."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "integer vs bigint?",
+      "back": "integer goes up to about 2.1 billion; bigint to about 9.2 quintillion. Use bigint for IDs that may grow large."
+    },
+    {
+      "front": "NULL means…?",
+      "back": "Unknown or missing — not 0 and not ''. Test with IS NULL / IS NOT NULL."
+    }
+  ]
+}

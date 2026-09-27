@@ -1,0 +1,22 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 1
+ERROR:  invalid input syntax for type integer: "cheap"
+LINE 1: INSERT INTO products VALUES (2, 'Poster', 'cheap', true, '20...
+                                                  ^
+INSERT 0 1
+ id | name | price_cents | in_stock |  added_on  |                 sku
+----+------+-------------+----------+------------+--------------------------------------
+  1 | Mug  |        1299 | t        | 2026-09-01 | a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11
+  3 | Pen  |         199 |          |            |
+(2 rows)
+
+ name
+------
+ Pen
+(1 row)
+
+ name
+------
+(0 rows)

@@ -14,7 +14,7 @@
 
 - [What is a database?](a1-postgres/what-is-a-database.md)
 - [Tables, rows and psql](a1-postgres/tables-rows-and-psql.md)
-- [Postgres data types]()
+- [Postgres data types](a1-postgres/postgres-data-types.md)
 - [CRUD in SQL]()
 - [Keys and relations]()
 - [Indexes]()

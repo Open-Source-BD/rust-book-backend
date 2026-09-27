@@ -1,0 +1,5 @@
+ name | shouting | quiet
+------+----------+-------
+ Mug  | MUG      | mug
+ Pen  | PEN      | pen
+(2 rows)

@@ -1,0 +1,8 @@
+ALTER TABLE
+INSERT 0 1
+   name   | weight_grams
+----------+--------------
+ Mug      |
+ Pen      |
+ Notebook |          200
+(3 rows)

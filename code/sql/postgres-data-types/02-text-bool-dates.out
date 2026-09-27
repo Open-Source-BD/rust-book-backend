@@ -1,0 +1,14 @@
+ joined_text | letters
+-------------+---------
+ Rust book   |       5
+(1 row)
+
+ in_stock | published  |  due_back
+----------+------------+------------
+ t        | 2026-09-24 | 2026-10-08
+(1 row)
+
+ dhaka_time_shown_in_utc
+-------------------------
+ 2026-09-24 04:30:00+00
+(1 row)

@@ -676,6 +676,6 @@ you always see exactly two titles. `CREATE TABLE` follows Step 3, with `integer`
 
 **Next:**
 
-- Postgres data types (coming soon)
+- [Postgres data types](../a1-postgres/postgres-data-types.md)
 
 <!-- next:end -->
