@@ -366,8 +366,9 @@ Rust code gets the same number back, as "rows affected".)
 
 **"Can I undo a `DELETE`?"**
 Not once it's done. There's no bin and no Ctrl+Z: a deleted row is gone, and so is an `UPDATE`'s
-old value. The one way to undo is to start a **transaction** first, with `BEGIN`: until you say
-`COMMIT`, you can take everything back with `ROLLBACK`. *Common mistakes* uses it as an undo button,
+old value. The one way to undo is to start a [**transaction**](../glossary.md#transaction) first,
+with `BEGIN`: until you say [`COMMIT`](../glossary.md#commit), you can take everything back with
+[`ROLLBACK`](../glossary.md#rollback). *Common mistakes* uses it as an undo button,
 and the lesson *SQL transactions*, a few lessons from now, teaches it properly. Because there's no undo, careful
 people run a `SELECT` with the same `WHERE` first: it shows exactly which rows the `DELETE` would
 remove, before anything is removed.

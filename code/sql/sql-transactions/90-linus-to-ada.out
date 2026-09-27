@@ -1,0 +1,9 @@
+BEGIN
+UPDATE 1
+UPDATE 1
+COMMIT
+ id | owner | balance_cents
+----+-------+---------------
+  1 | Ada   |          8500
+  2 | Linus |          6500
+(2 rows)

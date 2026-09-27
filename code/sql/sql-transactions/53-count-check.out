@@ -1,0 +1,16 @@
+BEGIN
+INSERT 0 1
+ accounts
+----------
+        3
+(1 row)
+
+COMMIT
+ id | owner | balance_cents
+----+-------+---------------
+  1 | Ada   |          7500
+  2 | Linus |          7500
+  3 | Grace |             0
+(3 rows)
+
+DELETE 1

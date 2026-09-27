@@ -1,0 +1,24 @@
+SET
+DROP TABLE
+DROP TABLE
+CREATE TABLE
+CREATE TABLE
+BEGIN
+INSERT 0 1
+INSERT 0 2
+COMMIT
+BEGIN
+INSERT 0 1
+ERROR:  new row for relation "order_items" violates check constraint "order_items_quantity_check"
+DETAIL:  Failing row contains (2, Emma, 0).
+ROLLBACK
+ id | customer
+----+----------
+  1 | Ada
+(1 row)
+
+ order_id | product | quantity
+----------+---------+----------
+        1 | Dune    |        1
+        1 | Emma    |        2
+(2 rows)

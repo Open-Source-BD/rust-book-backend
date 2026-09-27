@@ -197,7 +197,25 @@ export default [
       { label: "Using EXPLAIN", href: "https://www.postgresql.org/docs/18/using-explain.html", note: "How to read a query plan, node by node." },
     ],
   },
-  draft("sql-transactions", "SQL transactions", "A1", "lesson", "Beginner"),
+  {
+    slug: "sql-transactions",
+    title: "SQL transactions",
+    part: "A1", kind: "lesson", level: "Beginner", status: "published",
+    outcomes: [
+      "You can group changes so they all happen or none do.",
+      "You can undo work with ROLLBACK.",
+      "You know what an aborted transaction is and how to recover.",
+    ],
+    summary: "BEGIN, COMMIT and ROLLBACK: all-or-nothing changes, and why a bank transfer needs them.",
+    prereq: ["indexes"],
+    next: ["a1-build-library-schema", "cheatsheet-sql"],
+    codeDir: "code/sql/sql-transactions",
+    rfhLinks: [],
+    links: [
+      { label: "Transactions (tutorial)", href: "https://www.postgresql.org/docs/18/tutorial-transactions.html", note: "The official tutorial page: a bank transfer, BEGIN, COMMIT, ROLLBACK and savepoints." },
+      { label: "BEGIN", href: "https://www.postgresql.org/docs/18/sql-begin.html", note: "The reference page for BEGIN and its options." },
+    ],
+  },
   draft("a1-build-library-schema", "Build it: a library database", "A1", "project", "Beginner"),
   draft("cheatsheet-sql", "Cheat sheet: SQL", "A1", "cheatsheet", "Beginner"),
 

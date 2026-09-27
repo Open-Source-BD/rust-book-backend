@@ -1,0 +1,5 @@
+ id | owner | balance_cents
+----+-------+---------------
+  1 | Ada   |          7500
+  2 | Linus |          7500
+(2 rows)

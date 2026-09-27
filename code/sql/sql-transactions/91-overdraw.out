@@ -1,0 +1,16 @@
+ id | owner | balance_cents
+----+-------+---------------
+  1 | Ada   |          8500
+  2 | Linus |          6500
+(2 rows)
+
+BEGIN
+UPDATE 1
+ERROR:  new row for relation "accounts" violates check constraint "accounts_balance_cents_check"
+DETAIL:  Failing row contains (1, Ada, -91500).
+ROLLBACK
+ id | owner | balance_cents
+----+-------+---------------
+  1 | Ada   |          8500
+  2 | Linus |          6500
+(2 rows)

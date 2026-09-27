@@ -1,0 +1,21 @@
+BEGIN
+UPDATE 1
+UPDATE 1
+SAVEPOINT
+ERROR:  new row for relation "accounts" violates check constraint "accounts_balance_cents_check"
+DETAIL:  Failing row contains (2, Linus, -81500).
+ROLLBACK
+ id | owner | balance_cents
+----+-------+---------------
+  1 | Ada   |          6500
+  2 | Linus |          8500
+(2 rows)
+
+COMMIT
+ id | owner | balance_cents
+----+-------+---------------
+  1 | Ada   |          6500
+  2 | Linus |          8500
+(2 rows)
+
+UPDATE 2

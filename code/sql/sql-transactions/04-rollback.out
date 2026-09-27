@@ -1,0 +1,14 @@
+BEGIN
+UPDATE 1
+ id | owner | balance_cents
+----+-------+---------------
+  1 | Ada   |             0
+  2 | Linus |          7500
+(2 rows)
+
+ROLLBACK
+ id | owner | balance_cents
+----+-------+---------------
+  1 | Ada   |          7500
+  2 | Linus |          7500
+(2 rows)

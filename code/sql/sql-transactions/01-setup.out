@@ -1,0 +1,9 @@
+SET
+DROP TABLE
+CREATE TABLE
+INSERT 0 2
+ id | owner | balance_cents
+----+-------+---------------
+  1 | Ada   |         10000
+  2 | Linus |          5000
+(2 rows)

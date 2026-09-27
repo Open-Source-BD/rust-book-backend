@@ -1,0 +1,10 @@
+BEGIN;
+UPDATE accounts SET balance_cents = balance_cents - 1000 WHERE id = 1;
+UPDATE accounts SET balance_cents = balance_cents + 1000 WHERE id = 2;
+SAVEPOINT transfer_done;
+UPDATE accounts SET balance_cents = balance_cents - 90000 WHERE id = 2;
+ROLLBACK TO SAVEPOINT transfer_done;
+SELECT * FROM accounts ORDER BY id;
+COMMIT;
+SELECT * FROM accounts ORDER BY id;
+UPDATE accounts SET balance_cents = 7500;

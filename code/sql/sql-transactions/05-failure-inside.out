@@ -1,0 +1,11 @@
+BEGIN
+UPDATE 1
+ERROR:  new row for relation "accounts" violates check constraint "accounts_balance_cents_check"
+DETAIL:  Failing row contains (1, Ada, -12500).
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ROLLBACK
+ id | owner | balance_cents
+----+-------+---------------
+  1 | Ada   |          7500
+  2 | Linus |          7500
+(2 rows)

@@ -1,0 +1,60 @@
+{
+  "topic": "sql-transactions",
+  "title": "SQL transactions",
+  "quiz": [
+    {
+      "q": "Why wrap a money transfer in a transaction?",
+      "options": [
+        "It's faster",
+        "So both updates happen or neither does",
+        "To lock the database forever",
+        "Postgres requires it"
+      ],
+      "answer": 1,
+      "explain": "A transaction makes the two changes all-or-nothing, so money never appears or disappears."
+    },
+    {
+      "q": "What does ROLLBACK do?",
+      "options": [
+        "Saves the changes",
+        "Undoes every change since BEGIN",
+        "Deletes the table",
+        "Restarts Postgres"
+      ],
+      "answer": 1,
+      "explain": "ROLLBACK throws away all changes made inside the current transaction."
+    },
+    {
+      "q": "After an error inside BEGIN, the next statements say `current transaction is aborted`. What now?",
+      "options": [
+        "Keep going",
+        "ROLLBACK (or COMMIT, which rolls back) and start again",
+        "Restart the computer",
+        "DROP the table"
+      ],
+      "answer": 1,
+      "explain": "Once a statement fails, the transaction can only be ended. Postgres ignores everything until then."
+    },
+    {
+      "q": "Without BEGIN, each statement…",
+      "options": [
+        "Is never saved",
+        "Is its own tiny transaction, saved immediately",
+        "Waits for COMMIT",
+        "Is rolled back"
+      ],
+      "answer": 1,
+      "explain": "By default Postgres autocommits each statement on its own."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "All-or-nothing changes?",
+      "back": "`BEGIN; …; COMMIT;` — or `ROLLBACK;` to undo."
+    },
+    {
+      "front": "ACID in one line?",
+      "back": "All-or-nothing, rules always hold, others don't see half-done work, committed means saved."
+    }
+  ]
+}

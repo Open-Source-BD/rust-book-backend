@@ -1,0 +1,10 @@
+UPDATE 1
+ERROR:  new row for relation "accounts" violates check constraint "accounts_balance_cents_check"
+DETAIL:  Failing row contains (1, Ada, -10000).
+ id | owner | balance_cents
+----+-------+---------------
+  1 | Ada   |         10000
+  2 | Linus |         25000
+(2 rows)
+
+UPDATE 1

@@ -846,6 +846,6 @@ the index back for the other files, run `04` again.
 
 **Next:**
 
-- SQL transactions (coming soon)
+- [SQL transactions](../a1-postgres/sql-transactions.md)
 
 <!-- next:end -->

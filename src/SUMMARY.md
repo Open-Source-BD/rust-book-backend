@@ -18,7 +18,7 @@
 - [CRUD in SQL](a1-postgres/crud-in-sql.md)
 - [Keys and relations](a1-postgres/keys-and-relations.md)
 - [Indexes](a1-postgres/indexes.md)
-- [SQL transactions]()
+- [SQL transactions](a1-postgres/sql-transactions.md)
 - [Build it: a library database]()
 - [Cheat sheet: SQL]()
 

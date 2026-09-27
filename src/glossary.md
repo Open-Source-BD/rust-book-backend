@@ -3,6 +3,14 @@
 Every technical word in this book, in plain language. Lessons link here the first time they use a
 word. Terms are in A–Z order.
 
+### ACID
+
+Four promises a [database](#database) makes about every [transaction](#transaction), named by their
+first letters: **A**tomic (all of its changes happen, or none do), **C**onsistent (every
+[constraint](#constraint) still holds afterwards), **I**solated (others don't see its half-done
+work), **D**urable (once committed, it stays, even if the power goes out).
+**First used in:** [SQL transactions](a1-postgres/sql-transactions.md)
+
 ### API
 
 A set of addresses a program answers, so that other programs — a website, a phone app, another
@@ -55,6 +63,13 @@ person. A web browser or a phone app is a client; it talks to a [server](#server
 One named field that every [row](#row) in a [table](#table) has, such as `name` or `city`. A
 column holds the same kind of value in every row: all text, or all numbers, and so on.
 **First used in:** [What is a database?](a1-postgres/what-is-a-database.md)
+
+### Commit
+
+The command that ends a [transaction](#transaction) and makes all of its changes permanent, in one
+step: `COMMIT;`. Until then, nobody else can see them, and they can still be undone with a
+[rollback](#rollback).
+**First used in:** [CRUD in SQL](a1-postgres/crud-in-sql.md)
 
 ### Constraint
 
@@ -242,6 +257,13 @@ A common style for designing a [backend](#backend) where each [endpoint](#endpoi
 to create, and so on.
 **First used in:** [Introduction](introduction.md)
 
+### Rollback
+
+The command that ends a [transaction](#transaction) and throws away every change made inside it, as
+if it never started: `ROLLBACK;`. Postgres also rolls back on its own when a transaction fails or
+its connection closes before a [commit](#commit).
+**First used in:** [CRUD in SQL](a1-postgres/crud-in-sql.md)
+
 ### Route
 
 A rule that pairs one address and one HTTP method (like GET `/users`) with the
@@ -283,6 +305,13 @@ happened, such as `200` for success or `404` for "not found".
 A named list of data inside a [database](#database), laid out like a spreadsheet: the
 [columns](#column) go across the top, and each [row](#row) below them is one record.
 **First used in:** [What is a database?](a1-postgres/what-is-a-database.md)
+
+### Transaction
+
+A group of [SQL](#sql) statements that the [database](#database) treats as one: either all of their
+changes are kept, or none are. It starts with `BEGIN` and ends with a [commit](#commit) (keep) or a
+[rollback](#rollback) (throw away).
+**First used in:** [CRUD in SQL](a1-postgres/crud-in-sql.md)
 
 ### WHERE
 
