@@ -109,6 +109,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "handlers-and-into-response"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "http-body-util",
+ "tokio",
+ "tower",
+]
+
+[[package]]
 name = "hello-axum"
 version = "0.1.0"
 dependencies = [

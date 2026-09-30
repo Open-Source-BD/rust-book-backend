@@ -262,7 +262,7 @@ Now the Rust. This is the handler, the function that writes the answer:
   status `200 OK`, the header `content-type: text/plain; charset=utf-8`, and your text as the body.
   Other types become other responses: a [status code](../glossary.md#status-code) plus text, JSON,
   and more. Part A2's lesson
-  *Handlers and IntoResponse* covers it in full.
+  [Handlers and IntoResponse](../a2-axum/handlers-and-into-response.md) covers it in full.
 - **Remove it and…** the function returns nothing (`()`), which doesn't match `&'static str`, and
   the compiler stops with `mismatched types`.
 

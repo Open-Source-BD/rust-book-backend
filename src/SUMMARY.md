@@ -26,7 +26,7 @@
 
 - [Hello, Axum](a2-axum/hello-axum.md)
 - [Routes and HTTP methods](a2-axum/routes-and-methods.md)
-- [Handlers and IntoResponse]()
+- [Handlers and IntoResponse](a2-axum/handlers-and-into-response.md)
 - [Path and Query extractors]()
 - [JSON with serde]()
 - [Shared state]()

@@ -1,0 +1,60 @@
+{
+  "topic": "handlers-and-into-response",
+  "title": "Handlers and IntoResponse",
+  "quiz": [
+    {
+      "q": "Which return type makes the browser render HTML?",
+      "options": [
+        "&'static str",
+        "String",
+        "Html<&'static str>",
+        "StatusCode"
+      ],
+      "answer": 2,
+      "explain": "Html sets content-type text/html; plain strings are sent as text/plain."
+    },
+    {
+      "q": "How do you return status 201 with a body?",
+      "options": [
+        "(\"made\", StatusCode::CREATED)",
+        "(StatusCode::CREATED, \"made\")",
+        "StatusCode::CREATED + \"made\"",
+        "Created(\"made\")"
+      ],
+      "answer": 1,
+      "explain": "In a response tuple the status comes first, then headers, then the body."
+    },
+    {
+      "q": "What does `impl IntoResponse` as a return type mean?",
+      "options": [
+        "The handler returns nothing",
+        "Some type Axum can turn into a response — you don't have to name it",
+        "An HTTP header",
+        "A compile error"
+      ],
+      "answer": 1,
+      "explain": "`impl Trait` says 'a value of some type that implements this trait'."
+    },
+    {
+      "q": "Why does returning an `i32` from a handler fail to compile?",
+      "options": [
+        "Numbers are too big",
+        "i32 does not implement IntoResponse",
+        "Handlers can't be async",
+        "Axum only returns JSON"
+      ],
+      "answer": 1,
+      "explain": "Axum only accepts return types that implement IntoResponse, and a bare number doesn't: which content-type would it be?"
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Status + headers + body in one return?",
+      "back": "`(StatusCode::OK, [(header::X, \"v\")], \"body\")`"
+    },
+    {
+      "front": "Return 'no content'?",
+      "back": "`StatusCode::NO_CONTENT`"
+    }
+  ]
+}

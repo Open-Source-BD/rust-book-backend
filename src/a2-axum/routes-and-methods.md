@@ -203,7 +203,7 @@ One handler per job from Step 1, plus the fallback's:
   collection does.
 - **How:** the return value is a *tuple*, a pair in brackets: the status code first, then the body.
   Axum uses your status instead of `200`. (How Axum turns a tuple into a response is the topic of
-  the next lesson, *Handlers and IntoResponse*.)
+  the next lesson, [Handlers and IntoResponse](handlers-and-into-response.md).)
 - **Remove it and…** (the `StatusCode::CREATED` part, returning only `"book added"`) the book is
   "added" with `200 OK`, which works, but tells the client less.
 
@@ -877,6 +877,6 @@ the `HEAD` that comes with `GET`.
 
 **Next:**
 
-- Handlers and IntoResponse (coming soon)
+- [Handlers and IntoResponse](../a2-axum/handlers-and-into-response.md)
 
 <!-- next:end -->

@@ -1,0 +1,7 @@
+$ curl -i http://127.0.0.1:3000/download
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-disposition: attachment; filename="notes.txt"
+content-length: 52
+
+Remember: status first, then headers, then the body.

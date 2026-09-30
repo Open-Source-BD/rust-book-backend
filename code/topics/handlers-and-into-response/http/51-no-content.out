@@ -1,0 +1,2 @@
+$ curl -i -X DELETE http://127.0.0.1:3000/books/7
+HTTP/1.1 204 No Content

@@ -1,0 +1,16 @@
+$ curl -i http://127.0.0.1:3000/old-text
+HTTP/1.1 303 See Other
+location: /text
+content-length: 0
+
+
+$ curl -i -L http://127.0.0.1:3000/old-text
+HTTP/1.1 303 See Other
+location: /text
+content-length: 0
+
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 10
+
+plain text

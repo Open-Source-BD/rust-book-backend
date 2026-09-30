@@ -1,0 +1,6 @@
+$ curl -i http://127.0.0.1:3000/bytes
+HTTP/1.1 200 OK
+content-type: application/octet-stream
+content-length: 3
+
+hi!

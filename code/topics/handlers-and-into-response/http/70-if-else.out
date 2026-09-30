@@ -1,0 +1,6 @@
+$ curl -i -X POST http://127.0.0.1:3000/books
+HTTP/1.1 201 Created
+content-type: text/plain; charset=utf-8
+content-length: 10
+
+book added

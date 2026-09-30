@@ -335,7 +335,7 @@ server has two pages, so it has two handlers:
   same way you'd build a tuple struct. When the handler returns, Axum turns the `Html` into a
   response, and uses the wrapper to pick the `content-type`. (How Axum turns any value into a
   response is a [trait](https://open-source-bd.github.io/rustbook-for-human/abstractions/traits-basics.html)
-  called `IntoResponse`; the lesson *Handlers and IntoResponse* covers it.)
+  called `IntoResponse`; the lesson [Handlers and IntoResponse](handlers-and-into-response.md) covers it.)
 - **Remove it and…** (the `Html(…)` around the text, and the `Html<…>` in the return type) the
   page is sent as `text/plain`, and a browser shows the tags themselves:
   `<h1>Welcome to my first Axum app</h1>`, letters and brackets, in small plain type.

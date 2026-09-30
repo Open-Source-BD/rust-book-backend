@@ -1,0 +1,10 @@
+$ curl -i http://127.0.0.1:3000/books/1
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 37
+
+book 1: The Rust Programming Language
+
+$ curl -i http://127.0.0.1:3000/books/9
+HTTP/1.1 404 Not Found
+content-length: 0

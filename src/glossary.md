@@ -164,6 +164,13 @@ The function that runs when a [request](#request) matches a [route](#route); it 
 request's data and returns the [response](#response).
 **First used in:** [How to use this book](part-0-start/how-to-use-this-book.md)
 
+### Header
+
+One `name: value` line of extra information at the top of a [request](#request) or
+[response](#response), before the body, such as `content-type: text/html` (what the body is) or
+`cache-control: no-store` (don't keep a copy). Header names don't care about upper or lower case.
+**First used in:** [How a web backend works](part-0-start/how-a-web-backend-works.md)
+
 ### HTML
 
 The language web pages are written in (short for HyperText Markup Language). Text is wrapped in

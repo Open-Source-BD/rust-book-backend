@@ -85,8 +85,8 @@ Accept: application/json
   not a request.
 
 `Host: shop.example.com`
-- **What:** a **header**: one `Name: value` line of extra information about the request. This one
-  names the website the request is for.
+- **What:** a [**header**](../glossary.md#header): one `Name: value` line of extra information
+  about the request. This one names the website the request is for.
 - **Why:** one server computer often hosts many websites. `Host` tells it which one you meant.
 - **How:** headers come right after the request line, one per line, in any order. Header names
   don't care about upper or lower case: `Host` and `host` mean the same.

@@ -1,0 +1,42 @@
+$ curl -i http://127.0.0.1:3000/text
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 10
+
+plain text
+
+$ curl -i http://127.0.0.1:3000/sum
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 9
+
+2 + 3 = 5
+
+$ curl -i http://127.0.0.1:3000/page
+HTTP/1.1 200 OK
+content-type: text/html; charset=utf-8
+content-length: 19
+
+<p>an HTML page</p>
+
+$ curl -i http://127.0.0.1:3000/created
+HTTP/1.1 201 Created
+content-type: text/plain; charset=utf-8
+content-length: 7
+
+made it
+
+$ curl -i http://127.0.0.1:3000/no-cache
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+cache-control: no-store
+content-length: 16
+
+fresh every time
+
+$ curl -i http://127.0.0.1:3000/by-hand
+HTTP/1.1 202 Accepted
+x-note: built by hand
+content-length: 6
+
+queued
