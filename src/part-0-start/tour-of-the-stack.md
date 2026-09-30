@@ -153,7 +153,7 @@ that says which crates the project uses:
 `tokio.workspace = true`
 - **What:** adds **Tokio**, the async runtime.
 - **Why:** Axum runs on top of it, and our `main` function needs it to start (Step 5).
-- **How:** version `1.53.1` and three *features*, set in the workspace file below.
+- **How:** version `1.53.1` and a list of *features*, set in the workspace file below.
 - **Remove it and…** `#[tokio::main]` and `tokio::net::TcpListener` are unknown names.
 
 `[dev-dependencies]` · `tower.workspace = true` · `http-body-util.workspace = true`
@@ -166,11 +166,20 @@ that says which crates the project uses:
 - **Remove it and…** `cargo run` still works, but `cargo test` fails to compile.
 
 Those `.workspace = true` lines point at the workspace's own `Cargo.toml`, `code/Cargo.toml`. This
-is where the versions really live:
+is where the versions really live. Here are the parts this project uses:
 
 ```toml
-{{#include ../../code/Cargo.toml}}
+{{#include ../../code/Cargo.toml:workspace}}
+
+{{#include ../../code/Cargo.toml:package}}
+
+{{#include ../../code/Cargo.toml:axum}}
+{{#include ../../code/Cargo.toml:tokio}}
+{{#include ../../code/Cargo.toml:test_deps}}
 ```
+
+The real file also lists crates that later lessons add (for JSON, logging, errors and more). Each
+one is explained in the lesson that first uses it, so you can skip them for now.
 
 ### Line by line
 
@@ -196,14 +205,16 @@ is where the versions really live:
   could change how things work.
 - **Remove it and…** `axum.workspace = true` fails: there's no version to look up.
 
-`tokio = { version = "1.53.1", features = ["macros", "rt-multi-thread", "net"] }`
-- **What:** the Tokio version, plus three **features**. A feature is an optional part of a crate
+`tokio = { version = "1.53.1", features = ["macros", "rt-multi-thread", "net", "time"] }`
+- **What:** the Tokio version, plus four **features**. A feature is an optional part of a crate
   that's only compiled if you ask for it, which keeps programs small.
-- **Why:** Tokio is big, so it's split into features. We turn on exactly the three we use:
+- **Why:** Tokio is big, so it's split into features. We turn on only the four the book's projects
+  use:
   - `macros` gives us `#[tokio::main]` (Step 5) and `#[tokio::test]` (used by the tests).
   - `rt-multi-thread` gives us the runtime that spreads work across all your computer's
     processor cores. `#[tokio::main]` uses this one unless you ask for another.
   - `net` gives us `TcpListener`, which listens on a port (Step 5).
+  - `time` gives timers (waiting for a set time). Later lessons use it; this one doesn't.
 - **How:** the `{ … }` form lets one line hold a version *and* options.
 - **Remove it and…** (a feature) the part that needs it fails to compile. **Common mistakes** shows
   the exact errors.
@@ -409,10 +420,10 @@ curl -i http://127.0.0.1:3000/
 - **Why:** the workspace lives in `code/`, so Cargo must run from there.
 - **How:** `&&` runs the second command only if the first worked. `-p tour-of-the-stack` picks
   which project in the workspace to run.
-- **Remove it and…** (the `-p …`) today it still works, because `tour-of-the-stack` is the only
-  program in the workspace. Once the workspace holds more than one project, as later lessons add
-  their own, Cargo needs `-p` to know which one to run, and stops with an error asking you to
-  choose.
+- **Remove it and…** (the `-p …`) the workspace holds more than one program (each later lesson
+  adds its own), so Cargo can't tell which one to run:
+  ``error: `cargo run` could not determine which binary to run``, followed by the list of programs
+  it found.
 
 `curl -i http://127.0.0.1:3000/` (second terminal)
 - **What:** sends `GET /` to your server and prints the whole response.

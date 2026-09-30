@@ -77,8 +77,9 @@ cargo add axum tokio --features tokio/macros,tokio/rt-multi-thread,tokio/net
 `--features tokio/macros,tokio/rt-multi-thread,tokio/net`
 - **What:** switches on three **features** of Tokio. A feature is an optional part of a crate that's
   compiled only if you ask for it.
-- **Why:** Tokio is big, so almost everything in it is optional. These are the three parts our
-  `main` uses, exactly as in [Tour of the stack](../part-0-start/tour-of-the-stack.md): `macros`
+- **Why:** Tokio is big, so almost everything in it is optional. These are three of the
+  workspace's Tokio features, the ones our `main` uses (see
+  [Tour of the stack](../part-0-start/tour-of-the-stack.md)): `macros`
   gives `#[tokio::main]`, `rt-multi-thread` gives the runtime that `#[tokio::main]` starts, and
   `net` gives `TcpListener`, which opens the port.
 - **How:** the list is separated by commas, with no spaces. Each feature starts with `tokio/`

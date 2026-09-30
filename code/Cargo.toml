@@ -1,17 +1,27 @@
+# ANCHOR: workspace
 [workspace]
 resolver = "3"
 members = ["topics/*"]
+# ANCHOR_END: workspace
 
+# ANCHOR: package
 [workspace.package]
 edition = "2024"
 publish = false
+# ANCHOR_END: package
 
+# ANCHOR: axum
 [workspace.dependencies]
 axum = "0.8.9"
+# ANCHOR_END: axum
+# ANCHOR: tokio
 tokio = { version = "1.53.1", features = ["macros", "rt-multi-thread", "net", "time"] }
+# ANCHOR_END: tokio
+# ANCHOR: test_deps
 tower = { version = "0.5.3", features = ["util"] }
-tower-http = { version = "0.7.1", features = ["trace", "cors", "timeout"] }
 http-body-util = "0.1.5"
+# ANCHOR_END: test_deps
+tower-http = { version = "0.7.1", features = ["trace", "cors", "timeout"] }
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.151"
 thiserror = "2.0.21"
