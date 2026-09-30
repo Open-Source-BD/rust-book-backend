@@ -1,0 +1,27 @@
+$ curl -i http://127.0.0.1:3000/books
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 2
+
+[]
+
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"title":"Dune"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 23
+
+{"id":1,"title":"Dune"}
+
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"title":"Emma"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 23
+
+{"id":2,"title":"Emma"}
+
+$ curl -i http://127.0.0.1:3000/books
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 49
+
+[{"id":1,"title":"Dune"},{"id":2,"title":"Emma"}]

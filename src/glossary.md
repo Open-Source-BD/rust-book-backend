@@ -358,6 +358,13 @@ The language used to ask a [database](#database) questions and give it instructi
 this row" or "find every order from this user" (short for Structured Query Language).
 **First used in:** [How to use this book](part-0-start/how-to-use-this-book.md)
 
+### State
+
+Data an Axum app keeps for as long as the [server](#server) runs, handed to the Router once with
+`.with_state(…)` and shared by every [handler](#handler), which reaches it with the `State`
+[extractor](#extractor). It lives in memory, so it's lost when the program stops.
+**First used in:** [Shared state](a2-axum/shared-state.md)
+
 ### Status code
 
 A short number a [server](#server) sends back with every [response](#response) to say what

@@ -93,8 +93,8 @@ any other path                              →  not_found
 - **Remove it and…** Axum answers unknown paths itself, with the empty `404` from Hello, Axum.
 
 The handlers in this lesson don't store any books yet: each one answers with a fixed sentence, so
-you can see which handler ran. Keeping real data comes later, in *Shared state*, and in a database
-in Part A3.
+you can see which handler ran. Keeping real data comes later, in [Shared state](shared-state.md),
+and in a database in Part A3.
 
 ### Step 2: the crate's `Cargo.toml`
 

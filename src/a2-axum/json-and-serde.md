@@ -244,7 +244,8 @@ A book that goes **out** to the client, and a new book that comes **in** from th
 - **Why:** it shows the struct arrived, field by field, and it shows the server adding the id.
 - **How:** `input.title` and `input.in_stock` take the two fields out of the `NewBook`. The id is
   always `2` for now, because there's nowhere to store books yet. The next lesson,
-  *Shared state*, keeps a list of books in memory; *Part A3* lets Postgres choose each id.
+  [Shared state](shared-state.md), keeps a list of books in memory; *Part A3* lets Postgres choose
+  each id.
 - **Remove it and…** (`title: input.title,`) the build stops with
   ``missing field `title` in initializer of `Book` ``: a Rust struct needs every field.
 
@@ -993,6 +994,6 @@ altogether: serde would ignore it, like any unknown field.)
 
 **Next:**
 
-- Shared state (coming soon)
+- [Shared state](../a2-axum/shared-state.md)
 
 <!-- next:end -->

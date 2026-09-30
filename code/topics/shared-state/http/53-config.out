@@ -1,0 +1,6 @@
+$ curl -i http://127.0.0.1:3000/
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 25
+
+Welcome to The Book Nook!

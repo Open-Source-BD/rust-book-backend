@@ -1,0 +1,60 @@
+{
+  "topic": "shared-state",
+  "title": "Shared state",
+  "quiz": [
+    {
+      "q": "Why is the list wrapped in `Arc<Mutex<…>>`?",
+      "options": [
+        "To make it JSON",
+        "Many requests share it (Arc) and only one changes it at a time (Mutex)",
+        "To save it to disk",
+        "Axum requires Vec to be wrapped"
+      ],
+      "answer": 1,
+      "explain": "Arc shares ownership across tasks; Mutex stops two writers colliding."
+    },
+    {
+      "q": "What happens to the books when you restart the server?",
+      "options": [
+        "They're saved",
+        "They're gone — they lived only in memory",
+        "They move to a file",
+        "Axum reloads them"
+      ],
+      "answer": 1,
+      "explain": "State is ordinary memory. Keeping data across restarts is the database's job (Part A3)."
+    },
+    {
+      "q": "How does a handler get the state?",
+      "options": [
+        "A global variable",
+        "The `State(state): State<AppState>` extractor",
+        "A function argument named state",
+        "It reads a file"
+      ],
+      "answer": 1,
+      "explain": "The State extractor hands each handler a clone of what you passed to `.with_state`."
+    },
+    {
+      "q": "Why must AppState implement Clone?",
+      "options": [
+        "Axum hands every request its own copy (a cheap Arc clone)",
+        "To print it",
+        "To serialize it",
+        "It doesn't need to"
+      ],
+      "answer": 0,
+      "explain": "Each handler call gets a clone; cloning an Arc copies a pointer, not the data."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Share data with handlers?",
+      "back": "`Router::new()….with_state(state)` + `State(s): State<AppState>`"
+    },
+    {
+      "front": "Arc vs Mutex?",
+      "back": "Arc: many owners. Mutex: one at a time may change it."
+    }
+  ]
+}

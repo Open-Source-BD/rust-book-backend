@@ -29,7 +29,7 @@
 - [Handlers and IntoResponse](a2-axum/handlers-and-into-response.md)
 - [Path and Query extractors](a2-axum/path-and-query-extractors.md)
 - [JSON with serde](a2-axum/json-and-serde.md)
-- [Shared state]()
+- [Shared state](a2-axum/shared-state.md)
 - [Error handling in Axum]()
 - [Middleware and Tower layers]()
 - [Nesting and modular routers]()

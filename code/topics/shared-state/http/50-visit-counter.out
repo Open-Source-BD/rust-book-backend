@@ -1,0 +1,20 @@
+$ curl -i http://127.0.0.1:3000/visits
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 24
+
+You are visitor number 1
+
+$ curl -i http://127.0.0.1:3000/visits
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 24
+
+You are visitor number 2
+
+$ curl -i http://127.0.0.1:3000/visits
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 24
+
+You are visitor number 3
