@@ -598,8 +598,8 @@ For errors that are the **client's** doing, yes: "book 9 not found" or "title mu
 help them fix their request. For `500` errors, be careful. Their real reason is about **your**
 server, and it can reveal what a stranger shouldn't know: file paths, setting names, database
 details. Send a short, polite message instead, and write the real reason to your server's log,
-where only you can read it. *More examples* shows this with `eprintln!`, and *Middleware and Tower
-layers* does proper logging.
+where only you can read it. *More examples* shows this with `eprintln!`, and
+[Middleware and Tower layers](middleware-and-tower-layers.md) sets up proper logging.
 
 **"What about anyhow?"**
 [anyhow](https://open-source-bd.github.io/rustbook-for-human/abstractions/error-crates-thiserror-and-anyhow.html)
@@ -766,8 +766,8 @@ as in Step 6, and `.map_err(|_| AppError::Poisoned)?` on the lock.
 In production, add a safety net for the panics you didn't foresee: tower-http's
 [`CatchPanicLayer`](https://docs.rs/tower-http/0.7.1/tower_http/catch_panic/index.html) catches a
 panicking handler and answers `500 Internal Server Error` instead of closing the connection. (It
-needs tower-http's `catch-panic` feature, and *Middleware and Tower layers* shows how layers are
-added.) It's a net, not a fix: the lock is still poisoned after the panic, so an expected case such
+needs tower-http's `catch-panic` feature, and
+[Middleware and Tower layers](middleware-and-tower-layers.md) shows how layers are added.) It's a net, not a fix: the lock is still poisoned after the panic, so an expected case such
 as a missing book still belongs in `AppError`.
 
 **Forgetting `impl IntoResponse for AppError`.**
@@ -970,7 +970,8 @@ Listening on http://127.0.0.1:3000
 `std::env::var` reads an environment variable, and gives an `Err` when it isn't set. The `404` for
 book 9 wasn't logged: it's the client's doing, not a problem with the server. (A real app reads its
 settings once, at startup, and keeps them in the state; *Config and .env*, in *Part A4*, does that.
-And instead of `eprintln!`, *Middleware and Tower layers* uses a real logging library.)
+And instead of `eprintln!`, a real app uses a logging library:
+[Middleware and Tower layers](middleware-and-tower-layers.md) sets one up.)
 
 ### An error that names the book
 
@@ -1209,6 +1210,6 @@ route, as in [Routes and HTTP methods](routes-and-methods.md).
 
 **Next:**
 
-- Middleware and Tower layers (coming soon)
+- [Middleware and Tower layers](../a2-axum/middleware-and-tower-layers.md)
 
 <!-- next:end -->

@@ -1,0 +1,17 @@
+$ curl -i -H 'origin: https://example.com' http://127.0.0.1:3000/
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+x-powered-by: axum
+access-control-expose-headers: *
+access-control-allow-origin: *
+content-length: 5
+
+hello
+
+$ curl -i -X OPTIONS -H 'origin: https://example.com' -H 'access-control-request-method: DELETE' http://127.0.0.1:3000/
+HTTP/1.1 200 OK
+access-control-allow-methods: *
+access-control-allow-headers: *
+access-control-allow-origin: *
+allow: GET,HEAD
+content-length: 0

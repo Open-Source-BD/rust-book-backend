@@ -516,8 +516,9 @@ app.route("/books/:id").get(showBook).put(updateBook).delete(deleteBook);
 app.use((req, res) => res.status(404).send("nothing lives here"));
 ```
 
-The last line is Express's fallback: middleware registered after every route. One difference:
-Express has no automatic `405`. `PATCH /books` gets a `404` page saying `Cannot PATCH /books`.
+The last line is Express's fallback: [middleware](../glossary.md#middleware) registered after
+every route. One difference: Express has no automatic `405`. `PATCH /books` gets a `404` page
+saying `Cannot PATCH /books`.
 
 **Flask and FastAPI (Python).** Flask lists methods per route, or has one decorator per method
 since Flask 2.0. Its placeholder uses angle brackets, and can check the type with a *converter*:

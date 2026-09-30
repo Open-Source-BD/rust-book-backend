@@ -1,0 +1,60 @@
+{
+  "topic": "middleware-and-tower-layers",
+  "title": "Middleware and Tower layers",
+  "quiz": [
+    {
+      "q": "What does `next.run(request).await` do in middleware?",
+      "options": [
+        "Stops the request",
+        "Passes the request on to the handler (and inner layers) and gets the response back",
+        "Logs the request",
+        "Restarts the server"
+      ],
+      "answer": 1,
+      "explain": "Middleware wraps the rest of the app; `next.run` calls inward and returns the response."
+    },
+    {
+      "q": "Which layer is outermost?",
+      "options": [
+        "The first `.layer` call",
+        "The last `.layer` call",
+        "They run in random order",
+        "TraceLayer always"
+      ],
+      "answer": 1,
+      "explain": "Each `.layer` wraps everything added before it, so the last one sees the request first."
+    },
+    {
+      "q": "What does CORS control?",
+      "options": [
+        "Which databases can connect",
+        "Which websites' JavaScript may call your API from a browser",
+        "Server speed",
+        "JSON format"
+      ],
+      "answer": 1,
+      "explain": "CORS headers tell browsers which other origins may read your responses."
+    },
+    {
+      "q": "The handler takes 3 s and TimeoutLayer allows 1 s. The client gets…",
+      "options": [
+        "200 after 3 s",
+        "408 after about 1 s",
+        "500 immediately",
+        "Nothing"
+      ],
+      "answer": 1,
+      "explain": "The timeout layer gives up and answers with the status you chose."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Custom middleware?",
+      "back": "`async fn m(req: Request, next: Next) -> Response` + `.layer(middleware::from_fn(m))`"
+    },
+    {
+      "front": "Request logging?",
+      "back": "`.layer(TraceLayer::new_for_http())` + a tracing_subscriber"
+    }
+  ]
+}

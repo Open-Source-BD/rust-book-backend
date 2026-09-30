@@ -1,0 +1,23 @@
+$ curl -i http://127.0.0.1:3000/
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+x-powered-by: axum
+x-request-count: 1
+content-length: 5
+
+hello
+
+$ curl -i http://127.0.0.1:3000/
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+x-powered-by: axum
+x-request-count: 2
+content-length: 5
+
+hello
+
+$ curl -i http://127.0.0.1:3000/missing
+HTTP/1.1 404 Not Found
+x-powered-by: axum
+x-request-count: 3
+content-length: 0

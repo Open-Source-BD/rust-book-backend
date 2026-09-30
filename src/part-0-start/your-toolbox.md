@@ -227,8 +227,8 @@ secrets.
 
 `interval: 2s` · `timeout: 3s` · `retries: 15`
 - **What:** how often to run the test (every 2 seconds), how long one test may take before it
-  counts as failed (3 seconds), and how many failures in a row before the container is marked
-  unhealthy (15).
+  counts as failed (3 seconds, its [timeout](../glossary.md#timeout)), and how many failures in a
+  row before the container is marked unhealthy (15).
 - **Why:** checking every 2 seconds means `--wait` returns soon after Postgres is ready; 15 retries
   give it about half a minute, plenty even on a slow laptop.
 - **How:** Docker keeps a count of failures and resets it after a success.

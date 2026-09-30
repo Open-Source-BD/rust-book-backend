@@ -85,6 +85,15 @@ needs, kept separate from the rest of your computer. [Docker](#docker) starts, s
 containers.
 **First used in:** [Your toolbox](part-0-start/your-toolbox.md)
 
+### CORS
+
+Cross-Origin Resource Sharing: the rules a web browser follows before it lets a web page's
+JavaScript read an answer from a **different** website (a different *origin*: `https://myapp.com`
+and `https://api.myapp.com` are two origins). Your [server](#server) takes part by sending
+[headers](#header) such as `access-control-allow-origin`; the browser reads them and decides.
+Programs that aren't browsers, such as curl, ignore CORS completely.
+**First used in:** [Middleware and Tower layers](a2-axum/middleware-and-tower-layers.md)
+
 ### Crate
 
 A package of Rust code that you can add to your own project, written by you or by someone else. It
@@ -237,11 +246,27 @@ both people and programs can read. Most [request](#request) and [response](#resp
 this book are JSON.
 **First used in:** [How a web backend works](part-0-start/how-a-web-backend-works.md)
 
+### Layer
+
+In Axum, a wrapper added with `.layer(…)` around the [routes](#route) added before it. It sees each
+[request](#request) on its way in and each [response](#response) on its way out, so it can run code
+for many [handlers](#handler) at once. [Middleware](#middleware) is added to Axum as a layer. The
+last `.layer` call is the outermost wrapper: it sees a request first and its response last.
+**First used in:** [Middleware and Tower layers](a2-axum/middleware-and-tower-layers.md)
+
 ### Localhost
 
 A name that always means "this computer" — used when a program on your machine talks to a
 [server](#server) that is also running on your machine, without going out to the internet.
 **First used in:** [Your toolbox](part-0-start/your-toolbox.md)
+
+### Middleware
+
+Code that runs around [handlers](#handler), for every [request](#request) or for a group of them:
+before the handler, to look at the request, change it or refuse it, and after it, to look at or
+change the [response](#response). Request logging, [CORS](#cors) and [timeouts](#timeout) are
+usually middleware. In Axum, you add it as a [layer](#layer).
+**First used in:** [Routes and HTTP methods](a2-axum/routes-and-methods.md)
 
 ### NULL
 
@@ -384,6 +409,13 @@ happened, such as `200` for success or `404` for "not found".
 A named list of data inside a [database](#database), laid out like a spreadsheet: the
 [columns](#column) go across the top, and each [row](#row) below them is one record.
 **First used in:** [What is a database?](a1-postgres/what-is-a-database.md)
+
+### Timeout
+
+A time limit for waiting. If the work isn't finished when the time is up, the side that waits gives
+up and treats it as a failure: a health check counts as failed, or a [server](#server) answers
+`408 Request Timeout` instead of waiting any longer for a slow [handler](#handler).
+**First used in:** [Your toolbox](part-0-start/your-toolbox.md)
 
 ### Transaction
 
