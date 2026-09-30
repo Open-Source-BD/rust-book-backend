@@ -210,8 +210,10 @@ One handler per job from Step 1, plus the fallback's:
 `async fn show_book() -> &'static str {` · `"one book"`
 - **What:** the handler for `GET /books/{id}`.
 - **Why:** a stand-in for "the book with this id".
-- **How:** it doesn't read the id yet. Reading the value of `{id}` needs an *extractor*, which the
-  lesson *Path and Query extractors* covers. Here, the point is only *which handler runs*.
+- **How:** it doesn't read the id yet. Reading the value of `{id}` needs an
+  [*extractor*](../glossary.md#extractor), which the lesson
+  [Path and Query extractors](path-and-query-extractors.md) covers. Here, the point is only *which
+  handler runs*.
 - **Remove it and…** ``cannot find value `show_book` in this scope``.
 
 `async fn update_book() -> &'static str {` · `"book updated"`
@@ -270,8 +272,9 @@ One handler per job from Step 1, plus the fallback's:
 - **Why:** one book's address is the collection's path plus its id.
 - **How:** `{id}` in braces is a placeholder. It matches **any one segment**: `7`, `42`, or even
   `abc`, but not `7/reviews`, which is two segments. The name inside the braces is yours to choose;
-  it matters when you read the value, in *Path and Query extractors*. The route spans several lines
-  because it's too long for one: `cargo fmt`, Rust's formatter, splits it this way.
+  [Path and Query extractors](path-and-query-extractors.md) shows how you read the value. The route
+  spans several lines because it's too long for one: `cargo fmt`, Rust's formatter, splits it this
+  way.
 - **Remove it and…** (writing `":id"` instead of `"{id}"`, the old style) the program compiles,
   then **panics** as it starts. *Common mistakes* shows it.
 
@@ -484,8 +487,8 @@ fallback changes what a `404` says; a `405` still comes from Axum, with its `all
 
 **"Does `{id}` check that it's a number?"**
 No, not yet: the transcript above shows `GET /books/abc` reaching `show_book`. The placeholder only
-says "one segment goes here". The lesson *Path and Query extractors* shows how to read the value as
-a number, and what Axum answers when it isn't one.
+says "one segment goes here". The lesson [Path and Query extractors](path-and-query-extractors.md)
+shows how to read the value as a number, and what Axum answers when it isn't one.
 
 **"Can two routes share a handler?"**
 Yes. A handler is a function, and you can hand the same function to Axum as many times as you like.

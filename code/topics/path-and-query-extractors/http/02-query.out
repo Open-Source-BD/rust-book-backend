@@ -1,0 +1,27 @@
+$ curl -i "http://127.0.0.1:3000/search?q=rust"
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 28
+
+searching for "rust", page 1
+
+$ curl -i "http://127.0.0.1:3000/search?q=rust&page=2"
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 28
+
+searching for "rust", page 2
+
+$ curl -i http://127.0.0.1:3000/search
+HTTP/1.1 400 Bad Request
+content-type: text/plain; charset=utf-8
+content-length: 53
+
+Failed to deserialize query string: missing field `q`
+
+$ curl -i "http://127.0.0.1:3000/search?q=hello%20world"
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 35
+
+searching for "hello world", page 1

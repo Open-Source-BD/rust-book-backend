@@ -75,10 +75,10 @@ Accept: application/json
   - `/products/42` is the **path**: *which thing* you're talking about. Read it like folders:
     `/products` is the collection of all products, and the **path segment** `42` (one piece
     between slashes) picks product number 42 from it.
-  - `?currency=usd` is the **query string**: everything after the `?`. It holds optional extra
-    options as `name=value` pairs, joined with `&` when there are several
-    (`?currency=usd&lang=en`). Here it says "show me the price in US dollars". The path says
-    *what*; the query string says *how you'd like it*.
+  - `?currency=usd` is the [**query string**](../glossary.md#query-string): everything after the
+    `?`. It holds optional extra options as `name=value` pairs, joined with `&` when there are
+    several (`?currency=usd&lang=en`). Here it says "show me the price in US dollars". The path
+    says *what*; the query string says *how you'd like it*.
   - `HTTP/1.1` is the **version** of the HTTP rules the client is using. You'll also see
     `HTTP/2`, a newer version that means the same things but travels in a more compact form.
 - **Remove it and…** the server has no idea what you want. A request without a request line is

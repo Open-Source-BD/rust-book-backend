@@ -1,0 +1,20 @@
+$ curl -i http://127.0.0.1:3000/books/42
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 14
+
+book number 42
+
+$ curl -i http://127.0.0.1:3000/books/3/chapters/7
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 17
+
+book 3, chapter 7
+
+$ curl -i http://127.0.0.1:3000/books/dune
+HTTP/1.1 400 Bad Request
+content-type: text/plain; charset=utf-8
+content-length: 43
+
+Invalid URL: Cannot parse `dune` to a `u32`

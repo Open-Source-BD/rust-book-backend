@@ -118,6 +118,14 @@ A [crate](#crate) your project uses but didn't write itself, such as Axum or Tok
 one under `[dependencies]` in the project's `Cargo.toml`, and Cargo downloads and builds it for you.
 **First used in:** [Hello, Axum](a2-axum/hello-axum.md)
 
+### Deserialize
+
+To build a value in your program, such as a Rust struct, out of data that arrived as text, such as
+a [query string](#query-string) or [JSON](#json). The opposite, turning a value into text, is to
+*serialize*. In Rust, the `serde` crate does both, and `#[derive(Deserialize)]` gives a struct the
+ability to be built this way.
+**First used in:** [Path and Query extractors](a2-axum/path-and-query-extractors.md)
+
 ### Docker
 
 A tool that runs programs inside [containers](#container), so that everyone runs the exact same
@@ -143,6 +151,14 @@ A command you put in front of a [query](#query) to see the plan Postgres will us
 example, whether it reads every [row](#row) of a [table](#table) (`Seq Scan`) or uses an
 [index](#index). `EXPLAIN (ANALYZE)` also runs the query and shows what really happened.
 **First used in:** [Indexes](a1-postgres/indexes.md)
+
+### Extractor
+
+A [handler](#handler) parameter that Axum fills from the [request](#request) before the handler
+runs, such as `Path` (values from the path) or `Query` (values from the
+[query string](#query-string)). If the request doesn't fit, Axum answers with an error, usually
+`400 Bad Request`, and the handler never runs.
+**First used in:** [Routes and HTTP methods](a2-axum/routes-and-methods.md)
 
 ### Foreign key
 
@@ -264,6 +280,13 @@ The part of Postgres that decides **how** to run each [query](#query): read the 
 [table](#table), or use an [index](#index), and which one. It uses statistics about the table's
 contents to pick the plan it expects to be fastest. [EXPLAIN](#explain) shows its choice.
 **First used in:** [Indexes](a1-postgres/indexes.md)
+
+### Query string
+
+The part of an address after the `?`, holding optional extra options as `name=value` pairs joined
+with `&`, such as `?q=rust&page=2`. The path says *what* you want; the query string says *how you'd
+like it*.
+**First used in:** [How a web backend works](part-0-start/how-a-web-backend-works.md)
 
 ### Request
 

@@ -838,7 +838,7 @@ and Axum implements `IntoResponse` for it when both sides have the ability
 `find_book(1)` returns `Ok` with a `String`, sent as `200 OK` and plain text. `find_book(9)` returns
 `Err(StatusCode::NOT_FOUND)`, sent as `404 Not Found` with an empty body (`content-length: 0`).
 Axum sends whichever side it got. The two routes have fixed paths for now: reading the `1` or `9`
-from one `/books/{id}` route is the next lesson, *Path and Query extractors*.
+from one `/books/{id}` route is the next lesson, [Path and Query extractors](path-and-query-extractors.md).
 
 ### `StatusCode` alone: nothing to say
 
@@ -1053,6 +1053,6 @@ saves a file called `notes.txt`.
 
 **Next:**
 
-- Path and Query extractors (coming soon)
+- [Path and Query extractors](../a2-axum/path-and-query-extractors.md)
 
 <!-- next:end -->

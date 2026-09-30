@@ -1,0 +1,13 @@
+$ curl -i http://127.0.0.1:3000/articles/my-first-post
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 34
+
+the article called "my-first-post"
+
+$ curl -i http://127.0.0.1:3000/articles/42
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 23
+
+the article called "42"

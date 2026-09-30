@@ -1,0 +1,60 @@
+{
+  "topic": "path-and-query-extractors",
+  "title": "Path and Query extractors",
+  "quiz": [
+    {
+      "q": "For `/books/{id}` with `Path(id): Path<u32>`, what happens on `/books/dune`?",
+      "options": [
+        "id is 0",
+        "400 Bad Request — 'dune' isn't a u32",
+        "404",
+        "The server crashes"
+      ],
+      "answer": 1,
+      "explain": "The Path extractor fails to parse and Axum answers 400 before your handler runs."
+    },
+    {
+      "q": "How do you make a query parameter optional?",
+      "options": [
+        "Give it a default in the URL",
+        "Make the field `Option<T>`",
+        "Use Path instead",
+        "It's always optional"
+      ],
+      "answer": 1,
+      "explain": "An `Option` field is None when the parameter is missing."
+    },
+    {
+      "q": "What does `#[derive(Deserialize)]` give your struct?",
+      "options": [
+        "A database table",
+        "The ability to be built from query-string or JSON data",
+        "A web route",
+        "Faster code"
+      ],
+      "answer": 1,
+      "explain": "serde's Deserialize lets extractors like Query and Json fill your struct from the request."
+    },
+    {
+      "q": "What does `Path((book, chapter)): Path<(u32, u32)>` do?",
+      "options": [
+        "Reads two path placeholders in order",
+        "Reads the query string",
+        "Creates a route",
+        "Nothing"
+      ],
+      "answer": 0,
+      "explain": "A tuple reads the placeholders left to right."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Read /books/42?",
+      "back": "`Path(id): Path<u32>` on route `/books/{id}`"
+    },
+    {
+      "front": "Optional query param?",
+      "back": "`#[derive(Deserialize)] struct P { page: Option<u32> }` + `Query(p): Query<P>`"
+    }
+  ]
+}

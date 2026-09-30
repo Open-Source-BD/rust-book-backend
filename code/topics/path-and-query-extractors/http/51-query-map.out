@@ -1,0 +1,20 @@
+$ curl -i "http://127.0.0.1:3000/filters?color=red&size=big"
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 33
+
+2 option(s); color is Some("red")
+
+$ curl -i http://127.0.0.1:3000/filters
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 26
+
+0 option(s); color is None
+
+$ curl -i "http://127.0.0.1:3000/filters?anything=goes"
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 26
+
+1 option(s); color is None

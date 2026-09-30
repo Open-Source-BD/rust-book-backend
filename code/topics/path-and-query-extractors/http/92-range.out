@@ -1,0 +1,20 @@
+$ curl -i "http://127.0.0.1:3000/range?from=1&to=5"
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 9
+
+1,2,3,4,5
+
+$ curl -i "http://127.0.0.1:3000/range?from=5&to=1"
+HTTP/1.1 400 Bad Request
+content-type: text/plain; charset=utf-8
+content-length: 30
+
+from (5) is bigger than to (1)
+
+$ curl -i "http://127.0.0.1:3000/range?from=1"
+HTTP/1.1 400 Bad Request
+content-type: text/plain; charset=utf-8
+content-length: 54
+
+Failed to deserialize query string: missing field `to`

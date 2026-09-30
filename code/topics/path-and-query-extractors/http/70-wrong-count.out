@@ -1,0 +1,6 @@
+$ curl -i http://127.0.0.1:3000/books/3
+HTTP/1.1 500 Internal Server Error
+content-type: text/plain; charset=utf-8
+content-length: 63
+
+Wrong number of path arguments for `Path`. Expected 2 but got 1

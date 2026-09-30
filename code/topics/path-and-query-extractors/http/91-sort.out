@@ -1,0 +1,13 @@
+$ curl -i "http://127.0.0.1:3000/search?q=rust"
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 45
+
+searching for "rust", page 1, sorted by title
+
+$ curl -i "http://127.0.0.1:3000/search?q=rust&sort=year"
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 44
+
+searching for "rust", page 1, sorted by year

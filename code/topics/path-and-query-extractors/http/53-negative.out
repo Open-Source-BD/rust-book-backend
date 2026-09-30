@@ -1,0 +1,13 @@
+$ curl -i http://127.0.0.1:3000/books/-1
+HTTP/1.1 400 Bad Request
+content-type: text/plain; charset=utf-8
+content-length: 41
+
+Invalid URL: Cannot parse `-1` to a `u32`
+
+$ curl -i "http://127.0.0.1:3000/search?q=rust&page=-2"
+HTTP/1.1 400 Bad Request
+content-type: text/plain; charset=utf-8
+content-length: 71
+
+Failed to deserialize query string: page: invalid digit found in string
