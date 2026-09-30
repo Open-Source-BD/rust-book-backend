@@ -1,0 +1,24 @@
+$ curl -i -X DELETE http://127.0.0.1:3000/books/2
+HTTP/1.1 204 No Content
+
+
+$ curl -i http://127.0.0.1:3000/books/2
+HTTP/1.1 404 Not Found
+content-type: application/json
+content-length: 28
+
+{"error":"book 2 not found"}
+
+$ curl -i -X DELETE http://127.0.0.1:3000/books/2
+HTTP/1.1 404 Not Found
+content-type: application/json
+content-length: 28
+
+{"error":"book 2 not found"}
+
+$ curl -i http://127.0.0.1:3000/books/1
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 23
+
+{"id":1,"title":"Dune"}

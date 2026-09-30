@@ -1,0 +1,20 @@
+$ curl -i http://127.0.0.1:3000/books/13
+HTTP/1.1 410 Gone
+content-type: application/json
+content-length: 50
+
+{"error":"book 13 was removed from the catalogue"}
+
+$ curl -i http://127.0.0.1:3000/books/9
+HTTP/1.1 404 Not Found
+content-type: application/json
+content-length: 28
+
+{"error":"book 9 not found"}
+
+$ curl -i http://127.0.0.1:3000/books/2
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 23
+
+{"id":2,"title":"Emma"}

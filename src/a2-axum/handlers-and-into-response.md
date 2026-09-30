@@ -515,7 +515,7 @@ ability for `&'static str`, `String`, `Html`, `StatusCode`, tuples, and many mor
 Axum's `get(…)` accepts any handler whose return type has it. Rust for Humans'
 [Traits basics](https://open-source-bd.github.io/rustbook-for-human/abstractions/traits-basics.html)
 lesson teaches traits from the start, including how to give your own type an ability. You'll do
-that for `IntoResponse` in *Error handling in Axum*.
+that for `IntoResponse` in [Error handling in Axum](error-handling-in-axum.md).
 
 **"What does `impl IntoResponse` mean?"**
 "This function returns a value of **some** type that implements `IntoResponse`; I'm not writing
@@ -564,7 +564,7 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 panic, so the client got no answer at all. Axum runs each request on its own, so the server keeps
 going: `/text` still answers. With fixed, correct values, as in `by_hand`, this can't happen. When
 the values come from outside (a user, a file), don't `.unwrap()`: handle the error, which
-*Error handling in Axum* shows how to do.
+[Error handling in Axum](error-handling-in-axum.md) shows how to do.
 
 ## Coming from another language?
 
@@ -815,7 +815,7 @@ your second terminal.
 
 ### `Result<String, StatusCode>`: an answer or an error code
 
-A preview of *Error handling in Axum*. `Result` holds either a success (`Ok`) or an error (`Err`),
+A preview of [Error handling in Axum](error-handling-in-axum.md). `Result` holds either a success (`Ok`) or an error (`Err`),
 and Axum implements `IntoResponse` for it when both sides have the ability
 (`cargo run -p handlers-and-into-response --example handlers-result`):
 

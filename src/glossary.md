@@ -145,6 +145,14 @@ program can read when it starts. This book stores the [database](#database)'s lo
 in environment variables, so they are never written directly into the code.
 **First used in:** [Your toolbox](part-0-start/your-toolbox.md)
 
+### Error type
+
+A type whose values describe what went wrong, instead of what went right. In an Axum app it's
+usually one `enum` with a variant for each kind of failure, such as "book not found", so that every
+[handler](#handler) reports its errors the same way and each one becomes the right
+[status code](#status-code).
+**First used in:** [Error handling in Axum](a2-axum/error-handling-in-axum.md)
+
 ### EXPLAIN
 
 A command you put in front of a [query](#query) to see the plan Postgres will use to run it: for

@@ -535,8 +535,8 @@ connected.
 **"What does `.unwrap()` on `.lock()` mean here?"**
 `.lock()` returns a `Result`, which is an error only if the lock is **poisoned**: another handler
 panicked (crashed) while it held the lock, so the list might be half-changed. `.unwrap()` means
-"if that ever happens, crash this request too", which is a fair choice for a lesson; *Error handling
-in Axum* comes back to it.
+"if that ever happens, crash this request too", which is a fair choice for a lesson; [Error handling
+in Axum](error-handling-in-axum.md) comes back to it.
 
 **"Is `Mutex` slow?"**
 Not in the way that matters here. Locking a `Mutex` that nobody else holds takes a tiny fraction of
@@ -1081,6 +1081,6 @@ reads the body, so their order is up to you.
 
 **Next:**
 
-- Error handling in Axum (coming soon)
+- [Error handling in Axum](../a2-axum/error-handling-in-axum.md)
 
 <!-- next:end -->

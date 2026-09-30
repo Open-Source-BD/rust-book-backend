@@ -1,0 +1,13 @@
+$ curl -i http://127.0.0.1:3000/books/9
+HTTP/1.1 404 Not Found
+content-type: application/json
+content-length: 28
+
+{"error":"book 9 not found"}
+
+$ curl -i http://127.0.0.1:3000/books/2/cover
+HTTP/1.1 500 Internal Server Error
+content-type: application/json
+content-length: 44
+
+{"error":"something went wrong on our side"}

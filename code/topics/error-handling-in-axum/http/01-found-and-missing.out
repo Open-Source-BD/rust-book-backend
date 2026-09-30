@@ -1,0 +1,20 @@
+$ curl -i http://127.0.0.1:3000/books/2
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 23
+
+{"id":2,"title":"Emma"}
+
+$ curl -i http://127.0.0.1:3000/books/9
+HTTP/1.1 404 Not Found
+content-type: application/json
+content-length: 28
+
+{"error":"book 9 not found"}
+
+$ curl -i http://127.0.0.1:3000/books/abc
+HTTP/1.1 400 Bad Request
+content-type: text/plain; charset=utf-8
+content-length: 42
+
+Invalid URL: Cannot parse `abc` to a `u32`

@@ -510,7 +510,7 @@ means the default, and `Option` when "not given" means something different.
 **"Why are Axum's error answers plain text, not JSON?"**
 Because Axum doesn't know how your API writes its errors, so its built-in rejections use the
 simplest format there is. Most JSON APIs answer errors in JSON too, such as
-`{"error":"missing field title"}`. *Error handling in Axum* shows how to turn every rejection into
+`{"error":"missing field title"}`. [Error handling in Axum](error-handling-in-axum.md) shows how to turn every rejection into
 the error format you choose.
 
 ## Coming from another language?

@@ -1,0 +1,13 @@
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"title":"   "}'
+HTTP/1.1 422 Unprocessable Entity
+content-type: application/json
+content-length: 35
+
+{"error":"title must not be empty"}
+
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"title":"Hamlet"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 25
+
+{"id":3,"title":"Hamlet"}

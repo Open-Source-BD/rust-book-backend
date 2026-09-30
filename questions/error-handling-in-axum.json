@@ -1,0 +1,60 @@
+{
+  "topic": "error-handling-in-axum",
+  "title": "Error handling in Axum",
+  "quiz": [
+    {
+      "q": "What does `?` do inside a handler returning `Result<_, AppError>`?",
+      "options": [
+        "Ignores the error",
+        "Returns the error early; Axum turns it into a response",
+        "Retries",
+        "Panics"
+      ],
+      "answer": 1,
+      "explain": "`?` stops the handler and returns the Err; AppError's IntoResponse makes the HTTP answer."
+    },
+    {
+      "q": "Why implement `IntoResponse` for `AppError`?",
+      "options": [
+        "To print it",
+        "So Axum knows which status and body each error becomes",
+        "To make it Clone",
+        "thiserror requires it"
+      ],
+      "answer": 1,
+      "explain": "Axum can only send types that implement IntoResponse."
+    },
+    {
+      "q": "What does `#[error(\"book {0} not found\")]` generate?",
+      "options": [
+        "A route",
+        "The text shown by `to_string()` for that variant",
+        "A log line",
+        "An HTTP header"
+      ],
+      "answer": 1,
+      "explain": "thiserror writes the Display implementation for you."
+    },
+    {
+      "q": "Why avoid `.unwrap()` for 'book not found'?",
+      "options": [
+        "It's slower",
+        "It panics: the client gets no answer at all instead of a clear 404",
+        "It doesn't compile",
+        "It deletes the book"
+      ],
+      "answer": 1,
+      "explain": "A missing book is an expected case; handle it with an error value, not a crash."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "App-wide error pattern?",
+      "back": "enum AppError + `impl IntoResponse` + handlers return `Result<T, AppError>` and use `?`"
+    },
+    {
+      "front": "Option to error?",
+      "back": "`.ok_or(AppError::NotFound(id))?`"
+    }
+  ]
+}

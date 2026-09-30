@@ -30,7 +30,7 @@
 - [Path and Query extractors](a2-axum/path-and-query-extractors.md)
 - [JSON with serde](a2-axum/json-and-serde.md)
 - [Shared state](a2-axum/shared-state.md)
-- [Error handling in Axum]()
+- [Error handling in Axum](a2-axum/error-handling-in-axum.md)
 - [Middleware and Tower layers]()
 - [Nesting and modular routers]()
 - [Custom extractors]()
