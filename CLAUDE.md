@@ -94,6 +94,36 @@ Part A1 (PostgreSQL & SQL) lessons show real `psql` output, checked by CI instea
   That's deliberate: the stale output would otherwise linger (and could still be included by a
   page). `git rm` the orphan, then rerun.
 
+## HTTP transcripts
+
+Part A2+ lessons show real `curl` output from a running Axum server, checked by CI instead of
+hand-typed. The runner is `tools/http-check.mjs`.
+
+- **Script format:** `code/topics/<slug>/http/NN-name.sh`. The first line is
+  `# serve: -p <package> [--example <name>]` (the `cargo run` arguments; `-p` is required). Every
+  other non-comment, non-blank line is one command the reader types, usually `curl -i …`. JSON
+  requests: `curl -i -X POST http://127.0.0.1:3000/<path> -H 'content-type: application/json' -d '<json>'`.
+- **NN ranges:** same as SQL: `01`–`49` The idea, slowly; `50`–`69` More examples; `70`–`79`
+  Common mistakes; `90`–`99` Your turn.
+- **Port 3000:** every lesson server binds `127.0.0.1:3000`. The runner refuses to start a script
+  (a FAIL line, exit 1) if something already listens on 3000, rather than test the wrong server,
+  and it stops its own server after every script, even when a command fails.
+- **Volatile output:** the runner drops every `date:` response header (the only line that changes
+  each second) and normalizes CRLF. curl runs with a private `.curlrc` (`no-progress-meter`), so no
+  progress meter reaches a `.out`.
+- **`--update` and `--check-twice`:** `node tools/http-check.mjs --update <package>` writes each
+  `NN-name.out`. `--check-twice` runs every script twice, each time against a fresh server, and
+  fails if the output differs. `npm run http` = `node tools/http-check.mjs`; CI passes
+  `--check-twice`. Orphan `.out` files are reported as `no matching .sh`.
+- **On the page:** show the script in a ` ```bash ` fence with
+  `{{#include ../../code/topics/<slug>/http/NN-name.sh}}` and the result in a ` ```text ` fence with
+  `{{#include ../../code/topics/<slug>/http/NN-name.out}}`. **`.out` files are never hand-edited**;
+  they come only from `--update`.
+- **Rust listings** follow the Hard rules above: ` ```rust,noplayground ` fence holding an include
+  from `code/topics/<slug>/src/` (by anchor), then `📁 Full code: code/topics/<slug>` and
+  `cd code && cargo run -p <slug>`. Variations and exercise solutions are full programs in
+  `examples/<name>.rs` with a `#[cfg(test)]` test (run them with `cargo run -p <slug> --example <name>`).
+
 ## Publishing a draft page
 
 1. Set `status: "published"` for that page's entry in `tools/topics.data.js`.

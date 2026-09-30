@@ -36,6 +36,12 @@ jobs:
       - run: cargo fmt --all --check
       - run: cargo clippy --workspace --all-targets -- -D warnings
       - run: cargo test --workspace --all-targets   # --all-targets also runs the tests in examples/*.rs
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+      - name: Every curl transcript on the site matches the real server (twice)
+        working-directory: .
+        run: node tools/http-check.mjs --check-twice
 
   sql:
     runs-on: ubuntu-latest

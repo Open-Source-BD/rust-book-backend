@@ -6,6 +6,7 @@
     "test": "node --test \"tools/test/*.test.mjs\"",
     "gen": "node tools/generate.mjs",
     "validate": "node tools/validate.mjs",
-    "sql": "node tools/sql-check.mjs"
+    "sql": "node tools/sql-check.mjs",
+    "http": "node tools/http-check.mjs"
   }
 }

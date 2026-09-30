@@ -21,6 +21,7 @@ npm test                  # runs the generator/validator/SQL-runner unit tests
 node tools/generate.mjs   # writes any missing page stubs, regenerates SUMMARY.md and questions.data.js
 node tools/validate.mjs   # checks every published page against the format rules
 npm run sql               # re-runs every code/sql/<slug>/NN-*.sql for real and checks its .out
+npm run http              # starts each lesson's Axum server, runs its curl script, checks the .out (port 3000 must be free)
 mdbook serve --open       # builds the book and opens it in your browser, rebuilding on save
 ```
 

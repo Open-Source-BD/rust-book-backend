@@ -269,6 +269,14 @@ reaches CI. `validate.mjs` errors on a hand-typed ` ```sql ` fence; the only exc
 `node tools/sql-check.mjs --check-twice` against a fresh `postgres:18` service container on every
 push and pull request.
 
+The same idea covers HTTP output in Part A2+: every "Run it" that talks to a running server is a
+script `code/topics/<slug>/http/NN-name.sh` (first line `# serve: -p <package> [--example <name>]`,
+then one command per line), shown in a ` ```bash ` include, with its result in a ` ```text `
+include of `NN-name.out`. `tools/http-check.mjs` starts the server on `127.0.0.1:3000` (refusing to
+run if the port is busy), runs each command with a private `.curlrc`, drops the `date:` header,
+and diffs against the committed `.out`; `--update` writes it, `--check-twice` runs every script a
+second time against a fresh server, and CI runs `node tools/http-check.mjs --check-twice`.
+
 ### Capstone snapshots
 `code/shop/step-NN/` is a full, independent crate (`shop-step-NN`). Each step is created by copying
 the previous one and applying that chapter's changes, so readers can start from any chapter.
