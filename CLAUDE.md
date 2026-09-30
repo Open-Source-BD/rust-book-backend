@@ -108,6 +108,13 @@ hand-typed. The runner is `tools/http-check.mjs`.
 - **Port 3000:** every lesson server binds `127.0.0.1:3000`. The runner refuses to start a script
   (a FAIL line, exit 1) if something already listens on 3000, rather than test the wrong server,
   and it stops its own server after every script, even when a command fails.
+- **Failures are loud:** the runner first builds every bin and example (`cargo build --workspace
+  --bins --examples`), so a compile error shows up front (exit 2). A server that exits before
+  opening port 3000 fails fast with `server exited (code N) before opening port 3000` and the last
+  lines of its stderr. A command that cannot run, is killed, or exits non-zero fails its script and
+  its `.out` is not written under `--update` (`curl -i` exits 0 on 4xx/5xx, so lessons never need a
+  failing command). A package name that has no `http/` scripts fails (`no http/ scripts for this
+  package`) instead of silently checking nothing.
 - **Volatile output:** the runner drops every `date:` response header (the only line that changes
   each second) and normalizes CRLF. curl runs with a private `.curlrc` (`no-progress-meter`), so no
   progress meter reaches a `.out`.

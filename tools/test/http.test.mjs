@@ -21,3 +21,23 @@ test("stripVolatile drops only the date header", () => {
 test("transcript prefixes each command with $ and separates blocks", () => {
   assert.equal(transcript(["curl a", "curl b"], ["A", "B\n"]), "$ curl a\nA\n\n$ curl b\nB\n");
 });
+
+import { commandResult, unknownPackages, lastLines } from "../http.mjs";
+
+test("commandResult fails on error, signal or non-zero status", () => {
+  assert.deepEqual(commandResult({ status: 0 }), { ok: true, reason: "" });
+  assert.match(commandResult({ error: new Error("boom"), status: null }).reason, /boom/);
+  assert.match(commandResult({ signal: "SIGTERM", status: null }).reason, /SIGTERM/);
+  const bad = commandResult({ status: 7 });
+  assert.equal(bad.ok, false);
+  assert.match(bad.reason, /status 7/);
+});
+
+test("unknownPackages lists requested names with no http/ scripts", () => {
+  assert.deepEqual(unknownPackages(["a", "nosuch"], ["a", "b"]), ["nosuch"]);
+  assert.deepEqual(unknownPackages([], ["a"]), []);
+});
+
+test("lastLines keeps only the tail, skipping blanks", () => {
+  assert.equal(lastLines("a\n\nb\nc\n", 2), "b\nc");
+});
