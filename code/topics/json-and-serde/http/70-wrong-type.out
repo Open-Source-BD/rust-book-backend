@@ -1,0 +1,6 @@
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"title":"Emma","in_stock":"yes"}'
+HTTP/1.1 422 Unprocessable Entity
+content-type: text/plain; charset=utf-8
+content-length: 134
+
+Failed to deserialize the JSON body into the target type: in_stock: invalid type: string "yes", expected a boolean at line 1 column 32

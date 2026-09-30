@@ -1,0 +1,13 @@
+$ curl -i -X POST http://127.0.0.1:3000/orders -H 'content-type: application/json' -d '{"items":[{"book_id":1,"qty":2}]}'
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 17
+
+{"total_items":2}
+
+$ curl -i -X POST http://127.0.0.1:3000/orders -H 'content-type: application/json' -d '{"items":[{"book_id":1,"qty":2},{"book_id":7,"qty":3}]}'
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 17
+
+{"total_items":5}

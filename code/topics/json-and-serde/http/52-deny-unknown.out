@@ -1,0 +1,13 @@
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"title":"Emma","author":"Jane Austen"}'
+HTTP/1.1 422 Unprocessable Entity
+content-type: text/plain; charset=utf-8
+content-length: 140
+
+Failed to deserialize the JSON body into the target type: author: unknown field `author`, expected `title` or `in_stock` at line 1 column 24
+
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"title":"Emma"}'
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 40
+
+{"id":2,"title":"Emma","in_stock":false}

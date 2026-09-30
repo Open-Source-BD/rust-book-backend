@@ -68,9 +68,9 @@ The code lives in `code/topics/path-and-query-extractors`. Its `Cargo.toml` has 
 - **Remove it and…** (`axum`) every `use axum::…` line fails with ``unresolved import `axum` ``.
 
 `serde.workspace = true`
-- **What:** the new line. **serde** is Rust's standard crate for turning Rust values into text
-  (*ser*ializing) and building them back out of text
-  ([*de*serializing](../glossary.md#deserialize)): its name is *ser* + *de*.
+- **What:** the new line. [**serde**](../glossary.md#serde) is Rust's standard crate for turning
+  Rust values into text ([*ser*ializing](../glossary.md#serialize)) and building them back out of
+  text ([*de*serializing](../glossary.md#deserialize)): its name is *ser* + *de*.
 - **Why:** `Query` fills a struct of yours with the query string's options. serde is the part that
   knows how to build a struct out of `q=rust&page=2`; Step 6 shows how you ask it to.
 - **How:** the version and its features are in `code/Cargo.toml`: Step 2 shows that line.
@@ -747,8 +747,8 @@ query string (`cargo run -p path-and-query-extractors --example extractors-both`
 
 Two parameters, two clerks. Each reads its own part of the address, and both must succeed before
 `reviews` runs. `ReviewOptions` has only an optional field, so the query string may be left out
-entirely. (For these two extractors the order of the parameters doesn't matter. *JSON with serde*
-meets one that has to come last.)
+entirely. (For these two extractors the order of the parameters doesn't matter.
+[JSON with serde](json-and-serde.md) meets one that has to come last.)
 
 ### `HashMap<String, String>`: any options at all
 
@@ -960,6 +960,6 @@ it builds, so that `from=0&to=4000000000` can't keep the server busy.
 
 **Next:**
 
-- JSON with serde (coming soon)
+- [JSON with serde](../a2-axum/json-and-serde.md)
 
 <!-- next:end -->

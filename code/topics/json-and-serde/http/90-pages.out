@@ -1,0 +1,13 @@
+$ curl -i http://127.0.0.1:3000/books/sample
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 51
+
+{"id":1,"title":"Dune","in_stock":true,"pages":412}
+
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"title":"Emma","pages":474}'
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 52
+
+{"id":2,"title":"Emma","in_stock":false,"pages":474}

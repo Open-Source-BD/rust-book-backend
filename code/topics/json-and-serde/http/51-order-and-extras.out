@@ -1,0 +1,20 @@
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"in_stock":true,"title":"Emma"}'
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 39
+
+{"id":2,"title":"Emma","in_stock":true}
+
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"title":"Emma","author":"Jane Austen"}'
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 40
+
+{"id":2,"title":"Emma","in_stock":false}
+
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"id":99,"title":"Emma"}'
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 40
+
+{"id":2,"title":"Emma","in_stock":false}

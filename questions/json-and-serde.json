@@ -1,0 +1,60 @@
+{
+  "topic": "json-and-serde",
+  "title": "JSON with serde",
+  "quiz": [
+    {
+      "q": "Which derive lets a struct be sent back as JSON?",
+      "options": [
+        "Deserialize",
+        "Serialize",
+        "Debug",
+        "Clone"
+      ],
+      "answer": 1,
+      "explain": "Serialize turns a Rust value into JSON; Deserialize goes the other way."
+    },
+    {
+      "q": "A POST has valid JSON but is missing a required field. Axum answers…",
+      "options": [
+        "400",
+        "415",
+        "422",
+        "500"
+      ],
+      "answer": 2,
+      "explain": "422 Unprocessable Entity: the JSON parsed, but it doesn't match your struct."
+    },
+    {
+      "q": "A client forgets `content-type: application/json`. Axum answers…",
+      "options": [
+        "200",
+        "400",
+        "415",
+        "404"
+      ],
+      "answer": 2,
+      "explain": "415 Unsupported Media Type: the Json extractor only accepts JSON bodies."
+    },
+    {
+      "q": "Why use a separate `NewBook` input struct?",
+      "options": [
+        "serde requires it",
+        "The client shouldn't send fields the server decides, like id",
+        "It's faster",
+        "JSON can't have ids"
+      ],
+      "answer": 1,
+      "explain": "Input and output often differ: the server assigns the id, so the input type leaves it out."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Receive JSON?",
+      "back": "`Json(input): Json<NewBook>` (last extractor)"
+    },
+    {
+      "front": "400 vs 415 vs 422 for JSON?",
+      "back": "400 broken JSON · 415 wrong content-type · 422 JSON doesn't fit the struct"
+    }
+  ]
+}

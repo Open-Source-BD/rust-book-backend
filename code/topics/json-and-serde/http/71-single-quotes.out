@@ -1,0 +1,6 @@
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d "{'title':'Emma'}"
+HTTP/1.1 400 Bad Request
+content-type: text/plain; charset=utf-8
+content-length: 81
+
+Failed to parse the request body as JSON: key must be a string at line 1 column 2

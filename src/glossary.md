@@ -122,8 +122,8 @@ one under `[dependencies]` in the project's `Cargo.toml`, and Cargo downloads an
 
 To build a value in your program, such as a Rust struct, out of data that arrived as text, such as
 a [query string](#query-string) or [JSON](#json). The opposite, turning a value into text, is to
-*serialize*. In Rust, the `serde` crate does both, and `#[derive(Deserialize)]` gives a struct the
-ability to be built this way.
+[serialize](#serialize). In Rust, the [serde](#serde) crate does both, and `#[derive(Deserialize)]`
+gives a struct the ability to be built this way.
 **First used in:** [Path and Query extractors](a2-axum/path-and-query-extractors.md)
 
 ### Docker
@@ -331,6 +331,20 @@ One record in a [table](#table): one friend, one book, one order. A row has one 
 The program running underneath your code that carries out [async](#async) work, deciding when each
 paused task picks back up. Tokio is the runtime this book uses.
 **First used in:** [Tour of the stack](part-0-start/tour-of-the-stack.md)
+
+### Serde
+
+The Rust [crate](#crate) that turns Rust values into text formats such as [JSON](#json)
+([serialize](#serialize)) and builds them back out of text ([deserialize](#deserialize)). Its name
+is *ser* + *de*. Axum's `Json` and `Query` extractors use it.
+**First used in:** [Path and Query extractors](a2-axum/path-and-query-extractors.md)
+
+### Serialize
+
+To turn a value in your program, such as a Rust struct, into text that can be sent or saved, such
+as [JSON](#json). The opposite is to [deserialize](#deserialize). In Rust, `#[derive(Serialize)]`
+from the [serde](#serde) crate gives a struct this ability.
+**First used in:** [Path and Query extractors](a2-axum/path-and-query-extractors.md)
 
 ### Server
 

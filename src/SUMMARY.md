@@ -28,7 +28,7 @@
 - [Routes and HTTP methods](a2-axum/routes-and-methods.md)
 - [Handlers and IntoResponse](a2-axum/handlers-and-into-response.md)
 - [Path and Query extractors](a2-axum/path-and-query-extractors.md)
-- [JSON with serde]()
+- [JSON with serde](a2-axum/json-and-serde.md)
 - [Shared state]()
 - [Error handling in Axum]()
 - [Middleware and Tower layers]()

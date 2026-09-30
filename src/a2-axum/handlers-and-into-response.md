@@ -536,7 +536,7 @@ opposite order, `return "made it", 201`, so if you've used Flask, this one will 
 Rarely, and that's the point of all the other types. Reach for the builder when the parts of the
 response aren't known until the program runs and don't fit a tuple well, such as adding a header
 only in some cases, or when you're passing on a response from somewhere else. Most handlers in this
-book return text, `Html`, JSON (in *JSON with serde*), or a tuple. Remember the cost: a hand-built
+book return text, `Html`, JSON (in [JSON with serde](json-and-serde.md)), or a tuple. Remember the cost: a hand-built
 response has only the headers you add, as `/by-hand`'s missing `content-type` showed.
 
 **"Is `.unwrap()` dangerous in `by_hand`?"**

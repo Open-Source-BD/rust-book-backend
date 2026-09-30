@@ -1,0 +1,6 @@
+$ curl -i http://127.0.0.1:3000/books
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 82
+
+[{"id":1,"title":"Dune","in_stock":true},{"id":2,"title":"Emma","in_stock":false}]

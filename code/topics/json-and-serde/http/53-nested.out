@@ -1,0 +1,6 @@
+$ curl -i http://127.0.0.1:3000/books/sample
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 69
+
+{"id":1,"title":"Dune","author":{"name":"Frank Herbert","born":1920}}
