@@ -1,0 +1,6 @@
+$ curl -i http://127.0.0.1:3000/menu
+HTTP/1.1 200 OK
+content-type: text/html; charset=utf-8
+content-length: 69
+
+<h1>Today's menu</h1><ul><li>Soup</li><li>Bread</li><li>Tea</li></ul>

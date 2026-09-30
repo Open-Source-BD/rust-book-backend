@@ -1,0 +1,10 @@
+$ curl -i http://127.0.0.1:3000/
+HTTP/1.1 200 OK
+content-type: text/html; charset=utf-8
+content-length: 37
+
+<h1>Welcome to my first Axum app</h1>
+
+$ curl -i http://127.0.0.1:3000/about
+HTTP/1.1 404 Not Found
+content-length: 0

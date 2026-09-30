@@ -112,6 +112,12 @@ stops, and lets you search, add, change and delete it safely. This book uses a d
 Postgres.
 **First used in:** [How to use this book](part-0-start/how-to-use-this-book.md)
 
+### Dependency
+
+A [crate](#crate) your project uses but didn't write itself, such as Axum or Tokio. You list each
+one under `[dependencies]` in the project's `Cargo.toml`, and Cargo downloads and builds it for you.
+**First used in:** [Hello, Axum](a2-axum/hello-axum.md)
+
 ### Docker
 
 A tool that runs programs inside [containers](#container), so that everyone runs the exact same
@@ -157,6 +163,13 @@ specific to your app. Axum is the framework this book uses to build a [backend](
 The function that runs when a [request](#request) matches a [route](#route); it receives the
 request's data and returns the [response](#response).
 **First used in:** [How to use this book](part-0-start/how-to-use-this-book.md)
+
+### HTML
+
+The language web pages are written in (short for HyperText Markup Language). Text is wrapped in
+*tags*, such as `<h1>…</h1>` for a big heading or `<a href="/about">…</a>` for a link, and a
+browser reads the tags to draw the page.
+**First used in:** [How a web backend works](part-0-start/how-a-web-backend-works.md)
 
 ### HTTP
 

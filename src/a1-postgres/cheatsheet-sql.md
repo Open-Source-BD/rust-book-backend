@@ -208,6 +208,6 @@ To get the prompt in the first place, open psql on this page's database with
 
 **Next:**
 
-- Hello, Axum (coming soon)
+- [Hello, Axum](../a2-axum/hello-axum.md)
 
 <!-- next:end -->

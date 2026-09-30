@@ -251,7 +251,25 @@ export default [
   },
 
   // ---- Part A2 · Axum ----
-  draft("hello-axum", "Hello, Axum", "A2", "lesson", "Beginner"),
+  {
+    slug: "hello-axum",
+    title: "Hello, Axum",
+    part: "A2", kind: "lesson", level: "Beginner", status: "published",
+    outcomes: [
+      "You can start a new Axum project with cargo and add the right dependencies.",
+      "You can serve an HTML page and a plain-text page.",
+      "You can read every line of a raw HTTP response from your own server.",
+    ],
+    summary: "Build your own Axum server from an empty folder: dependencies, handlers, routes, and a first look at real responses.",
+    prereq: ["cheatsheet-sql"],
+    next: ["routes-and-methods"],
+    codeDir: "code/topics/hello-axum",
+    rfhLinks: [rfh("Cargo basics", "start-here/cargo-basics.html"), rfh("Async basics", "runtime-and-ecosystem/async-basics.html")],
+    links: [
+      { label: "Axum docs", href: "https://docs.rs/axum/0.8.9/axum/", note: "Official API reference." },
+      { label: "axum::response::Html", href: "https://docs.rs/axum/0.8.9/axum/response/struct.Html.html", note: "The wrapper that turns text into an HTML response." },
+    ],
+  },
   draft("routes-and-methods", "Routes and HTTP methods", "A2", "lesson", "Beginner"),
   draft("handlers-and-into-response", "Handlers and IntoResponse", "A2", "lesson", "Beginner"),
   draft("path-and-query-extractors", "Path and Query extractors", "A2", "lesson", "Beginner"),

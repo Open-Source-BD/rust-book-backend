@@ -24,7 +24,7 @@
 
 # Part A2 · Axum
 
-- [Hello, Axum]()
+- [Hello, Axum](a2-axum/hello-axum.md)
 - [Routes and HTTP methods]()
 - [Handlers and IntoResponse]()
 - [Path and Query extractors]()

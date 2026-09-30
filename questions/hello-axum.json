@@ -1,0 +1,60 @@
+{
+  "topic": "hello-axum",
+  "title": "Hello, Axum",
+  "quiz": [
+    {
+      "q": "What does `Html(\"<h1>Hi</h1>\")` change about the response?",
+      "options": [
+        "Nothing",
+        "It sets content-type to text/html so the browser renders it",
+        "It compresses the text",
+        "It makes the server faster"
+      ],
+      "answer": 1,
+      "explain": "The Html wrapper tells Axum to send `content-type: text/html; charset=utf-8`, so a browser renders the tags instead of showing them."
+    },
+    {
+      "q": "Which command adds Axum to a new project?",
+      "options": [
+        "cargo install axum",
+        "cargo add axum",
+        "cargo new axum",
+        "npm install axum"
+      ],
+      "answer": 1,
+      "explain": "`cargo add` writes the dependency line into Cargo.toml for you."
+    },
+    {
+      "q": "Your server returns 404 for `/contact`. Most likely cause?",
+      "options": [
+        "The port is wrong",
+        "No `.route(\"/contact\", …)` was added",
+        "Tokio is missing",
+        "The handler is too slow"
+      ],
+      "answer": 1,
+      "explain": "Axum answers 404 for any path the Router has no rule for."
+    },
+    {
+      "q": "Why does the book's crate write `axum.workspace = true`?",
+      "options": [
+        "It's required by Axum",
+        "The version is set once in code/Cargo.toml and shared by every lesson crate",
+        "It disables features",
+        "It downloads the latest version"
+      ],
+      "answer": 1,
+      "explain": "A Cargo workspace lets many crates share one list of dependency versions."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Serve HTML from a handler?",
+      "back": "Return `Html(\"…\")`."
+    },
+    {
+      "front": "Add a dependency?",
+      "back": "`cargo add <crate>` (optionally `--features …`)."
+    }
+  ]
+}

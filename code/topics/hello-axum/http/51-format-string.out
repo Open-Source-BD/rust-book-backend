@@ -1,0 +1,6 @@
+$ curl -i http://127.0.0.1:3000/about
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 47
+
+This server is written in Rust and has 2 pages.

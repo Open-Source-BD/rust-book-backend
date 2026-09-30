@@ -483,7 +483,7 @@ browsers to fetch in advance. It normally has no body; any options go in the que
 a browser warns you before re-sending a form.
 
 **"Why JSON and not HTML?"**
-HTML is a finished *page*: text already arranged with fonts and layout, for a person to look at.
+[HTML](../glossary.md#html) is a finished *page*: text already arranged with fonts and layout, for a person to look at.
 JSON is plain *data*, for a program to use. A backend's clients are programs (a phone app, a
 website's code), and each wants to lay out the data its own way: the app shows the mug in a small
 card, the website in a big grid. Send data, and let each client draw it.
