@@ -16,9 +16,10 @@ service — can ask it for data or ask it to do something. By the end of Part A,
 - **Library database** — design tables and write real SQL queries for a small library system,
   straight in Postgres.
 - **Todo API** — an in-memory [REST](glossary.md#rest) API for a to-do list (REST is a common
-  style where each address stands for one thing, like a to-do, and the request's method says what
-  to do with it), with a [route](glossary.md#route) — a rule pairing one address and method with
-  the code that answers it — for every basic operation: add, view, change, remove.
+  style where each address stands for one thing, like a to-do, and the request's
+  [method](glossary.md#http-method) says what to do with it), with a [route](glossary.md#route) — a
+  rule pairing one address and method with the code that answers it — for every basic operation:
+  add, view, change, remove.
 - **Blog data layer** — the data side of a blog (users, posts and comments), built with SeaORM
   instead of raw SQL.
 - **Notes API** — a full API backed by a real Postgres database, combining everything Axum and

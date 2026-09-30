@@ -1002,6 +1002,6 @@ test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 
 **Next:**
 
-- Routes and HTTP methods (coming soon)
+- [Routes and HTTP methods](../a2-axum/routes-and-methods.md)
 
 <!-- next:end -->

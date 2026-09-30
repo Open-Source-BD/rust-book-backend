@@ -1,0 +1,30 @@
+$ curl -i http://127.0.0.1:3000/books
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 9
+
+all books
+
+$ curl -i -X POST http://127.0.0.1:3000/books
+HTTP/1.1 201 Created
+content-type: text/plain; charset=utf-8
+content-length: 10
+
+book added
+
+$ curl -i http://127.0.0.1:3000/books/7
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 8
+
+one book
+
+$ curl -i -X PUT http://127.0.0.1:3000/books/7
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 12
+
+book updated
+
+$ curl -i -X DELETE http://127.0.0.1:3000/books/7
+HTTP/1.1 204 No Content

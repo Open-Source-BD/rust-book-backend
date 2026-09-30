@@ -1,0 +1,13 @@
+$ curl -i http://127.0.0.1:3000/books/abc
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 8
+
+one book
+
+$ curl -i http://127.0.0.1:3000/books/7/reviews
+HTTP/1.1 404 Not Found
+content-type: text/plain; charset=utf-8
+content-length: 18
+
+nothing lives here

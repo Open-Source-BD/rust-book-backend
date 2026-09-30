@@ -1,0 +1,13 @@
+$ curl -i http://127.0.0.1:3000/magazines
+HTTP/1.1 404 Not Found
+content-type: text/plain; charset=utf-8
+content-length: 27
+
+nothing lives at /magazines
+
+$ curl -i "http://127.0.0.1:3000/magazines/3?page=2"
+HTTP/1.1 404 Not Found
+content-type: text/plain; charset=utf-8
+content-length: 36
+
+nothing lives at /magazines/3?page=2

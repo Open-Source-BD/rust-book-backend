@@ -1,0 +1,60 @@
+{
+  "topic": "routes-and-methods",
+  "title": "Routes and HTTP methods",
+  "quiz": [
+    {
+      "q": "`.route(\"/books\", get(list).post(add))` — what runs for `POST /books`?",
+      "options": [
+        "list",
+        "add",
+        "both",
+        "neither"
+      ],
+      "answer": 1,
+      "explain": "Method chaining attaches a different handler per method on the same path."
+    },
+    {
+      "q": "Axum returns 405 when…",
+      "options": [
+        "the path doesn't exist",
+        "the path exists but not for that method",
+        "the server is down",
+        "the body is invalid"
+      ],
+      "answer": 1,
+      "explain": "405 Method Not Allowed: the route exists, but nothing handles that verb. 404 means no route matched at all."
+    },
+    {
+      "q": "In Axum 0.8, a path placeholder is written…",
+      "options": [
+        ":id",
+        "{id}",
+        "<id>",
+        "*id"
+      ],
+      "answer": 1,
+      "explain": "Axum 0.8 uses braces. The old `:id` style now panics at startup."
+    },
+    {
+      "q": "What does `.fallback(not_found)` handle?",
+      "options": [
+        "Every request",
+        "Requests whose path matched no route",
+        "Only 500 errors",
+        "Only POST requests"
+      ],
+      "answer": 1,
+      "explain": "The fallback runs when the path matches none of the routes."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Same path, two methods?",
+      "back": "`.route(\"/x\", get(a).post(b))`"
+    },
+    {
+      "front": "404 vs 405?",
+      "back": "404: no route for the path. 405: route exists, method not handled."
+    }
+  ]
+}

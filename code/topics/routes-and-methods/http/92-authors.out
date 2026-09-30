@@ -1,0 +1,29 @@
+$ curl -i http://127.0.0.1:3000/authors
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 11
+
+all authors
+
+$ curl -i -X POST http://127.0.0.1:3000/authors
+HTTP/1.1 201 Created
+content-type: text/plain; charset=utf-8
+content-length: 12
+
+author added
+
+$ curl -i http://127.0.0.1:3000/authors/3
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 10
+
+one author
+
+$ curl -i -X DELETE http://127.0.0.1:3000/authors/3
+HTTP/1.1 204 No Content
+
+
+$ curl -i -X PUT http://127.0.0.1:3000/authors/3
+HTTP/1.1 405 Method Not Allowed
+allow: GET,HEAD,DELETE
+content-length: 0

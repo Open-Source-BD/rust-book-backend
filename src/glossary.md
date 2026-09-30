@@ -178,6 +178,13 @@ HyperText Transfer Protocol). Every [request](#request) and [response](#response
 travels using HTTP.
 **First used in:** [Your toolbox](part-0-start/your-toolbox.md)
 
+### HTTP method
+
+The verb at the start of every HTTP [request](#request) that says what the client wants done with
+the path: `GET` to read, `POST` to create, `PUT` to replace, `PATCH` to change part of something,
+`DELETE` to remove. One path can answer several methods, each with its own [handler](#handler).
+**First used in:** [Introduction](introduction.md)
+
 ### Index
 
 A sorted list of one [column](#column)'s values, each with the addresses of its [rows](#row), kept

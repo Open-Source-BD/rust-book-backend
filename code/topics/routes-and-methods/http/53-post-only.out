@@ -1,0 +1,11 @@
+$ curl -i -X POST http://127.0.0.1:3000/messages
+HTTP/1.1 201 Created
+content-type: text/plain; charset=utf-8
+content-length: 12
+
+message sent
+
+$ curl -i http://127.0.0.1:3000/messages
+HTTP/1.1 405 Method Not Allowed
+allow: POST
+content-length: 0
