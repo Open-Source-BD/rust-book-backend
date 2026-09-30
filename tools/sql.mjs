@@ -21,10 +21,10 @@ export function diffLines(expected, actual) {
   return out;
 }
 
-export function planRun(entries) {
-  const sql = entries.filter((e) => e.endsWith(".sql")).sort();
-  for (const f of sql) if (!/^\d{2}-/.test(f)) throw new Error(`${f}: SQL files must start with a two-digit NN- prefix`);
-  const bases = new Set(sql.map((f) => f.slice(0, -4)));
+export function planRun(entries, ext = ".sql") {
+  const sql = entries.filter((e) => e.endsWith(ext)).sort();
+  for (const f of sql) if (!/^\d{2}-/.test(f)) throw new Error(`${f}: listing files must start with a two-digit NN- prefix`);
+  const bases = new Set(sql.map((f) => f.slice(0, -ext.length)));
   const orphans = entries.filter((e) => e.endsWith(".out") && !bases.has(e.slice(0, -4))).sort();
   return { sql, orphans };
 }

@@ -48,7 +48,13 @@ for (const slug of slugs.filter((s) => !only.length || only.includes(s))) {
     failed++;
     continue;
   }
-  const { sql, orphans } = planRun(fs.readdirSync(dir));
+  let plan;
+  try { plan = planRun(fs.readdirSync(dir)); } catch (e) {
+    console.log(`FAIL  ${slug}: ${e.message}`);
+    failed++;
+    continue;
+  }
+  const { sql, orphans } = plan;
   for (const o of orphans) { console.log(`FAIL  ${slug}/${o}: no matching .sql`); failed++; }
   // ON_ERROR_STOP (inside setupScript) makes a failed DROP/CREATE fatal instead of silently
   // leaving the previous database in place. Lesson files run WITHOUT it: see psql()'s doc comment.

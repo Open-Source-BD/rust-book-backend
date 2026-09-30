@@ -32,3 +32,10 @@ test("setupScript sets ON_ERROR_STOP so a failed DROP/CREATE actually fails, and
     "\\set ON_ERROR_STOP 1\nDROP DATABASE IF EXISTS crud_in_sql WITH (FORCE);\nCREATE DATABASE crud_in_sql;\n"
   );
 });
+
+test("planRun works for any listing extension", () => {
+  const r = planRun(["02-b.sh", "01-a.sh", "01-a.out", "07-old.out", "notes.md"], ".sh");
+  assert.deepEqual(r.sql, ["01-a.sh", "02-b.sh"]);
+  assert.deepEqual(r.orphans, ["07-old.out"]);
+  assert.throws(() => planRun(["curl.sh"], ".sh"), /two-digit NN- prefix/);
+});

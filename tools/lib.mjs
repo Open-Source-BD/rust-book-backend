@@ -1,5 +1,5 @@
 // lib.mjs — pure functions shared by generate.mjs and validate.mjs (no file I/O here).
-import { dirname as _dirname, resolve as _resolve } from "node:path";
+import { dirname as _dirname, resolve as _resolve, relative as _relative, isAbsolute as _isAbsolute } from "node:path";
 
 export const PARTS = [
   { id: "0", title: "Part 0 · Before you start", dir: "part-0-start" },
@@ -368,12 +368,13 @@ export function checkPage({ topic: t, md, mdFile, root, glossary, exists, read, 
       errors.push(`line ${b.line}: hand-typed SQL in a \`\`\`${b.info} fence — put it in code/sql/<slug>/NN-name.sql and {{#include}} it`);
     // Only code/sql/ is executed by sql-check, so a sql fence including anything else would show
     // SQL nobody runs.
-    const sqlRoot = _resolve(root, "code/sql") + "/";
+    const sqlRoot = _resolve(root, "code/sql");
     for (const l of inc) {
       const m = /\{\{#include\s+([^}\s]+)\s*\}\}/.exec(l);
       if (!m) continue;
       const rel = m[1].split(":")[0];
-      if (!_resolve(_dirname(mdFile), rel).startsWith(sqlRoot))
+      const within = _relative(sqlRoot, _resolve(_dirname(mdFile), rel));
+      if (!(within && !within.startsWith("..") && !_isAbsolute(within)))
         errors.push(`line ${b.line}: a \`\`\`sql fence must include a file under code/sql/ (only that folder is run by sql-check): ${rel}`);
     }
   }

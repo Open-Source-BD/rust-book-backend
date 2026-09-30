@@ -462,3 +462,9 @@ test("sql: a sql fence's include must live under code/sql/ (the only folder sql-
   assert.ok(!inside.errors.some((e) => e.includes("under code/sql/")), inside.errors.join("\n"));
   assert.equal(inside.errors.length, 0, inside.errors.join("\n"));
 });
+
+test("carry: sql include root check uses path segments, not '/' strings", () => {
+  const files = { "/r/code/x/src/main.rs": "// ANCHOR: app\nfn a(){}\n// ANCHOR_END: app\n", "/r/code/sqlx/hello/01-a.sql": "SELECT 1;\n" };
+  const md = good().replace("### Line by line", "```sql\n{{#include ../../code/sqlx/hello/01-a.sql}}\n```\n\n### Line by line");
+  assert.ok(checkPage(ctx(md, files)).errors.some((e) => e.includes("code/sql/")), "code/sqlx must not pass as code/sql");
+});
