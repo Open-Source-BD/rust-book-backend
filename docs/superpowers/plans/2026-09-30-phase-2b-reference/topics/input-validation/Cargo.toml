@@ -1,0 +1,15 @@
+[package]
+name = "input-validation"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+axum.workspace = true
+tokio.workspace = true
+serde.workspace = true
+validator.workspace = true
+
+[dev-dependencies]
+tower.workspace = true
+http-body-util.workspace = true

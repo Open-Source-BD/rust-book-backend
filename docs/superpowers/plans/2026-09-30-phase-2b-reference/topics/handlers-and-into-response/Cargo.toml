@@ -1,0 +1,13 @@
+[package]
+name = "handlers-and-into-response"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+axum.workspace = true
+tokio.workspace = true
+
+[dev-dependencies]
+tower.workspace = true
+http-body-util.workspace = true
