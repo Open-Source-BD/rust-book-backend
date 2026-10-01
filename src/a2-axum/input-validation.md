@@ -306,8 +306,8 @@ will look familiar.
   with a `JsonRejection`".
 - **Why:** step one hands the request to `Json`, and the line after that converts `Json`'s "no".
   This line is the promise that both are possible.
-- **How:** a condition can be about any type, not only `T` or `S`. Axum's own example for wrapping
-  `Json` in your own extractor writes it this way.
+- **How:** a condition can be about any type, not only `T` or `S`. Axum's own `validator` example
+  (for Axum 0.8.9) writes the same three conditions, with `Form` in place of `Json`.
 - **Remove it and…** it still builds, with a warning that `JsonRejection` is now unused: the first
   two conditions are enough for Rust to work this out. Either way of saying it works; this one
   names the rejection type the code relies on.
@@ -372,8 +372,10 @@ will look familiar.
   transcripts.
 - **How:** `serde_json::to_value` turns anything serde can [serialize](../glossary.md#serialize)
   into a `serde_json::Value`, a JSON value held in memory. It returns a `Result`, because some
-  Rust values can't be JSON (a map whose keys are numbers, say). An error list always can, so `.expect(…)` takes the value out, and
-  would stop the program with that message if the impossible ever happened.
+  Rust values can't be JSON: a JSON key must be text, so a map whose keys are pairs, such as
+  `(1, 2)`, fails with `key must be a string`. An error list's keys are always text, so
+  `.expect(…)` takes the value out, and would stop the program with that message if the impossible
+  ever happened.
 - **Remove it and…** (the whole line, writing `Json(errors)` below) it still works, but the order
   of the fields, and of the params inside them, changes from one run of the server to the next.
   Remove only `.expect(…)`, and the next line fails: a `Json<Result<…>>` isn't a response.
