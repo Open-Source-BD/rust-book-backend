@@ -1051,7 +1051,10 @@ Both answers say `access-control-allow-origin: https://myapp.com`, even the one 
 page on `https://example.com` sees a different name, and the browser refuses to hand the answer to
 its JavaScript. `"https://myapp.com".parse::<HeaderValue>()` turns the text into a header value,
 checking it as it goes, and `.unwrap()` is safe here because the text is fixed and valid. For
-several websites, `allow_origin` also accepts a list: `[a, b]`. With nothing else set, this layer
+several websites, `allow_origin` also accepts a list: `[a, b]`. With a list, tower-http compares
+on the server: it sends back the request's origin only when it's on the list, and sends no
+`access-control-allow-origin` at all to the others; the browser still has the final say. With
+nothing else set, this layer
 answers preflight requests without allowing any extra method or header, so a browser lets the page
 send only the simplest requests, such as a plain `GET`. For a `DELETE`, or a `POST` with a JSON
 body, add `.allow_methods(…)` and `.allow_headers(…)` too; the tower-http documentation has
