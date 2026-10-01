@@ -32,7 +32,7 @@
 - [Shared state](a2-axum/shared-state.md)
 - [Error handling in Axum](a2-axum/error-handling-in-axum.md)
 - [Middleware and Tower layers](a2-axum/middleware-and-tower-layers.md)
-- [Nesting and modular routers]()
+- [Nesting and modular routers](a2-axum/nesting-and-modular-routers.md)
 - [Custom extractors]()
 - [Input validation]()
 - [Testing handlers]()

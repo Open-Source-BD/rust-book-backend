@@ -1,0 +1,16 @@
+$ curl -i http://127.0.0.1:3000/api/books/
+HTTP/1.1 308 Permanent Redirect
+location: /api/books
+content-length: 0
+
+
+$ curl -i -L http://127.0.0.1:3000/api/books/
+HTTP/1.1 308 Permanent Redirect
+location: /api/books
+content-length: 0
+
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 9
+
+all books

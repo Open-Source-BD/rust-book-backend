@@ -409,7 +409,27 @@ export default [
       { label: "MDN: Cross-Origin Resource Sharing (CORS)", href: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS", note: "How browsers decide whether a web page may read another site's answers, preflight requests included." },
     ],
   },
-  draft("nesting-and-modular-routers", "Nesting and modular routers", "A2"),
+  {
+    slug: "nesting-and-modular-routers",
+    title: "Nesting and modular routers",
+    part: "A2", kind: "lesson", level: "Intermediate", status: "published",
+    outcomes: [
+      "You can split routes into modules, one file per area.",
+      "You can mount a group of routes under a prefix with `nest`.",
+      "You can combine routers with `merge`.",
+    ],
+    summary: "Grow beyond one file: routers in modules, `merge` to combine them, `nest` to mount them under /api/books.",
+    prereq: ["middleware-and-tower-layers"],
+    next: ["custom-extractors"],
+    codeDir: "code/topics/nesting-and-modular-routers",
+    rfhLinks: [
+      rfh("Modules and crates", "language-basics/modules-and-crates.html"),
+      rfh("Visibility and privacy", "language-basics/visibility-and-privacy.html"),
+    ],
+    links: [
+      { label: "axum::Router::nest", href: "https://docs.rs/axum/0.8.9/axum/struct.Router.html#method.nest", note: "Official reference: how nest adds a prefix, and what it does with paths and fallbacks." },
+    ],
+  },
   draft("custom-extractors", "Custom extractors", "A2"),
   draft("input-validation", "Input validation", "A2"),
   draft("testing-handlers", "Testing handlers", "A2"),

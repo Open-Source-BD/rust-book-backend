@@ -285,7 +285,7 @@ and `get` into scope:
 - **What:** makes two names from the `axum` crate usable here: `Router` and `get`.
 - **Why:** without it you'd have to write `axum::Router` and `axum::routing::get` every time.
 - **How:** the braces list several names from the same crate; `routing::get` means "`get`, which
-  lives in axum's `routing` module".
+  lives in axum's `routing` [module](../glossary.md#module)".
 - **Remove it and…** ``cannot find type `Router` in this scope`` and the same for `get`.
 
 `fn app() -> Router {`

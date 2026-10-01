@@ -268,6 +268,14 @@ change the [response](#response). Request logging, [CORS](#cors) and [timeouts](
 usually middleware. In Axum, you add it as a [layer](#layer).
 **First used in:** [Routes and HTTP methods](a2-axum/routes-and-methods.md)
 
+### Module
+
+A named part of a Rust program, with its own items (functions, types…) that are private to it
+unless marked `pub`. A file is usually a module: `mod books;` in `main.rs` adds `books.rs` to the
+program as the module `books`. Rust for Humans teaches them in
+[Modules and crates](https://open-source-bd.github.io/rustbook-for-human/language-basics/modules-and-crates.html).
+**First used in:** [Tour of the stack](part-0-start/tour-of-the-stack.md)
+
 ### NULL
 
 SQL's marker for "unknown" or "missing": no value at all. It isn't `0` and it isn't empty text

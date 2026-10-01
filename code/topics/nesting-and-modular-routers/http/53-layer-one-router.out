@@ -1,0 +1,23 @@
+$ curl -i http://127.0.0.1:3000/api/books/7
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+x-area: books
+content-length: 6
+
+book 7
+
+$ curl -i http://127.0.0.1:3000/health
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 2
+
+ok
+
+$ curl -i http://127.0.0.1:3000/api/books/7/extra
+HTTP/1.1 404 Not Found
+content-length: 0
+
+
+$ curl -i http://127.0.0.1:3000/nope
+HTTP/1.1 404 Not Found
+content-length: 0

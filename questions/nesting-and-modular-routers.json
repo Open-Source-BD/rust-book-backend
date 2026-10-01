@@ -1,0 +1,60 @@
+{
+  "topic": "nesting-and-modular-routers",
+  "title": "Nesting and modular routers",
+  "quiz": [
+    {
+      "q": "`.nest(\"/api/books\", books::router())` with a route `/{id}` inside — which URL matches?",
+      "options": [
+        "/{id}",
+        "/api/books/7",
+        "/books/7",
+        "/api/7"
+      ],
+      "answer": 1,
+      "explain": "nest adds the prefix to every route of the inner router."
+    },
+    {
+      "q": "What's the difference between `merge` and `nest`?",
+      "options": [
+        "None",
+        "merge combines routes as-is; nest mounts them under a prefix",
+        "nest is faster",
+        "merge only works with state"
+      ],
+      "answer": 1,
+      "explain": "merge keeps paths unchanged; nest prefixes them."
+    },
+    {
+      "q": "Why must `router()` be `pub`?",
+      "options": [
+        "Axum needs it",
+        "main.rs is a different module and can only call public functions",
+        "For speed",
+        "It doesn't"
+      ],
+      "answer": 1,
+      "explain": "Items are private to their module unless marked pub."
+    },
+    {
+      "q": "Does `/api/books/` (trailing slash) match a nested `/` route?",
+      "options": [
+        "Yes, always",
+        "No — Axum treats it as a different path and answers 404",
+        "It redirects automatically",
+        "It returns 405"
+      ],
+      "answer": 1,
+      "explain": "Paths match exactly; add a route or a redirect if you want both."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Mount routes under a prefix?",
+      "back": "`.nest(\"/api/books\", books::router())`"
+    },
+    {
+      "front": "Combine two routers as-is?",
+      "back": "`.merge(other)`"
+    }
+  ]
+}

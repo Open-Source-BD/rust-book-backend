@@ -1,0 +1,17 @@
+$ curl -i http://127.0.0.1:3000/api/v1/books/7
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 6
+
+book 7
+
+$ curl -i http://127.0.0.1:3000/api/v2/books/7
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 29
+
+book number 7, from version 2
+
+$ curl -i http://127.0.0.1:3000/v1/books/7
+HTTP/1.1 404 Not Found
+content-length: 0

@@ -1,0 +1,27 @@
+$ curl -i http://127.0.0.1:3000/health
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 25
+
+ok, 0 book lookups so far
+
+$ curl -i http://127.0.0.1:3000/api/books/7
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 6
+
+book 7
+
+$ curl -i http://127.0.0.1:3000/api/books/8
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 6
+
+book 8
+
+$ curl -i http://127.0.0.1:3000/health
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 25
+
+ok, 2 book lookups so far
