@@ -18,6 +18,13 @@ service — can ask it for data or ask it to do something (short for Application
 Interface).
 **First used in:** [Introduction](introduction.md)
 
+### API key
+
+A secret text that a program sends with each [request](#request), usually in a [header](#header)
+such as `x-api-key`, to show it's allowed to call an [API](#api): a password for a program rather
+than for a person. The [server](#server) answers `401` when it's missing and `403` when it's wrong.
+**First used in:** [Custom extractors](a2-axum/custom-extractors.md)
+
 ### Async
 
 Code that can pause while it waits for something slow (the network, the [database](#database)…) so
@@ -328,6 +335,13 @@ The part of an address after the `?`, holding optional extra options as `name=va
 with `&`, such as `?q=rust&page=2`. The path says *what* you want; the query string says *how you'd
 like it*.
 **First used in:** [How a web backend works](part-0-start/how-a-web-backend-works.md)
+
+### Rejection
+
+The answer an [extractor](#extractor) sends instead of running the [handler](#handler), when the
+[request](#request) doesn't fit: for example `400 Bad Request` when a `Path` value isn't a number.
+Built-in extractors have their own; an extractor you write chooses its own with `type Rejection`.
+**First used in:** [Path and Query extractors](a2-axum/path-and-query-extractors.md)
 
 ### Request
 

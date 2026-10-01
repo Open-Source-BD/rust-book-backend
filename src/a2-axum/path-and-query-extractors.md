@@ -269,7 +269,7 @@ show_book(Path(42))
 - **What:** the clerk's check: can this text become a `u32`?
 - **Why:** so your handler receives a real number, never text that might not be one.
 - **How:** it runs **before** your handler. If the check fails, Axum sends the extractor's own
-  answer, a **rejection**, and the handler isn't called at all.
+  answer, a **[rejection](../glossary.md#rejection)**, and the handler isn't called at all.
 - **Remove it and…** you'd get text, and have to check it yourself in every handler.
 
 `show_book(Path(42))` · `3. the pattern Path(id) opens the box`

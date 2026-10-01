@@ -950,6 +950,6 @@ with the books Router's `/`, so the address is still `/books`, which is what the
 
 **Next:**
 
-- Custom extractors (coming soon)
+- [Custom extractors](../a2-axum/custom-extractors.md)
 
 <!-- next:end -->

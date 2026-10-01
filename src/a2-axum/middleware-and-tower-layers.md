@@ -1087,7 +1087,7 @@ A middleware doesn't have to call `next.run`. It can answer by itself, and the h
 `(StatusCode, &str)` tuple, turned into a `Response` with `.into_response()`, sends it away with
 `401 Unauthorized`. Notice the last request: `/missing` also gets `401`, not `404`. The guard wraps
 Axum's `404` answer too, so a stranger can't even find out which paths exist. (A real key would come
-from a setting, not from the code; *Custom extractors*, two lessons on, checks a key in another way.)
+from a setting, not from the code; [Custom extractors](custom-extractors.md), two lessons on, checks a key in another way.)
 
 ### `route_layer`: protect one route only
 

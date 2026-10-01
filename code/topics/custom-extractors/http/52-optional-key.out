@@ -1,0 +1,20 @@
+$ curl -i http://127.0.0.1:3000/greeting
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 43
+
+hello, guest: sign up for a key to see more
+
+$ curl -i -H 'x-api-key: letmein' http://127.0.0.1:3000/greeting
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 51
+
+hello, member "letmein": here are today's new books
+
+$ curl -i -H 'x-api-key: guess' http://127.0.0.1:3000/greeting
+HTTP/1.1 403 Forbidden
+content-type: text/plain; charset=utf-8
+content-length: 13
+
+wrong API key

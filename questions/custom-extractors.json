@@ -1,0 +1,60 @@
+{
+  "topic": "custom-extractors",
+  "title": "Custom extractors",
+  "quiz": [
+    {
+      "q": "Why write an extractor instead of checking the header in each handler?",
+      "options": [
+        "It's required",
+        "Write the check once and reuse it by adding one argument",
+        "It's faster",
+        "Headers can't be read in handlers"
+      ],
+      "answer": 1,
+      "explain": "An extractor is reusable: any handler that takes ApiKey is protected."
+    },
+    {
+      "q": "What does `type Rejection` decide?",
+      "options": [
+        "The route",
+        "What response the client gets when extraction fails",
+        "The key value",
+        "The port"
+      ],
+      "answer": 1,
+      "explain": "If from_request_parts returns Err, Axum sends the Rejection as the response."
+    },
+    {
+      "q": "Missing header → 401, wrong key → 403. Why different?",
+      "options": [
+        "Random choice",
+        "401: we don't know who you are; 403: we know, but you're not allowed",
+        "403 is for servers only",
+        "They mean the same"
+      ],
+      "answer": 1,
+      "explain": "Same distinction as in How a web backend works."
+    },
+    {
+      "q": "`FromRequestParts` can read…",
+      "options": [
+        "The body",
+        "Headers, URL and method — not the body",
+        "Only cookies",
+        "The database"
+      ],
+      "answer": 1,
+      "explain": "Parts are everything except the body; FromRequest is for body extractors."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Own extractor from headers?",
+      "back": "`impl<S: Send + Sync> FromRequestParts<S> for X { type Rejection = …; async fn from_request_parts(…) }`"
+    },
+    {
+      "front": "Protect a route?",
+      "back": "Add the extractor as a handler argument."
+    }
+  ]
+}

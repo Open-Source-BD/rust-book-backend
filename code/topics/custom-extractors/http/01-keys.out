@@ -1,0 +1,27 @@
+$ curl -i http://127.0.0.1:3000/public
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 20
+
+anyone can read this
+
+$ curl -i http://127.0.0.1:3000/secret
+HTTP/1.1 401 Unauthorized
+content-type: text/plain; charset=utf-8
+content-length: 24
+
+missing x-api-key header
+
+$ curl -i -H 'x-api-key: guess' http://127.0.0.1:3000/secret
+HTTP/1.1 403 Forbidden
+content-type: text/plain; charset=utf-8
+content-length: 13
+
+wrong API key
+
+$ curl -i -H 'x-api-key: letmein' http://127.0.0.1:3000/secret
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 32
+
+welcome, holder of key "letmein"

@@ -1,0 +1,13 @@
+$ curl -i -H 'user-agent: book-reader/1.0' http://127.0.0.1:3000/whoami
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 42
+
+your client calls itself "book-reader/1.0"
+
+$ curl -i -H 'user-agent:' http://127.0.0.1:3000/whoami
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 34
+
+your client calls itself "unknown"

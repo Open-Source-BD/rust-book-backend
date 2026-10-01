@@ -33,7 +33,7 @@
 - [Error handling in Axum](a2-axum/error-handling-in-axum.md)
 - [Middleware and Tower layers](a2-axum/middleware-and-tower-layers.md)
 - [Nesting and modular routers](a2-axum/nesting-and-modular-routers.md)
-- [Custom extractors]()
+- [Custom extractors](a2-axum/custom-extractors.md)
 - [Input validation]()
 - [Testing handlers]()
 - [Build it: a Todo API]()

@@ -430,7 +430,27 @@ export default [
       { label: "axum::Router::nest", href: "https://docs.rs/axum/0.8.9/axum/struct.Router.html#method.nest", note: "Official reference: how nest adds a prefix, and what it does with paths and fallbacks." },
     ],
   },
-  draft("custom-extractors", "Custom extractors", "A2"),
+  {
+    slug: "custom-extractors",
+    title: "Custom extractors",
+    part: "A2", kind: "lesson", level: "Intermediate", status: "published",
+    outcomes: [
+      "You can write your own extractor with `FromRequestParts`.",
+      "You can reject a request with your own status and message.",
+      "You can protect a route by adding one argument to its handler.",
+    ],
+    summary: "Write an `ApiKey` extractor with `FromRequestParts`: check a header once, reuse it on any handler, reject with 401 or 403.",
+    prereq: ["nesting-and-modular-routers"],
+    next: ["input-validation"],
+    codeDir: "code/topics/custom-extractors",
+    rfhLinks: [
+      rfh("Traits basics", "abstractions/traits-basics.html"),
+      rfh("Generics", "abstractions/generics.html"),
+    ],
+    links: [
+      { label: "axum::extract::FromRequestParts", href: "https://docs.rs/axum/0.8.9/axum/extract/trait.FromRequestParts.html", note: "Official reference: the trait every head-only extractor implements, with its Rejection type." },
+    ],
+  },
   draft("input-validation", "Input validation", "A2"),
   draft("testing-handlers", "Testing handlers", "A2"),
   draft("a2-build-todo-api", "Build it: a Todo API", "A2", "project", "Beginner"),
