@@ -446,6 +446,14 @@ changes are kept, or none are. It starts with `BEGIN` and ends with a [commit](#
 [rollback](#rollback) (throw away).
 **First used in:** [CRUD in SQL](a1-postgres/crud-in-sql.md)
 
+### Validation
+
+Checking that data which arrived in the right **shape** also makes **sense**: a username long
+enough, an email that looks like an email, an age within limits. Parsing answers "is this a
+sign-up form?"; validation answers "is it filled in correctly?". A server that finds a problem
+answers `422 Unprocessable Entity` and says which fields are wrong.
+**First used in:** [JSON and serde](a2-axum/json-and-serde.md)
+
 ### WHERE
 
 The part of an [SQL](#sql) statement that picks which [rows](#row) it works on, such as

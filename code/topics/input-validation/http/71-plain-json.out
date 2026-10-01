@@ -1,0 +1,6 @@
+$ curl -i -X POST http://127.0.0.1:3000/sign-up -H 'content-type: application/json' -d '{"username":"al","email":"nope","age":9}'
+HTTP/1.1 201 Created
+content-type: text/plain; charset=utf-8
+content-length: 18
+
+welcome, al <nope>

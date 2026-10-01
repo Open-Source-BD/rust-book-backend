@@ -1,0 +1,60 @@
+{
+  "topic": "input-validation",
+  "title": "Input validation",
+  "quiz": [
+    {
+      "q": "What's the difference between parsing and validating?",
+      "options": [
+        "None",
+        "Parsing checks the JSON shape; validating checks the values make sense",
+        "Validating is faster",
+        "Parsing checks emails"
+      ],
+      "answer": 1,
+      "explain": "Json<T> only proves the shape; rules like 'email must look like an email' are validation."
+    },
+    {
+      "q": "Why does `ValidatedJson` implement `FromRequest` rather than `FromRequestParts`?",
+      "options": [
+        "Style",
+        "It needs to read the request body",
+        "It's newer",
+        "FromRequestParts is deprecated"
+      ],
+      "answer": 1,
+      "explain": "Only FromRequest extractors can consume the body."
+    },
+    {
+      "q": "Which status fits 'the JSON is fine but the email is invalid'?",
+      "options": [
+        "400",
+        "404",
+        "422",
+        "500"
+      ],
+      "answer": 2,
+      "explain": "422 Unprocessable Entity: understood, but the content breaks the rules."
+    },
+    {
+      "q": "Why return all errors at once?",
+      "options": [
+        "It's required",
+        "So the user fixes every field in one go instead of one per request",
+        "It's faster to compute",
+        "Browsers need it"
+      ],
+      "answer": 1,
+      "explain": "Reporting every problem together is kinder to the person filling in the form."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Declare a rule?",
+      "back": "`#[derive(Validate)]` + `#[validate(length(min = 3))]`"
+    },
+    {
+      "front": "Validate automatically?",
+      "back": "A `ValidatedJson<T>` FromRequest extractor: Json first, then `.validate()`, 422 on errors."
+    }
+  ]
+}

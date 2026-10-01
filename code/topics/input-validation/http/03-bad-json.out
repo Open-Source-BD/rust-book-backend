@@ -1,0 +1,13 @@
+$ curl -i -X POST http://127.0.0.1:3000/sign-up -H 'content-type: application/json' -d '{"username":"ada","email":"ada@example.com"}'
+HTTP/1.1 422 Unprocessable Entity
+content-type: text/plain; charset=utf-8
+content-length: 97
+
+Failed to deserialize the JSON body into the target type: missing field `age` at line 1 column 44
+
+$ curl -i -X POST http://127.0.0.1:3000/sign-up -H 'content-type: application/json' -d '{"username":"ada"'
+HTTP/1.1 400 Bad Request
+content-type: text/plain; charset=utf-8
+content-length: 89
+
+Failed to parse the request body as JSON: EOF while parsing an object at line 1 column 17

@@ -1,0 +1,20 @@
+$ curl -i -X POST http://127.0.0.1:3000/sign-up -H 'content-type: application/json' -d '{"username":"ada lovelace","email":"ada@example.com","age":36}'
+HTTP/1.1 422 Unprocessable Entity
+content-type: application/json
+content-length: 105
+
+{"username":[{"code":"no_spaces","message":"must not contain spaces","params":{"value":"ada lovelace"}}]}
+
+$ curl -i -X POST http://127.0.0.1:3000/sign-up -H 'content-type: application/json' -d '{"username":"ada","email":"ada@example.com","age":36}'
+HTTP/1.1 201 Created
+content-type: text/plain; charset=utf-8
+content-length: 30
+
+welcome, ada <ada@example.com>
+
+$ curl -i -X POST http://127.0.0.1:3000/sign-up -H 'content-type: application/json' -d '{"username":"ada king, countess of lovelace","email":"ada@example.com","age":36}'
+HTTP/1.1 422 Unprocessable Entity
+content-type: application/json
+content-length: 225
+
+{"username":[{"code":"length","message":null,"params":{"max":20,"min":3,"value":"ada king, countess of lovelace"}},{"code":"no_spaces","message":"must not contain spaces","params":{"value":"ada king, countess of lovelace"}}]}

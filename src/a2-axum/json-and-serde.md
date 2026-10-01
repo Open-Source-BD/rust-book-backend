@@ -568,7 +568,8 @@ public Book create(@RequestBody NewBook input) {
 Jackson uses the Java names, which are camelCase by convention, so here the JSON says `"inStock"`,
 not `"in_stock"`. A wrong `content-type` gets `415` and broken JSON gets `400`, as in Axum. But a
 missing `title` isn't an error: it arrives as `null`, and a missing `inStock` as `false`, unless
-you add validation annotations. Spring Boot ignores unknown fields, like serde does by default.
+you add [validation](../glossary.md#validation) annotations. Spring Boot ignores unknown fields,
+like serde does by default.
 
 **Go (`net/http` and Gin).** The standard library's `encoding/json` fills a struct, with **tags**
 naming the JSON keys:

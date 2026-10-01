@@ -1,0 +1,13 @@
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"title":"Dune","pages":412,"isbn":"9780441013593"}'
+HTTP/1.1 201 Created
+content-type: text/plain; charset=utf-8
+content-length: 43
+
+added "Dune", 412 pages, ISBN 9780441013593
+
+$ curl -i -X POST http://127.0.0.1:3000/books -H 'content-type: application/json' -d '{"title":"","pages":0,"isbn":"978-0441013593"}'
+HTTP/1.1 422 Unprocessable Entity
+content-type: application/json
+content-length: 265
+
+{"isbn":[{"code":"isbn","message":"must be exactly 13 digits","params":{"value":"978-0441013593"}}],"pages":[{"code":"range","message":null,"params":{"max":5000,"min":1,"value":0}}],"title":[{"code":"length","message":null,"params":{"max":200,"min":1,"value":""}}]}

@@ -1,0 +1,13 @@
+$ curl -i -X POST http://127.0.0.1:3000/sign-up -H 'content-type: application/json' -d '{"username":"ada","email":"ada@example.com","age":15}'
+HTTP/1.1 422 Unprocessable Entity
+content-type: application/json
+content-length: 72
+
+{"age":[{"code":"range","message":null,"params":{"min":16,"value":15}}]}
+
+$ curl -i -X POST http://127.0.0.1:3000/sign-up -H 'content-type: application/json' -d '{"username":"ada","email":"ada@example.com","age":16}'
+HTTP/1.1 201 Created
+content-type: text/plain; charset=utf-8
+content-length: 30
+
+welcome, ada <ada@example.com>

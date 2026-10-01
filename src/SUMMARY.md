@@ -34,7 +34,7 @@
 - [Middleware and Tower layers](a2-axum/middleware-and-tower-layers.md)
 - [Nesting and modular routers](a2-axum/nesting-and-modular-routers.md)
 - [Custom extractors](a2-axum/custom-extractors.md)
-- [Input validation]()
+- [Input validation](a2-axum/input-validation.md)
 - [Testing handlers]()
 - [Build it: a Todo API]()
 - [Cheat sheet: Axum]()

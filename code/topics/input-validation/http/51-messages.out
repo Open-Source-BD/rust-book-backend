@@ -1,0 +1,6 @@
+$ curl -i -X POST http://127.0.0.1:3000/sign-up -H 'content-type: application/json' -d '{"username":"al","email":"nope","age":9}'
+HTTP/1.1 422 Unprocessable Entity
+content-type: application/json
+content-length: 331
+
+{"age":[{"code":"range","message":"you must be 13 or older to sign up","params":{"min":13,"value":9}}],"email":[{"code":"email","message":"must be an email address, like ada@example.com","params":{"value":"nope"}}],"username":[{"code":"length","message":"must be 3 to 20 characters long","params":{"max":20,"min":3,"value":"al"}}]}

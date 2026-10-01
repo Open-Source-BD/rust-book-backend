@@ -27,10 +27,14 @@ tower-http = { version = "0.7.1", features = ["trace", "cors", "timeout"] }
 # ANCHOR: serde
 serde = { version = "1.0.229", features = ["derive"] }
 # ANCHOR_END: serde
+# ANCHOR: serde_json
 serde_json = "1.0.151"
+# ANCHOR_END: serde_json
 thiserror = "2.0.21"
 tracing = "0.1.44"
 # ANCHOR: tracing_subscriber
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 # ANCHOR_END: tracing_subscriber
+# ANCHOR: validator
 validator = { version = "0.21.0", features = ["derive"] }
+# ANCHOR_END: validator
