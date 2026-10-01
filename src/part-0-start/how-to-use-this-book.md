@@ -160,7 +160,7 @@ No. [**SQL**](../glossary.md#sql) is the language you use to talk to a
 programs stop). Part A1 teaches it from zero before any Rust code touches a database.
 
 **"Do I need to build a frontend (the screens people see)?"**
-No. This book builds the kitchen only. To test your backend you'll use `curl`, a small command-line
+No. This book builds the kitchen only. To [**test**](../glossary.md#test) your backend you'll use `curl`, a small command-line
 program that sends a [**request**](../glossary.md#request) to a server and prints the
 [**response**](../glossary.md#response). The next lesson installs it.
 

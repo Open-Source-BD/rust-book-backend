@@ -473,7 +473,28 @@ export default [
       { label: "axum::extract::FromRequest", href: "https://docs.rs/axum/0.8.9/axum/extract/trait.FromRequest.html", note: "Official reference: the trait for extractors that read the request body." },
     ],
   },
-  draft("testing-handlers", "Testing handlers", "A2"),
+  {
+    slug: "testing-handlers",
+    title: "Testing handlers",
+    part: "A2", kind: "lesson", level: "Intermediate", status: "published",
+    outcomes: [
+      "You can test an Axum app without starting a server.",
+      "You can split an app into a library and a thin `main` so tests can import it.",
+      "You can test JSON, shared state and error responses.",
+    ],
+    summary: "Test handlers with `tower::ServiceExt::oneshot`: a lib/main split, a tests/ folder, and tests for JSON, state and errors.",
+    prereq: ["input-validation"],
+    next: ["a2-build-todo-api", "cheatsheet-axum"],
+    codeDir: "code/topics/testing-handlers",
+    rfhLinks: [
+      rfh("Unit testing", "runtime-and-ecosystem/unit-testing.html"),
+      rfh("Integration testing", "runtime-and-ecosystem/integration-testing.html"),
+    ],
+    links: [
+      { label: "tower::ServiceExt::oneshot", href: "https://docs.rs/tower/0.5.3/tower/trait.ServiceExt.html#method.oneshot", note: "Official reference: the method that sends one request to a service and gives back its response." },
+      { label: "Axum's testing example", href: "https://github.com/tokio-rs/axum/tree/main/examples/testing", note: "Official example: more ways to test an Axum app, including against a real server on a random port." },
+    ],
+  },
   draft("a2-build-todo-api", "Build it: a Todo API", "A2", "project", "Beginner"),
   draft("cheatsheet-axum", "Cheat sheet: Axum", "A2", "cheatsheet"),
 

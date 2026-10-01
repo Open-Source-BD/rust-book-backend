@@ -239,6 +239,14 @@ next to a [table](#table), like the index at the back of a book. It lets Postgre
 without reading the whole table. It costs disk space, and every write must update it.
 **First used in:** [Indexes](a1-postgres/indexes.md)
 
+### Integration test
+
+A [test](#test) that lives in a project's `tests/` folder, outside the code it checks. Cargo builds
+each file there as a separate program that can use only the project's **public** library items
+(the ones marked `pub`), the way any other project would. A unit test, written inside a file in a
+`#[cfg(test)]` block, can also reach that file's private items.
+**First used in:** [Testing handlers](a2-axum/testing-handlers.md)
+
 ### Join
 
 Combining rows from two [tables](#table) into one answer, by matching a column in one with a column
@@ -431,6 +439,15 @@ happened, such as `200` for success or `404` for "not found".
 A named list of data inside a [database](#database), laid out like a spreadsheet: the
 [columns](#column) go across the top, and each [row](#row) below them is one record.
 **First used in:** [What is a database?](a1-postgres/what-is-a-database.md)
+
+### Test
+
+A check that code does what it should: give it a known input, and compare its answer with the one
+you expect. You can test by hand, sending a [request](#request) with `curl` and reading the answer,
+or write the check as a small function that `cargo test` runs for you, every time, in a moment. In
+Rust such a function is marked `#[test]` (`#[tokio::test]` when it's `async`); see
+[Rust for Humans: Unit testing](https://open-source-bd.github.io/rustbook-for-human/runtime-and-ecosystem/unit-testing.html).
+**First used in:** [How to use this book](part-0-start/how-to-use-this-book.md)
 
 ### Timeout
 

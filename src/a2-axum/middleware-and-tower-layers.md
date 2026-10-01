@@ -1223,7 +1223,7 @@ The maintenance case is checked by the example's test, which builds the app with
 ```
 
 (`send` is a small helper in the same file: it sends one pretend request and gives back the status
-and the body. *Testing handlers* explains how.) Run it with
+and the body. [Testing handlers](testing-handlers.md) explains how.) Run it with
 `cargo test -p middleware-and-tower-layers --example mw-maintenance`:
 
 ```text

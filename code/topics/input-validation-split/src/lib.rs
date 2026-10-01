@@ -1,0 +1,62 @@
+//! Testing handlers, Your turn (From scratch): the input-validation lesson's code, split into a
+//! library so the tests in `tests/` can import `app()`. Only one change: `pub fn app()`.
+// ANCHOR: imports
+use axum::{
+    Json, Router,
+    extract::{FromRequest, Request, rejection::JsonRejection},
+    http::StatusCode,
+    response::{IntoResponse, Response},
+    routing::post,
+};
+use serde::{Deserialize, de::DeserializeOwned};
+use validator::Validate;
+// ANCHOR_END: imports
+
+// ANCHOR: input
+#[derive(Deserialize, Validate)]
+struct SignUp {
+    #[validate(length(min = 3, max = 20))]
+    username: String,
+    #[validate(email)]
+    email: String,
+    #[validate(range(min = 13))]
+    age: u32,
+}
+// ANCHOR_END: input
+
+// ANCHOR: extractor
+struct ValidatedJson<T>(T);
+
+impl<T, S> FromRequest<S> for ValidatedJson<T>
+where
+    T: DeserializeOwned + Validate,
+    S: Send + Sync,
+    Json<T>: FromRequest<S, Rejection = JsonRejection>,
+{
+    type Rejection = Response;
+
+    async fn from_request(request: Request, state: &S) -> Result<Self, Self::Rejection> {
+        let Json(value) = Json::<T>::from_request(request, state)
+            .await
+            .map_err(|rejection| rejection.into_response())?;
+        value.validate().map_err(|errors| {
+            let sorted = serde_json::to_value(errors).expect("errors always convert to JSON");
+            (StatusCode::UNPROCESSABLE_ENTITY, Json(sorted)).into_response()
+        })?;
+        Ok(ValidatedJson(value))
+    }
+}
+// ANCHOR_END: extractor
+
+// ANCHOR: handler
+async fn sign_up(ValidatedJson(input): ValidatedJson<SignUp>) -> (StatusCode, String) {
+    (
+        StatusCode::CREATED,
+        format!("welcome, {} <{}>", input.username, input.email),
+    )
+}
+
+pub fn app() -> Router {
+    Router::new().route("/sign-up", post(sign_up))
+}
+// ANCHOR_END: handler

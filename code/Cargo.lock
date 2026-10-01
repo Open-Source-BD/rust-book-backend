@@ -421,6 +421,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "input-validation-split"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "http-body-util",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tower",
+ "validator",
+]
+
+[[package]]
 name = "itoa"
 version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -810,6 +823,18 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 3.0.6",
+]
+
+[[package]]
+name = "testing-handlers"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "http-body-util",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tower",
 ]
 
 [[package]]

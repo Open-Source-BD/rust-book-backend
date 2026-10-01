@@ -1,0 +1,34 @@
+$ curl -i http://127.0.0.1:3000/health
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 2
+
+ok
+
+$ curl -i -X POST http://127.0.0.1:3000/notes -H 'content-type: application/json' -d '{"text":"buy milk"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 26
+
+{"id":1,"text":"buy milk"}
+
+$ curl -i -X POST http://127.0.0.1:3000/notes -H 'content-type: application/json' -d '{"text":"two"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 21
+
+{"id":2,"text":"two"}
+
+$ curl -i http://127.0.0.1:3000/notes
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 50
+
+[{"id":1,"text":"buy milk"},{"id":2,"text":"two"}]
+
+$ curl -i -X POST http://127.0.0.1:3000/notes -H 'content-type: application/json' -d '{"words":"oops"}'
+HTTP/1.1 422 Unprocessable Entity
+content-type: text/plain; charset=utf-8
+content-length: 98
+
+Failed to deserialize the JSON body into the target type: missing field `text` at line 1 column 16

@@ -246,7 +246,7 @@ Every listing in this lesson comes from the book's copy of this project, in
   Router and check the answers, without opening a port. `tower` sends one request (its `oneshot`
   method), and `http-body-util` reads the response body. (Tests are a Rust topic: see
   [Rust for Humans: Unit testing](https://open-source-bd.github.io/rustbook-for-human/runtime-and-ecosystem/unit-testing.html).
-  A later lesson, *Testing handlers*, covers them properly.)
+  A later lesson, [Testing handlers](testing-handlers.md), covers them properly.)
 - **How:** Cargo compiles `[dev-dependencies]` only for `cargo test`, so the server itself stays
   smaller.
 - **Remove it and…** `cargo run` still works, but `cargo test` fails to compile.

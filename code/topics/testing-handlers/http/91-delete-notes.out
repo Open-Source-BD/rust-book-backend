@@ -1,0 +1,17 @@
+$ curl -i -X POST http://127.0.0.1:3000/notes -H 'content-type: application/json' -d '{"text":"one"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 21
+
+{"id":1,"text":"one"}
+
+$ curl -i -X DELETE http://127.0.0.1:3000/notes
+HTTP/1.1 204 No Content
+
+
+$ curl -i http://127.0.0.1:3000/notes
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 2
+
+[]

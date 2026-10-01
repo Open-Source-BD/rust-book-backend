@@ -1,0 +1,60 @@
+{
+  "topic": "testing-handlers",
+  "title": "Testing handlers",
+  "quiz": [
+    {
+      "q": "What does `app().oneshot(request)` do?",
+      "options": [
+        "Starts the server on port 3000",
+        "Sends one request straight into the router and returns the response — no network",
+        "Deploys the app",
+        "Runs every test"
+      ],
+      "answer": 1,
+      "explain": "oneshot drives the Router as a Service, entirely in memory."
+    },
+    {
+      "q": "Why split the app into lib.rs and main.rs?",
+      "options": [
+        "Axum requires it",
+        "So tests in tests/ can import `app()` from the library",
+        "It's faster",
+        "To hide main"
+      ],
+      "answer": 1,
+      "explain": "Integration tests can only use a crate's public library items."
+    },
+    {
+      "q": "In the state test, why `app.clone()` before each request?",
+      "options": [
+        "oneshot consumes the app; clones share the same Arc'd state",
+        "To reset the data",
+        "To make it faster",
+        "It's a mistake"
+      ],
+      "answer": 0,
+      "explain": "Each clone points at the same shared list, so later requests see earlier changes."
+    },
+    {
+      "q": "What does `#[tokio::test]` do?",
+      "options": [
+        "Runs the test on a Tokio runtime so it can `.await`",
+        "Marks slow tests",
+        "Starts the server",
+        "Skips the test"
+      ],
+      "answer": 0,
+      "explain": "Async tests need a runtime, just like an async main."
+    }
+  ],
+  "flashcards": [
+    {
+      "front": "Test a handler without a server?",
+      "back": "`app().oneshot(Request::get(\"/x\").body(Body::empty())?).await`"
+    },
+    {
+      "front": "Share state across test requests?",
+      "back": "Build the app once, `.clone()` it per request."
+    }
+  ]
+}

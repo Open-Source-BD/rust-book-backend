@@ -1,0 +1,10 @@
+$ curl -i http://127.0.0.1:3000/fast
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 5
+
+quick
+
+$ curl -i http://127.0.0.1:3000/slow
+HTTP/1.1 408 Request Timeout
+content-length: 0

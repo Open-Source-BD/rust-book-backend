@@ -35,7 +35,7 @@
 - [Nesting and modular routers](a2-axum/nesting-and-modular-routers.md)
 - [Custom extractors](a2-axum/custom-extractors.md)
 - [Input validation](a2-axum/input-validation.md)
-- [Testing handlers]()
+- [Testing handlers](a2-axum/testing-handlers.md)
 - [Build it: a Todo API]()
 - [Cheat sheet: Axum]()
 
