@@ -339,7 +339,10 @@ JSON (`content-type: application/json`) that a program can read, not an empty pa
      |        ---- ^^^^ expected `Todo`, found `&Todo`
   ```
 
-  (That's the first lines of the real error; the rest suggests `todo.clone()`, which also works.)
+  (That's the first lines of the real error; the rest suggests `todo.clone()`, which also works.
+  The errors on this page were captured from the book's files, so they name paths such as
+  `projects/a2-build-todo-api/examples/step3.rs`. In your project the path is `src/main.rs`, and
+  the line numbers are different; the message is the same.)
 
 ### Step 4: change and delete
 
@@ -547,6 +550,11 @@ For that to work, `AppError`, `ValidatedJson` **and** its field must be `pub`, a
 `todos.rs`, the list is `"/"` and one todo is `"/{id}"`: together they make `/api/todos` and
 `/api/todos/{id}`.
 
+End `router()` with `.with_state(AppState::default())`, so it gives back a plain, ready `Router`.
+Then `app()` never sees the store: it nests a finished Router. (If you leave `.with_state` in
+`app()` instead, `router()` returns a `Router<AppState>`, which `app()` must name, so `AppState`
+has to become `pub`, and the type errors pile up.)
+
 </details>
 
 <details><summary>Hint 3: the tests</summary>
@@ -632,8 +640,8 @@ tests passing, your second.
 - ❌ If every `/api/todos` request answers `404` with an empty body, check the paths inside
   `todos.rs`: they must be `"/"` and `"/{id}"`, not `"/todos"` (which would make
   `/api/todos/todos`).
-- ❌ If `curl -i http://127.0.0.1:3000/api/todos/` (with a `/` at the end) answers `404`, that's
-  right: Axum matches paths exactly ([Nesting and modular routers](nesting-and-modular-routers.md)
+- ✅ If `curl -i http://127.0.0.1:3000/api/todos/` (with a `/` at the end) answers `404`, that's
+  right too: Axum matches paths exactly ([Nesting and modular routers](nesting-and-modular-routers.md)
   explains the trailing slash).
 - ❌ If the build fails with `is private`, a `pub` is missing; the *Reference solution* shows each
   case.
@@ -1047,8 +1055,10 @@ The biggest file. It's shown in pieces, top to bottom, in the order it's written
 `#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]` · `pub struct Todo {` · `pub id: u64,` · `pub title: String,` · `pub done: bool,` · `}`
 - **What:** one todo, as the server stores it and sends it.
 - **Why:** the server needs `Clone` (one copy in the list, one in the answer) and `Serialize` (to
-  send it as JSON). `Deserialize`, `Debug` and `PartialEq` are there so a test could read a todo
-  back from JSON and compare it with `assert_eq!`, as in Testing handlers.
+  send it as JSON). `Deserialize`, `Debug` and `PartialEq` are unused today. `tests/api.rs` can't
+  name `Todo` (the module `todos` is private), so it compares JSON text instead. They're there for
+  a unit test inside `todos.rs`, which could read a todo back from JSON and compare it with
+  `assert_eq!`, as in Testing handlers.
 - **How:** `u64` is a whole number from 0 up, big enough that the counter never runs out. The
   `pub`s change nothing today: the module `todos` is private to the library, and only this file
   uses `Todo`. They're a habit for a type that **is** the API's shape, ready for the day the module
