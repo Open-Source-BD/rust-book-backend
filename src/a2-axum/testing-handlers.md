@@ -1399,7 +1399,7 @@ Word for word the first two answers of Input validation's *Run it*.
 
 **Next:**
 
-- Build it: a Todo API (coming soon)
+- [Build it: a Todo API](../a2-axum/a2-build-todo-api.md)
 - Cheat sheet: Axum (coming soon)
 
 <!-- next:end -->

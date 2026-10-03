@@ -1,0 +1,52 @@
+$ curl -i http://127.0.0.1:3000/health
+HTTP/1.1 200 OK
+content-type: text/plain; charset=utf-8
+content-length: 2
+
+ok
+
+$ curl -i -X POST http://127.0.0.1:3000/api/todos -H 'content-type: application/json' -d '{"title":"buy milk"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 40
+
+{"id":1,"title":"buy milk","done":false}
+
+$ curl -i -X POST http://127.0.0.1:3000/api/todos -H 'content-type: application/json' -d '{"title":"walk the dog"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 44
+
+{"id":2,"title":"walk the dog","done":false}
+
+$ curl -i http://127.0.0.1:3000/api/todos
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 87
+
+[{"id":1,"title":"buy milk","done":false},{"id":2,"title":"walk the dog","done":false}]
+
+$ curl -i -X PATCH http://127.0.0.1:3000/api/todos/1 -H 'content-type: application/json' -d '{"done":true}'
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 39
+
+{"id":1,"title":"buy milk","done":true}
+
+$ curl -i -X DELETE http://127.0.0.1:3000/api/todos/2
+HTTP/1.1 204 No Content
+
+
+$ curl -i http://127.0.0.1:3000/api/todos/2
+HTTP/1.1 404 Not Found
+content-type: application/json
+content-length: 28
+
+{"error":"todo 2 not found"}
+
+$ curl -i -X POST http://127.0.0.1:3000/api/todos -H 'content-type: application/json' -d '{"title":""}'
+HTTP/1.1 422 Unprocessable Entity
+content-type: application/json
+content-length: 84
+
+{"title":[{"code":"length","message":null,"params":{"max":100,"min":1,"value":""}}]}

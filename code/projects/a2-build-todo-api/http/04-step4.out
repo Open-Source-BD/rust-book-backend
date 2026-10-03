@@ -1,0 +1,52 @@
+$ curl -i -X POST http://127.0.0.1:3000/todos -H 'content-type: application/json' -d '{"title":"buy milk"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 40
+
+{"id":1,"title":"buy milk","done":false}
+
+$ curl -i -X POST http://127.0.0.1:3000/todos -H 'content-type: application/json' -d '{"title":"walk the dog"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 44
+
+{"id":2,"title":"walk the dog","done":false}
+
+$ curl -i -X PATCH http://127.0.0.1:3000/todos/1 -H 'content-type: application/json' -d '{"done":true}'
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 39
+
+{"id":1,"title":"buy milk","done":true}
+
+$ curl -i -X PATCH http://127.0.0.1:3000/todos/2 -H 'content-type: application/json' -d '{"title":"walk the dog twice"}'
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 50
+
+{"id":2,"title":"walk the dog twice","done":false}
+
+$ curl -i -X DELETE http://127.0.0.1:3000/todos/1
+HTTP/1.1 204 No Content
+
+
+$ curl -i -X DELETE http://127.0.0.1:3000/todos/1
+HTTP/1.1 404 Not Found
+content-type: application/json
+content-length: 28
+
+{"error":"todo 1 not found"}
+
+$ curl -i -X POST http://127.0.0.1:3000/todos -H 'content-type: application/json' -d '{"title":"water the plants"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 48
+
+{"id":3,"title":"water the plants","done":false}
+
+$ curl -i http://127.0.0.1:3000/todos
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 101
+
+[{"id":2,"title":"walk the dog twice","done":false},{"id":3,"title":"water the plants","done":false}]

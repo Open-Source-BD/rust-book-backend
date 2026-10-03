@@ -1,0 +1,27 @@
+$ curl -i http://127.0.0.1:3000/todos
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 2
+
+[]
+
+$ curl -i -X POST http://127.0.0.1:3000/todos -H 'content-type: application/json' -d '{"title":"buy milk"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 40
+
+{"id":1,"title":"buy milk","done":false}
+
+$ curl -i -X POST http://127.0.0.1:3000/todos -H 'content-type: application/json' -d '{"title":"walk the dog"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 44
+
+{"id":2,"title":"walk the dog","done":false}
+
+$ curl -i http://127.0.0.1:3000/todos
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 87
+
+[{"id":1,"title":"buy milk","done":false},{"id":2,"title":"walk the dog","done":false}]

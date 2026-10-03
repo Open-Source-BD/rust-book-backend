@@ -495,7 +495,28 @@ export default [
       { label: "Axum's testing example", href: "https://github.com/tokio-rs/axum/tree/main/examples/testing", note: "Official example: more ways to test an Axum app, including against a real server on a random port." },
     ],
   },
-  draft("a2-build-todo-api", "Build it: a Todo API", "A2", "project", "Beginner"),
+  {
+    slug: "a2-build-todo-api",
+    title: "Build it: a Todo API",
+    part: "A2", kind: "project", level: "Intermediate", status: "published",
+    outcomes: [
+      "You built a complete REST API for todos from an empty folder.",
+      "You combined routing, JSON, state, errors, validation and tests in one app.",
+      "You tested it by hand and with automated tests.",
+    ],
+    summary: "Build a complete Todo REST API — create, list, show, update, delete — using everything from Part A2.",
+    prereq: ["testing-handlers"],
+    next: ["cheatsheet-axum", "what-is-an-orm"],
+    codeDir: "code/projects/a2-build-todo-api",
+    rfhLinks: [
+      rfh("Result and Option", "abstractions/result-and-option.html"),
+      rfh("Modules and crates", "language-basics/modules-and-crates.html"),
+    ],
+    links: [
+      { label: "axum::Router::nest", href: "https://docs.rs/axum/0.8.9/axum/struct.Router.html#method.nest", note: "Official reference: how a nested router's paths join the prefix, and what happens to its state." },
+      { label: "Axum's todos example", href: "https://github.com/tokio-rs/axum/tree/main/examples/todos", note: "Official example: another in-memory todo API, with pagination and a request timeout." },
+    ],
+  },
   draft("cheatsheet-axum", "Cheat sheet: Axum", "A2", "cheatsheet"),
 
   // ---- Part A3 · SeaORM ----

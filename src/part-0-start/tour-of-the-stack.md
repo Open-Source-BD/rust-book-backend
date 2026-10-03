@@ -183,8 +183,10 @@ one is explained in the lesson that first uses it, so you can skip them for now.
 
 ### Line by line
 
-`[workspace]` · `resolver = "3"` · `members = ["topics/*"]`
-- **What:** declares `code/` as a workspace whose members are every folder inside `topics/`.
+`[workspace]` · `resolver = "3"` · `members = ["topics/*", "projects/*"]`
+- **What:** declares `code/` as a workspace whose members are every folder inside `topics/` (one
+  per lesson) and inside `projects/` (one per bigger project, the kind that ends a part of the
+  book).
 - **Why:** one `cargo test --workspace --all-targets` from `code/` builds and tests every project in the book — `--all-targets` also runs the tests inside each project's `examples/` folder, which plain `cargo test --workspace` skips.
 - **How:** `resolver = "3"` picks the newest rules Cargo uses to choose crate versions (the
   default for edition 2024).

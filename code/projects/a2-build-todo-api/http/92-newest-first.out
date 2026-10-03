@@ -1,0 +1,27 @@
+$ curl -i -X POST http://127.0.0.1:3000/api/todos -H 'content-type: application/json' -d '{"title":"buy milk"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 40
+
+{"id":1,"title":"buy milk","done":false}
+
+$ curl -i -X POST http://127.0.0.1:3000/api/todos -H 'content-type: application/json' -d '{"title":"walk the dog"}'
+HTTP/1.1 201 Created
+content-type: application/json
+content-length: 44
+
+{"id":2,"title":"walk the dog","done":false}
+
+$ curl -i "http://127.0.0.1:3000/api/todos?order=newest"
+HTTP/1.1 200 OK
+content-type: application/json
+content-length: 87
+
+[{"id":2,"title":"walk the dog","done":false},{"id":1,"title":"buy milk","done":false}]
+
+$ curl -i "http://127.0.0.1:3000/api/todos?order=random"
+HTTP/1.1 400 Bad Request
+content-type: text/plain; charset=utf-8
+content-length: 98
+
+Failed to deserialize query string: order: unknown variant `random`, expected `oldest` or `newest`
