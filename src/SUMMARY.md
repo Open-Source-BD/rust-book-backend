@@ -37,7 +37,7 @@
 - [Input validation](a2-axum/input-validation.md)
 - [Testing handlers](a2-axum/testing-handlers.md)
 - [Build it: a Todo API](a2-axum/a2-build-todo-api.md)
-- [Cheat sheet: Axum]()
+- [Cheat sheet: Axum](a2-axum/cheatsheet-axum.md)
 
 # Part A3 · SeaORM
 

@@ -1642,7 +1642,7 @@ the two names, so `Query` answers `400`, and its message lists the names it woul
 
 **Next:**
 
-- Cheat sheet: Axum (coming soon)
+- [Cheat sheet: Axum](../a2-axum/cheatsheet-axum.md)
 - What is an ORM? (coming soon)
 
 <!-- next:end -->

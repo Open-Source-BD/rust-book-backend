@@ -517,7 +517,20 @@ export default [
       { label: "Axum's todos example", href: "https://github.com/tokio-rs/axum/tree/main/examples/todos", note: "Official example: another in-memory todo API, with pagination and a request timeout." },
     ],
   },
-  draft("cheatsheet-axum", "Cheat sheet: Axum", "A2", "cheatsheet"),
+  {
+    slug: "cheatsheet-axum",
+    title: "Cheat sheet: Axum",
+    part: "A2", kind: "cheatsheet", level: "Intermediate", status: "published",
+    summary: "Every Axum pattern from Part A2 on one page, each linked to the lesson that explains it.",
+    prereq: ["testing-handlers"],
+    next: ["what-is-an-orm"],
+    codeDir: "code/topics/cheatsheet-axum",
+    rfhLinks: [],
+    links: [
+      { label: "axum 0.8.9 documentation", href: "https://docs.rs/axum/0.8.9/axum/", note: "The official reference for every type and function on this page." },
+      { label: "Axum's examples", href: "https://github.com/tokio-rs/axum/tree/main/examples", note: "Official example apps, one small idea each, from CORS to WebSockets." },
+    ],
+  },
 
   // ---- Part A3 · SeaORM ----
   draft("what-is-an-orm", "What is an ORM?", "A3", "lesson", "Beginner"),
