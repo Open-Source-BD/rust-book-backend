@@ -138,7 +138,7 @@ The versions and features are written once, in the workspace's `code/Cargo.toml`
 
 `[dependencies]` · `axum.workspace = true` · `tokio.workspace = true` · `serde.workspace = true`
 - **What:** Axum 0.8.9, Tokio 1.53.1, and serde with its `derive` feature, as in
-  [JSON and serde](json-and-serde.md).
+  [JSON with serde](json-and-serde.md).
 - **Why:** the app itself needs them: Axum for the Router and `Json`, Tokio to run, serde to turn
   notes into JSON and back.
 - **How:** these are built for `cargo run` **and** `cargo test`.
@@ -193,7 +193,7 @@ Here's the whole app: a small notes service with a health check. If
 - **What:** the five names this file takes from Axum.
 - **Why:** `Json` for JSON bodies, `Router` for the routes, `State` for the shared list,
   `StatusCode` for `201 Created`, and `get` for `GET` routes.
-- **How:** all met before: `State` in Shared state, `Json` in JSON and serde.
+- **How:** all met before: `State` in Shared state, `Json` in JSON with serde.
 - **Remove it and…** (`State`) ``cannot find tuple struct or tuple variant `State` in this
   scope``, once per handler.
 
@@ -233,7 +233,7 @@ Here's the whole app: a small notes service with a health check. If
 `#[derive(Deserialize)]` · `pub struct NewNote {` · `pub text: String,` · `}`
 - **What:** what a client sends to create a note: only the text. The server picks the `id`.
 - **Why:** the same "one struct for each direction" idea as in
-  [JSON and serde, Step 3](json-and-serde.md#step-3-two-structs-one-for-each-direction).
+  [JSON with serde, Step 3](json-and-serde.md#step-3-two-structs-one-for-each-direction).
 - **How:** the tests send this as JSON text, so they never use `NewNote` by name. The `pub` lets
   other programs build one; take it away, and everything here still compiles.
 - **Remove it and…** (`Deserialize`) `Json<NewNote>` can't be built, and `add_note` stops being a
@@ -262,7 +262,7 @@ Here's the whole app: a small notes service with a health check. If
 - **What:** `POST /notes`: receives the state and the parsed body, and answers with a status and a
   `Note` as JSON.
 - **Why:** creating something answers `201 Created` and shows what was made.
-- **How:** `Json` is last because it reads the body, as in JSON and serde.
+- **How:** `Json` is last because it reads the body, as in JSON with serde.
 - **Remove it and…** (`Json(input): …`) there's no text to save.
 
 `let mut notes = state.notes.lock().unwrap();` · `let note = Note {` · `id: notes.len() as u32 + 1,` · `text: input.text,` · `};`
@@ -464,7 +464,7 @@ functions that every test below uses:
 `.header("content-type", "application/json")`
 - **What:** labels the body as JSON, like `curl`'s `-H`.
 - **Why:** Axum's `Json` refuses a body without this label, as you saw in
-  [JSON and serde](json-and-serde.md#run-it).
+  [JSON with serde](json-and-serde.md#run-it).
 - **How:** the builder adds the header and hands itself back, so the next call can follow.
 - **Remove it and…** every `POST` gets `415 Unsupported Media Type`, and the three tests that post
   notes fail.
@@ -645,7 +645,7 @@ input.
 `let (status, _) = send(app(), post_json("/notes", r#"{"words":"oops"}"#)).await;`
 - **What:** posts JSON that's well-formed but has `words` where a `NewNote` needs `text`.
 - **Why:** this is the "right grammar, wrong shape" case from
-  [JSON and serde, Step 5](json-and-serde.md#step-5-what-happens-to-a-json-body).
+  [JSON with serde, Step 5](json-and-serde.md#step-5-what-happens-to-a-json-body).
 - **How:** `_` throws away the body: the plain-text message is Axum's to word, and could change in a
   later Axum. The status is the promise this app makes.
 - **Remove it and…** nothing is sent.

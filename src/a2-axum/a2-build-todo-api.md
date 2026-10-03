@@ -1522,7 +1522,9 @@ added to the `use axum::{…}` line):
 `Json(todos)` must send. `is_none_or` says `true` when there's no `?done` (so everything is kept),
 and otherwise compares. `?done=maybe` never reaches the handler: `Query` can't read `maybe` as a
 `bool`, and answers `400` with the reason. The URLs are in double quotes because `?` means
-something special to your terminal's shell (*Path and Query extractors* explains).
+something special to your terminal's shell
+([Path and Query extractors, Step 8](path-and-query-extractors.md#step-8-main-and-run-it)
+explains).
 
 </details>
 

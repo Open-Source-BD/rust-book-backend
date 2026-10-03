@@ -469,7 +469,7 @@ Checking that data which arrived in the right **shape** also makes **sense**: a 
 enough, an email that looks like an email, an age within limits. Parsing answers "is this a
 sign-up form?"; validation answers "is it filled in correctly?". A server that finds a problem
 answers `422 Unprocessable Entity` and says which fields are wrong.
-**First used in:** [JSON and serde](a2-axum/json-and-serde.md)
+**First used in:** [JSON with serde](a2-axum/json-and-serde.md)
 
 ### WHERE
 

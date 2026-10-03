@@ -420,7 +420,7 @@ When you're done, press **`Ctrl+C`** in the first terminal to stop the server.
 string) and the headers. Any number of these extractors can read them, in any order. `FromRequest`
 gets the **whole** request, body included. A body can be read only once, so a handler has at most
 one `FromRequest` extractor, and it must be the **last** argument, as you saw with `Json` in
-[JSON and serde](json-and-serde.md#common-mistakes). Rule of thumb: if you only need headers or the
+[JSON with serde](json-and-serde.md#common-mistakes). Rule of thumb: if you only need headers or the
 address, use `FromRequestParts`. [Input validation](input-validation.md), the next lesson, writes a `FromRequest`
 extractor, because it reads the body.
 

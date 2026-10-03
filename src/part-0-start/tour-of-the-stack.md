@@ -515,7 +515,8 @@ GET /products/42
 `GET /products/42` → `Axum calls the handler get_product, with id = 42`
 - **What:** the Router matches the path and pulls the `42` out of it for the handler.
 - **Why:** the same handler serves every product; only the id changes.
-- **How:** Part A2 shows how a handler asks Axum for pieces of the request.
+- **How:** [Path and Query extractors](../a2-axum/path-and-query-extractors.md) shows how a handler
+  asks Axum for pieces of the request.
 - **Remove it and…** you'd need one handler per product.
 
 `the handler asks SeaORM` → `SeaORM sends SQL to Postgres`

@@ -19,7 +19,7 @@ so it passed the first look, but it's filled in wrongly. A good clerk circles **
 in one go and hands the form back. A bad clerk points at the first mistake, waits for you to fix
 it, then points at the next one.
 
-Your API has the same two looks. In [JSON and serde](json-and-serde.md), `Json<NewBook>` did the
+Your API has the same two looks. In [JSON with serde](json-and-serde.md), `Json<NewBook>` did the
 first one: it refuses a body that isn't JSON (`400`) or doesn't fit the struct (`422`). That is
 **parsing**: it checks the **shape**. But `{"username":"al","email":"nope","age":9}` has a
 perfect shape for a sign-up, and `Json` lets it straight through. Checking that the values make
@@ -75,7 +75,7 @@ Their versions and features are written once, in the workspace's `code/Cargo.tom
 
 `[dependencies]` · `axum.workspace = true` · `tokio.workspace = true` · `serde.workspace = true`
 - **What:** Axum 0.8.9, Tokio 1.53.1, and serde with its `derive` feature, as in
-  [JSON and serde](json-and-serde.md).
+  [JSON with serde](json-and-serde.md).
 - **Why:** Axum gives `Json`, `FromRequest` and `StatusCode`; Tokio runs the server; serde gives
   `#[derive(Deserialize)]`.
 - **How:** the versions are written once, in `code/Cargo.toml`.
@@ -85,7 +85,7 @@ Their versions and features are written once, in the workspace's `code/Cargo.tom
 - **What:** the crate that reads and writes JSON text, version 1.0.151.
 - **Why:** Step 4 calls one of its functions by name, `serde_json::to_value`, to put the error list
   in a fixed order.
-- **How:** in JSON and serde, Axum's `Json` used serde_json for you, and you didn't need this line.
+- **How:** in JSON with serde, Axum's `Json` used serde_json for you, and you didn't need this line.
   Axum brings serde_json in for **itself**; to write `serde_json::…` in **your** code, your project
   must list it too.
 - **Remove it and…** ``error[E0433]: cannot find module or crate `serde_json` in this scope``.
@@ -164,7 +164,7 @@ In your own project, the same lines come from
 - **Remove it and…** ``cannot find function `post` in this scope``.
 
 `use serde::{Deserialize, de::DeserializeOwned};`
-- **What:** `Deserialize`, which you know from JSON and serde, and `DeserializeOwned`, from serde's
+- **What:** `Deserialize`, which you know from JSON with serde, and `DeserializeOwned`, from serde's
   `de` (deserialize) module.
 - **Why:** `Deserialize` lets JSON become a `SignUp`. `DeserializeOwned` is how Step 4 says "any
   type that can be built from JSON".
@@ -209,7 +209,7 @@ Here is the sign-up form, with its rules written above each field:
 `struct SignUp {`
 - **What:** the shape of a sign-up: three fields.
 - **Why:** it's both the parsing target (what `Json` builds) and the thing being validated.
-- **How:** an ordinary struct, as in JSON and serde.
+- **How:** an ordinary struct, as in JSON with serde.
 - **Remove it and…** there's no sign-up to build.
 
 `#[validate(length(min = 3, max = 20))]` · `username: String,`
@@ -403,7 +403,7 @@ will look familiar.
 ### Step 5: what happens to one sign-up
 
 Here are the two looks, for one request, as a picture. The first three checks are `Json`'s, exactly
-as in [JSON and serde, Step 5](json-and-serde.md#step-5-what-happens-to-a-json-body); the fourth is
+as in [JSON with serde, Step 5](json-and-serde.md#step-5-what-happens-to-a-json-body); the fourth is
 new:
 
 ```text
@@ -430,7 +430,7 @@ sign_up(ValidatedJson(SignUp { … }))  runs → 201 Created
 `1. labelled JSON?` · `2. well-formed JSON?` · `3. fits a SignUp?` · `parsing (Json)`
 - **What:** `Json`'s three checks, in order: the `content-type` label (`415`), the JSON grammar
   (`400`), and the shape of the struct (`422`).
-- **Why:** each catches a different kind of broken request, as in JSON and serde.
+- **Why:** each catches a different kind of broken request, as in JSON with serde.
 - **How:** any failure comes out of the `.map_err(|rejection| …)?` line as Axum's own plain-text
   answer. The rules are never looked at: there's no `SignUp` to look at.
 - **Remove it and…** (these checks) there'd be no `SignUp` for the rules to check.
@@ -470,7 +470,7 @@ sign_up(ValidatedJson(SignUp { … }))  runs → 201 Created
   `SignUp`.
 - **Why:** **this argument is the guarantee.** `sign_up` can only run with a `SignUp` that parsed
   and passed every rule, so there's no `if` here, and nothing to forget.
-- **How:** exactly like `Json(input): Json<NewBook>` in JSON and serde, with a different box. It
+- **How:** exactly like `Json(input): Json<NewBook>` in JSON with serde, with a different box. It
   returns a status and a text, as in Handlers and IntoResponse.
 - **Remove it and…** (writing `Json<SignUp>` instead) it builds and runs, but nothing checks the
   rules. *Common mistakes* shows it.
@@ -576,7 +576,7 @@ its closing `}`:
 ```
 
 These are Axum's own answers, from the `.map_err(|rejection| …)?` line, word for word what
-[JSON and serde](json-and-serde.md#run-it) showed:
+[JSON with serde](json-and-serde.md#run-it) showed:
 
 - **No `age`: `422`, plain text, ``missing field `age` ``.** A `SignUp` must have an age, so `Json`
   couldn't build one. That's a **shape** problem, found while parsing.
