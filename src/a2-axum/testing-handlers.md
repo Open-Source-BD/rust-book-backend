@@ -1386,7 +1386,7 @@ Word for word the first two answers of Input validation's *Run it*.
 - **`oneshot` uses up the Router.** To share state across requests, build the app once and send
   `app.clone()`: clones share the same `Arc`'d state. A fresh `app()` starts empty.
 - Async tests need **`#[tokio::test]`**. Without it, `#[test]` refuses an `async fn`, and no
-  attribute at all silently skips the test: check the count.
+  attribute at all skips the test with only a warning: check the count.
 
 ## Go deeper
 
