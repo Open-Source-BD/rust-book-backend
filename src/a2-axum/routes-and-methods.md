@@ -211,7 +211,8 @@ One handler per job from Step 1, plus the fallback's:
 - **What:** the handler for `GET /books/{id}`.
 - **Why:** a stand-in for "the book with this id".
 - **How:** it doesn't read the id yet. Reading the value of `{id}` needs an
-  [*extractor*](../glossary.md#extractor), which the lesson
+  [*extractor*](../glossary.md#extractor) (a handler parameter that Axum fills in from the
+  request), which the lesson
   [Path and Query extractors](path-and-query-extractors.md) covers. Here, the point is only *which
   handler runs*.
 - **Remove it and…** ``cannot find value `show_book` in this scope``.

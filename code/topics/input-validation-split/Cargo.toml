@@ -1,3 +1,5 @@
+# Not a lesson of its own: this crate holds the 🔴 From scratch solution for the
+# testing-handlers lesson (src/a2-axum/testing-handlers.md).
 [package]
 name = "input-validation-split"
 version = "0.1.0"

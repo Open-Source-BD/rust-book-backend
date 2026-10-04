@@ -1122,7 +1122,10 @@ The biggest file. It's shown in pieces, top to bottom, in the order it's written
 - **How:** `.lock()` waits for the lock and gives back a `Result`; `.unwrap()` takes the guard out
   (it fails only if an earlier request crashed while holding the lock, as
   [Error handling in Axum](error-handling-in-axum.md) showed). The guard is a temporary value, so
-  the lock is released at the end of this one line.
+  the lock is released at the end of this one line. This project keeps `.unwrap()` so each handler
+  stays short; a production API would add Error handling's `AppError::Poisoned` and use
+  `.map_err(…)?` instead, as in
+  [A poisoned lock, handled](error-handling-in-axum.md#a-poisoned-lock-handled).
 - **Remove it and…** (`.clone()`) ``error[E0507]: cannot move out of dereference of
   `std::sync::MutexGuard<'_, Store>` ``: the list belongs to the store, and can't be carried off
   from behind the lock.

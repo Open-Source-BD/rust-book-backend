@@ -605,8 +605,9 @@ where only you can read it. *More examples* shows this with `eprintln!`, and
 [anyhow](https://open-source-bd.github.io/rustbook-for-human/abstractions/error-crates-thiserror-and-anyhow.html)
 is thiserror's sibling crate. Its `anyhow::Error` holds **any** error, which is perfect when you only
 need to report a failure, such as in a command-line tool's `main`. A handler needs more: it must
-know **which** error it has, to choose between `404` and `500`, and `anyhow::Error` forgets that on
-purpose. So Axum apps usually keep an enum like `AppError`, and some add one catch-all variant that
+know **which** error it has, to choose between `404` and `500`. `anyhow::Error` hides the concrete
+type, so getting it back needs a runtime check (`downcast_ref`); an enum lets the compiler check
+every case. So Axum apps usually keep an enum like `AppError`, and some add one catch-all variant that
 holds an `anyhow::Error` for "anything else", sent as a `500`. You don't need it in this book.
 
 **"Who calls `into_response`? I never do."**
@@ -716,8 +717,9 @@ It's tempting to write the handler the short way, as Shared state did for the lo
 ```
 
 It compiles, and `/books/2` works. Now ask for book 9, then for book 2 again. The book's checker
-can't record this session, because curl reports a failure, so it was captured by hand. The second
-terminal:
+can't record this session, because curl reports a failure, so it was captured by hand. The checker
+treats any curl that exits with an error (here `curl: (52)`) as a failed command and records
+nothing, so the `date:` line the book usually hides is still there. The second terminal:
 
 ```text
 $ curl -i http://127.0.0.1:3000/books/2
@@ -1010,7 +1012,8 @@ with a clear `500`. Here it is for real. This example is the lesson's program wi
 ```
 
 Like the `.unwrap()` mistake, this session was captured by hand, because the crash makes curl report
-a failure. The second terminal:
+a failure, which the checker can't record, so the `date:` lines the book usually hides are still
+there. The second terminal:
 
 ```text
 $ curl -i http://127.0.0.1:3000/books/2

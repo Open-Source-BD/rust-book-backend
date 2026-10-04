@@ -75,6 +75,6 @@ mod tests {
             (StatusCode::OK, "book 7".to_string())
         );
         assert_eq!(send(get("/books")).await.0, StatusCode::NOT_FOUND);
-        println!("TRAILING {:?}", send(get("/api/books/")).await);
+        assert_eq!(send(get("/api/books/")).await.0, StatusCode::NOT_FOUND);
     }
 }

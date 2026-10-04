@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseScript, stripVolatile, transcript } from "../http.mjs";
+import { parseScript, stripVolatile, transcript, commandResult, unknownPackages, lastLines } from "../http.mjs";
 
 test("parseScript reads the serve header and the commands", () => {
   const s = parseScript("# serve: -p hello-axum --example about\n# a comment\n\ncurl -i http://127.0.0.1:3000/\ncurl -i http://127.0.0.1:3000/about\n");
@@ -21,8 +21,6 @@ test("stripVolatile drops only the date header", () => {
 test("transcript prefixes each command with $ and separates blocks", () => {
   assert.equal(transcript(["curl a", "curl b"], ["A", "B\n"]), "$ curl a\nA\n\n$ curl b\nB\n");
 });
-
-import { commandResult, unknownPackages, lastLines } from "../http.mjs";
 
 test("commandResult fails on error, signal or non-zero status", () => {
   assert.deepEqual(commandResult({ status: 0 }), { ok: true, reason: "" });

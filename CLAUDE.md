@@ -126,6 +126,10 @@ hand-typed. The runner is `tools/http-check.mjs`.
   `{{#include ../../code/topics/<slug>/http/NN-name.sh}}` and the result in a ` ```text ` fence with
   `{{#include ../../code/topics/<slug>/http/NN-name.out}}`. **`.out` files are never hand-edited**;
   they come only from `--update`.
+- **Sessions the checker can't record** (a curl that exits non-zero, such as `curl: (52) Empty
+  reply from server`, or a demo that restarts the server): paste the real hand-captured output in
+  a ` ```text ` fence, unedited except for the allowed username/IP replacements (so its `date:`
+  lines stay), and say in the sentence before it that it was captured by hand and why.
 - **Rust listings** follow the Hard rules above: ` ```rust,noplayground ` fence holding an include
   from `code/topics/<slug>/src/` (by anchor), then `📁 Full code: code/topics/<slug>` and
   `cd code && cargo run -p <slug>`. Variations and exercise solutions are full programs in

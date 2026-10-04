@@ -528,7 +528,8 @@ a `Mutex`, for the same reason. But state is better in three ways. First, **each
 own**: this crate's tests build a fresh app for every test (`a_new_app_starts_empty`), while a
 global would be shared by every test, and one test's books would leak into the next. Second, a
 handler's parameters now **say what it uses**: `State<AppState>` in the signature, instead of a
-hidden global somewhere. Third, a `static` must be built before the program runs, and in *Part A3*
+hidden global somewhere. Third, a plain `static` is built before `main` starts (`LazyLock` can delay that, but the value
+still lives in one hidden global), and in *Part A3*
 the state holds a connection to the database, which only exists once the program has started and
 connected.
 

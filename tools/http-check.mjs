@@ -79,7 +79,13 @@ for (const kind of ["topics", "projects"]) {
     if (!fs.existsSync(http)) continue;
     known.push(pkg);
     if (only.length && !only.includes(pkg)) continue;
-    const { sql: files, orphans } = planRun(fs.readdirSync(http), ".sh");
+    let plan;
+    try { plan = planRun(fs.readdirSync(http), ".sh"); } catch (e) {
+      console.log(`FAIL  ${pkg}: ${e.message}`);
+      failed++;
+      continue;
+    }
+    const { sql: files, orphans } = plan;
     for (const o of orphans) { console.log(`FAIL  ${relative(ROOT, join(http, o))}: no matching .sh`); failed++; }
     for (const f of files) scripts.push(join(http, f));
   }
